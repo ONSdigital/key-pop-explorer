@@ -1,5 +1,5 @@
 <script>
-  import { assets } from "$app/paths";
+  import { base } from "$app/paths";
   import { page } from "$app/stores";
   import { setContext } from "svelte";
   import "../app.css";
@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href="{assets}/favicon.png" />
+  <link rel="icon" href="{base}/favicon.png" />
 </svelte:head>
 
 <Warning>

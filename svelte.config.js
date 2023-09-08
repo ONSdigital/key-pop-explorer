@@ -9,15 +9,15 @@ const config = {
 		adapter: adapter({
 			// Options below are defaults
 			pages: 'build',
-			assets: 'build',
-			fallback:'404.html'
+			assets: 'build'
 		}),
 		prerender: {
-			enabled: production
+			entries: ['/'],
+			handleHttpError: 'warn'
 		},
 		paths: {
-			assets: production ? 'https://onsvisual.github.io/key-pop-explorer' : '',
-			base: production ? '/key-pop-explorer' : ''
+			base: production ? '/key-pop-explorer' : '',
+			relative: false
 		}
 	}
 };

@@ -1,34 +1,3 @@
-<script context="module">
-  export const prerender = false;
-
-  import { getTopo, getData, removeCategoryCountFromName } from "$lib/utils";
-  import { ladBounds, datasets, colors } from "$lib/config";
-  import { base, assets } from "$app/paths";
-
-  export async function load({ fetch }) {
-    let geojson = await getTopo(assets + ladBounds.url, ladBounds.layer, fetch);
-
-    let dataAll = (await getData(datasets, [], fetch)).data;
-    dataAll.total_pop = makeSum(dataAll.residents.sex.values.count);
-
-    let geoCodesAndNames = geojson.features.map((d) => ({
-      code: d.properties[ladBounds.code],
-      name: d.properties[ladBounds.name],
-    }));
-
-    let geoPerc = geoCodesAndNames.map(({ code, name }) => ({
-      code,
-      name,
-      value: 100,
-      color: colors.seq[4],
-    }));
-
-    return {
-      props: { geojson, geoCodesAndNames, geoPerc, dataAll },
-    };
-  }
-</script>
-
 <script>
   import MapTiles from "../lib/ui/tiles/MapTiles.svelte";
 
@@ -39,17 +8,19 @@
 
   import { page } from "$app/stores";
   import { goto, afterNavigate } from "$app/navigation";
-  import { setContext } from "svelte";
+  import { base } from "$app/paths";
+  import { onMount, setContext } from "svelte";
   import { ckmeans } from "simple-statistics";
-  import { getColor, capitalise, makeSum } from "$lib/utils";
+  import { getColor, capitalise, makeSum, removeCategoryCountFromName, getData } from "$lib/utils";
   import {
     themes,
     vars,
     varsNested,
     mapStyle,
-    arrow,
-    spacer,
+    datasets,
     unblockedCombinationCounts,
+    ladBounds,
+    colors
   } from "$lib/config";
   import Titleblock from "$lib/layout/Titleblock.svelte";
   import Headline from "$lib/layout/partial/Headline.svelte";
@@ -59,7 +30,7 @@
   import Tiles from "$lib/layout/Tiles.svelte";
   import OptionPicker from "$lib/ui/OptionPicker.svelte";
 
-  export let geojson, geoCodesAndNames, geoPerc, dataAll;
+  export let data;
 
   // STYLE CONFIG
   // Set theme globally (options are 'light' or 'dark')
@@ -85,16 +56,6 @@
         .sort((a, b) => a.localeCompare(b))
         .join(",")
     ];
-
-  // Data
-  let data = {
-    all: dataAll,
-    selected: dataAll,
-    geojson,
-    geoCodesAndNames,
-    geoPerc,
-    geoBreaks: [0, 100],
-  };
 
   function updateUrl() {
     // TODO: check what `goto` does
@@ -134,7 +95,7 @@
     data.selected = d.data;
     data.selected.total_pop =
       selected.length === 0
-        ? makeSum(dataAll.residents.sex.values.count)
+        ? makeSum(data.all.residents.sex.values.count)
         : d.total_pop;
 
     data.geoPerc = [];
@@ -223,7 +184,7 @@
   <meta name="description" content="" />
   <meta property="og:title" content="Create a population group profile" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="{assets}/" />
+  <meta property="og:url" content="{base}" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:description" content="" />
   <meta name="description" content="" />
