@@ -1,165 +1,63 @@
 import { feature } from 'topojson-client';
 
-const endpoint = 'https://ftb-api-ext.ons.sensiblecode.io/graphql';
-const frag = `
-fragment tableDimensions on Table {
-  dimensions {
-    categories {
-      code
-    }
-  }
+import { maskRanges, codes } from "$lib/config";
+
+const endpoint = "https://raw.githubusercontent.com/jtrim-ons/key-pop-api-downloader/main/generated/";
+
+function getSelString(sel) {
+  let selected = [...sel].sort((a, b) => a.key.localeCompare(b.key));
+  let selString = sel.length == 0 ?
+      "data" :
+      selected.map((s, i) => {
+        if (i < selected.length - 1)
+          return `${s.key}-${s.code}`;
+        else
+          return `${s.key}`;
+      }).join('/');
+  return {
+    selString,
+    lastCode: sel.length > 0 ? selected[selected.length-1].code : null
+  };
 }
-`.replace(/\s+/g, " ");
-const credentials = "YWhtYWQuYmFyY2xheTplbG9wZS5wdWNrLmhhaWxzLmV4cGxvcmU=";
-const headers = new Headers({
-  "Accept": "application/json",
-  "Content-Type": "application/json",
-  "Authorization": "Basic " + credentials
-});
 
 export async function getData(datasets, sel = [], fetch = window.fetch) {
-  let selected = sel[0] ? [...sel].sort((a, b) => a.topic.localeCompare(b.topic)) : [...sel];
-
-  let variables = [];
-  let filters = [];
-  let altVariables = [];
-  let altFilters = [];
-
-  if (selected[0]) {
-    selected.forEach(item => {
-      if (item.var) {
-        variables.push(item.var);
-        filters.push(`{variable: "${item.var}", codes: ["${item.code}"]}`);
-        
-        if (item.topic != "age group") {
-          altVariables.push(item.var);
-          altFilters.push(`{variable: "${item.var}", codes: ["${item.code}"]}`);
-        }
-      }
-    });
+  if (sel.length > 0 && !sel[0].newFormat) {
+    throw new Error("OLD FORMAT!");
   }
 
-  variables = variables[0] ? '"' + variables.join('","') + '",' : '';
-  filters = filters[0] ? '[' + filters.join(',') + ']' : '[]';
-  altVariables = altVariables[0] ? '"' + altVariables.join('","') + '",' : '';
-  altFilters = altFilters[0] ? '[' + altFilters.join(',') + ']' : '[]';
+  let {selString, lastCode} = getSelString(sel);
+  let retval = {data: {}};
 
-  let dats = [];
-  datasets.forEach(dat => {
-    let tabs = [];
-    dat.tables.forEach(tab => {
-      tabs.push(`
-      ${tab.key}: table(
-        variables: [${tab.key == "age" ? altVariables : variables}"${tab.code}"]
-        filters: ${tab.key == "age" ? altFilters : filters}
-      )
-      {
-        values
-      }
-      `);
-    });
-    let string = `
-    ${dat.key}: dataset(name:"${dat.code}") {
-      ${tabs.join('\n')}
-    }
-    `
-    dats.push(string);
-  });
-
-  const query = `
-  query {
-    ${dats.join('\n')}
-  }
-  `.replace(/\s+/g, " ");
-
-	const ops = {
-		body: JSON.stringify({
-			"query": query
-		}),
-		headers: headers,
-		method: "POST",
-		mode: "cors"
-	};
-	
-	let response = await fetch(endpoint, ops);
-  let json = await response.json();
-
-  // Hack for filtering single year age data
-  let ageSelection = selected.filter(d => d.topic == "age group");
-  if (ageSelection[0] && json.data.residents.age.values) {
-    let ages = [...json.data.residents.age.values];
-    let cells = ageSelection[0].code.split('-');
-    cells.forEach((d, i) => cells[i] = +d);
-    ages.forEach((d, i) => ages[i] = i >= cells[0] && i <= cells[1] ? d : 0);
-    json.data.residents.age.values = ages;
+  let barChartData;
+  if (sel.length === 0) {
+    let url = `${endpoint}${sel.length}var_percent/${selString}.json`
+    let response = await fetch(url);
+    barChartData = await response.json();
+  } else {
+    let url = `${endpoint}${sel.length}var-combined_percent/${selString}.json`
+    let response = await fetch(url);
+    let json = await response.json();
+    barChartData = json.bar_chart_data[lastCode];
+    retval.mapData = json.map_data[lastCode];
+    retval.total_pop = barChartData.total_pop;
   }
 
-  return json;
-}
-
-export async function getGeo(sel = [], fetch = window.fetch) {
-  let selected = sel[0] ? [...sel].sort((a, b) => a.topic.localeCompare(b.topic)) : [...sel];
-  let variables = [];
-  let filters = [];
-  if (selected[0]) {
-    selected.forEach(item => {
-      if (item.var) {
-        variables.push(item.var);
-        filters.push(`{variable: "${item.var}", codes: ["${item.code}"]}`);
-      }
-    });
-  }
-  let vars = variables[0] ? '"' + variables.join('","') + '",' : '';
-  filters = filters[0] ? '[' + filters.join(',') + ']' : '[]';
-
-  const query = `
-  query {
-    dataset(name:"Usual-Residents") {
-      table(
-        variables: ["LA"${vars}]
-        filters: ${filters}
-      )
-      {
-        ...tableDimensions
-        values
-      }
+  for (let dataset of datasets) {
+    retval.data[dataset.key] = {};
+    for (let table of dataset.tables) {
+      retval.data[dataset.key][table.code] = {values: barChartData[table.code]};
     }
   }
-  `.replace(/\s+/g, " ");
 
-	const ops = {
-		body: JSON.stringify({
-			"query": query + frag
-		}),
-		headers: headers,
-		method: "POST",
-		mode: "cors"
-	};
-	
-	let response = await fetch(endpoint, ops);
-  let json = await response.json();
-  return json;
+  return retval;
 }
 
 export function getColor(value, breaks, colors) {
-  for (let i = 1; i < breaks.length; i ++) {
+  for (let i = 1; i < breaks.length; i++) {
     if (value <= breaks[i]) {
       return colors[i - 1];
     }
   }
-}
-
-export function suffixer(int) {
-  let mod = Math.round(int) % 10;
-  return mod == 1 ? 'st' : mod == 2 ? 'nd' : mod == 3 ? 'rd' : 'th';
-}
-
-export function changeClass(val) {
-  return val > 0 ? 'increase' : val < 0 ? 'decrease' : 'nochange';
-}
-
-export function changeStr(val, suffix = '', decimals = 0) {
-  return val != 0 ? Math.abs(val).toFixed(decimals) + suffix : suffix == 'pp' ? 'n/c' : 'no change';
 }
 
 export async function getTopo(url, layer, fetch = window.fetch) {
@@ -174,10 +72,52 @@ export function capitalise(str) {
 }
 
 export function makeSum(values) {
-  return values ? values.reduce((a, b) => a + b) : 0;
+  // TODO: check if this check is appropriate here.
+  if (!values) return 0;
+
+  let sum = 0;
+  for (let i=0; i<values.length; i++)
+    sum += values[i];
+  // for (let key in values) {
+  //   if (key != '-8') {
+  //     sum += values[key];
+  //   }
+  // }
+  return sum;
 }
 
-export function isNA(arr) {
-  let sum = arr ? arr.slice(0,-1).reduce((a, b) => a + b) : 0;
-  return sum == 0;
+export function removeCategoryCountFromName(name) {
+  return name.replace(new RegExp(" \\([0-9]* categories\\)"), "");
+}
+
+export function computeAgeMaskRange(selected) {
+  for (const s of selected)
+    if (s.var in maskRanges) return maskRanges[s.var][s.code];
+
+  return null;
+}
+
+export function makeDataNew(group, dataset, data) {
+  let valsAll = data.all[group][dataset].values;
+  let valsSelected = data.selected[group][dataset].values;
+
+  let arr = [];
+
+  codes[dataset].forEach((cd, i) => {
+    let label = cd.label;
+    let valAll = valsAll.percent[i];
+    let valSelected = valsSelected.percent[i];
+    if (data.selected.total_pop != data.all.total_pop)
+      arr.push({ group: "This group", category: label, value: valSelected });
+    arr.push({ group: "Whole population", category: label, value: valAll });
+  });
+
+  return arr;
+}
+
+export function calcPopPercentString(percentage) {
+  if (percentage === 100) return "100";
+  const pctString = percentage.toFixed(1);
+  if (pctString !== "0.0") return pctString;
+  return "Less than 0.05";
 }
