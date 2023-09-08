@@ -1,15 +1,14 @@
 <script>
   import Tile from "$lib/layout/partial/Tile.svelte";
   import Tiles from "$lib/layout/Tiles.svelte";
-  import Map from "$lib/map/Map.svelte";
-  import MapSource from "$lib/map/MapSource.svelte";
-  import MapLayer from "$lib/map/MapLayer.svelte";
+  import { Map, MapSource, MapLayer } from "@onsvisual/svelte-maps";
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
 
   export let data;
   export let mapStyle;
   export let ladBounds;
+  export let mapBounds;
   export let selected;
   export let colors;
 
@@ -26,7 +25,7 @@
   </Tile>
   <Tile colspan={2} rowspan={2} blank>
     <div style:height="450px">
-      <Map style={mapStyle}>
+      <Map style={mapStyle} location={{bounds: mapBounds}}>
         {#if data.geojson && data.geoPerc}
           <MapSource
             id="lad"
@@ -37,10 +36,9 @@
             <MapLayer
               id="lad-fill"
               data={data.geoPerc}
-              geoCode="code"
-              nameCode="name"
-              colorCode="color"
-              valueCode="value"
+              idKey="code"
+              nameKey="name"
+              valueKey="value"
               hover={true}
               bind:hovered
               tooltip={true}

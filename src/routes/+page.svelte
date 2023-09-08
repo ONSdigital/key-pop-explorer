@@ -17,13 +17,16 @@
     vars,
     varsNested,
     mapStyle,
+    mapBounds,
     datasets,
     unblockedCombinationCounts,
     ladBounds,
     colors
   } from "$lib/config";
-  import Titleblock from "$lib/layout/Titleblock.svelte";
-  import Headline from "$lib/layout/partial/Headline.svelte";
+  import {
+    Breadcrumb,
+    Titleblock
+  } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
   import Content from "$lib/layout/Content.svelte";
@@ -190,25 +193,24 @@
   <meta name="description" content="" />
 </svelte:head>
 
-<Titleblock
-  background="none"
-  breadcrumb={[
-    { label: "Census", url: "/census" },
+<Breadcrumb
+  links="{[
+    { label: "Census", href: "/census" },
     { label: "Create a population group profile" },
-  ]}
->
-  <Headline>Create a population group profile</Headline>
-  <p class="subtitle">
-    Select one or more identity characteristics to define a population group to
-    compare with the whole population of England and Wales. For example, see <a
-      href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
-    >
-    or
-    <a href="?resident_age_3a=3&country_of_birth_8a=2"
-      >people aged 65+ born in Ireland</a
-    >.
-  </p>
-  <div slot="meta" class="wrapper">
+  ]}"
+/>
+<Titleblock title="Create a population group profile">
+  <div slot="after">
+    <p class="subtitle">
+      Select one or more identity characteristics to define a population group to
+      compare with the whole population of England and Wales. For example, see <a
+        href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
+      >
+      or
+      <a href="?resident_age_3a=3&country_of_birth_8a=2"
+        >people aged 65+ born in Ireland</a
+      >.
+    </p>
     {#if selected[0]}
       <br />
       {#each selected as item, i}
@@ -257,7 +259,7 @@
     <AgeProfileTile {data} {selected} />
   </Tiles>
 
-  <MapTiles {data} {mapStyle} {ladBounds} {selected} {colors} />
+  <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
   <!-- <span slot="meta" style:margin-left="10px"> -->
   <!-- <span>
     <strong>Chart type:</strong>
