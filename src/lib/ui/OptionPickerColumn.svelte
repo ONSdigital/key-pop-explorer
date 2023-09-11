@@ -69,10 +69,8 @@
     <div class="title-container">
       <h5 class="column-title">{columnTitle}</h5>
       {#if checkIfAnySelected(currentVar, globalSelectedCategories)}
-        <button
-          on:click={() => removeCatCallback(currentVar)}
-          style="float:right"
-          {disabled}>Clear selection</button
+        <button on:click={() => removeCatCallback(currentVar)} {disabled}
+          >Clear selection</button
         >
       {/if}
     </div>
@@ -101,6 +99,7 @@
 
   .title-container {
     display: flex;
+    justify-content: space-between;
   }
 
   .column {
