@@ -9,7 +9,7 @@
     "deploy": "gh-pages -d build -t true"
   },
   "devDependencies": {
-    "@onsvisual/svelte-components": "^0.0.23",
+    "@onsvisual/svelte-components": "^0.0.24",
     "@onsvisual/svelte-maps": "^1.1.6",
     "@sveltejs/adapter-static": "^2.0.3",
     "@sveltejs/kit": "^1.24.1",
