@@ -38,7 +38,6 @@
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
   import Content from "$lib/layout/Content.svelte";
-  import Tiles from "$lib/layout/Tiles.svelte";
   import OptionPicker from "$lib/ui/OptionPicker.svelte";
 
   export let data;
@@ -294,7 +293,7 @@
         />
       {/each}
     </Cards>
-    <Tiles title={category.categoryName}>
+    <Cards title={category.categoryName}>
       {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
         <BarChartCard
           title={removeCategoryCountFromName(table.key)}
@@ -303,7 +302,7 @@
           {chart_type}
         />
       {/each}
-    </Tiles>
+    </Cards>
   {/each}
 </Content>
 

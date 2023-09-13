@@ -1,6 +1,5 @@
 <script>
-  import Tile from "$lib/layout/partial/Tile.svelte";
-  import Tiles from "$lib/layout/Tiles.svelte";
+  import { Card, Cards } from "@onsvisual/svelte-components";
   import { Map, MapSource, MapLayer } from "@onsvisual/svelte-maps";
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
@@ -15,17 +14,17 @@
   let hovered;
 </script>
 
-<Tiles title="Population by area">
-  <Tile colspan={3} rowspan={1} blank>
+<Cards title="Population by area">
+  <Card colspan={3} rowspan={1} blank>
     <p class="subtitle">
       For each lower-tier local authority area in England and Wales, the map
       shows the count of people in the categories chosen above as a percentage
       of the area's total population.
     </p>
-  </Tile>
-  <Tile colspan={2} rowspan={2} blank>
+  </Card>
+  <Card colspan={2} rowspan={2} blank>
     <div style:height="450px">
-      <Map style={mapStyle} location={{bounds: mapBounds}}>
+      <Map style={mapStyle} location={{ bounds: mapBounds }}>
         {#if data.geojson && data.geoPerc}
           <MapSource
             id="lad"
@@ -84,8 +83,8 @@
         />
       </div>
     {/if}
-  </Tile>
-  <Tile title="Areas with high %">
+  </Card>
+  <Card title="Areas with high %">
     {#if data.geoPerc && selected[0]}
       <Table
         data={[...data.geoPerc]
@@ -96,8 +95,8 @@
     {:else}
       <span class="muted">Make a selection to see rankings.</span>
     {/if}
-  </Tile>
-  <Tile title="Areas with low %">
+  </Card>
+  <Card title="Areas with low %">
     {#if data.geoPerc && selected[0]}
       <Table
         data={data.geoPerc
@@ -109,8 +108,8 @@
     {:else}
       <span class="muted">Make a selection to see rankings.</span>
     {/if}
-  </Tile>
-</Tiles>
+  </Card>
+</Cards>
 
 <style>
   .muted {
