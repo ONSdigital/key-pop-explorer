@@ -1,7 +1,7 @@
 <script>
   import { texts, populationBases } from "$lib/config";
   import { makeDataNew } from "$lib/utils";
-  import Tile from "$lib/layout/partial/Tile.svelte";
+  import { Card } from "@onsvisual/svelte-components";
 
   export let title;
   export let table;
@@ -9,7 +9,7 @@
   export let chart_type;
 </script>
 
-<Tile {title}>
+<Card {title}>
   <!-- FIXME: check for missing data -->
   {#if data.selected.residents[table.code].values === "blocked"}
     <span class="num-desc">{texts.blocked}</span>
@@ -22,7 +22,7 @@
     />
   {/if}
   <span class="num-desc">% of {populationBases[table.code]}</span>
-</Tile>
+</Card>
 
 <style>
   .num-desc {

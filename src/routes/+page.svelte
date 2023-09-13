@@ -1,7 +1,7 @@
 <script>
   import MapTiles from "../lib/ui/tiles/MapTiles.svelte";
 
-  import BarChartTile from "../lib/ui/tiles/BarChartTile.svelte";
+  import BarChartCard from "../lib/ui/tiles/BarChartCard.svelte";
 
   import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
@@ -11,7 +11,13 @@
   import { base } from "$app/paths";
   import { onMount, setContext } from "svelte";
   import { ckmeans } from "simple-statistics";
-  import { getColor, capitalise, makeSum, removeCategoryCountFromName, getData } from "$lib/utils";
+  import {
+    getColor,
+    capitalise,
+    makeSum,
+    removeCategoryCountFromName,
+    getData,
+  } from "$lib/utils";
   import {
     themes,
     vars,
@@ -21,11 +27,13 @@
     datasets,
     unblockedCombinationCounts,
     ladBounds,
-    colors
+    colors,
   } from "$lib/config";
   import {
     Breadcrumb,
-    Titleblock
+    Titleblock,
+    Cards,
+    Card,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -187,24 +195,24 @@
   <meta name="description" content="" />
   <meta property="og:title" content="Create a population group profile" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="{base}" />
+  <meta property="og:url" content={base} />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:description" content="" />
   <meta name="description" content="" />
 </svelte:head>
 
 <Breadcrumb
-  links="{[
+  links={[
     { label: "Census", href: "/census" },
     { label: "Create a population group profile" },
-  ]}"
+  ]}
 />
 <Titleblock title="Create a population group profile">
   <div slot="after">
     <p class="subtitle">
-      Select one or more identity characteristics to define a population group to
-      compare with the whole population of England and Wales. For example, see <a
-        href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
+      Select one or more identity characteristics to define a population group
+      to compare with the whole population of England and Wales. For example,
+      see <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
       >
       or
       <a href="?resident_age_3a=3&country_of_birth_8a=2"
@@ -276,9 +284,19 @@
   </span> -->
 
   {#each datasets[0].tablesCategorised as category}
+    <Cards title={category.categoryName}>
+      {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
+        <BarChartCard
+          title={removeCategoryCountFromName(table.key)}
+          {table}
+          {data}
+          {chart_type}
+        />
+      {/each}
+    </Cards>
     <Tiles title={category.categoryName}>
       {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
-        <BarChartTile
+        <BarChartCard
           title={removeCategoryCountFromName(table.key)}
           {table}
           {data}
