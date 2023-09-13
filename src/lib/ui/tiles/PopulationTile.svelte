@@ -1,6 +1,6 @@
 <script>
   import Em from "$lib/ui/Em.svelte";
-  import Tile from "$lib/layout/partial/Tile.svelte";
+  import { Card } from "@onsvisual/svelte-components";
 
   import { texts } from "$lib/config";
   import { calcPopPercentString } from "$lib/utils";
@@ -8,7 +8,7 @@
   export let data;
 </script>
 
-<Tile title="Population">
+<Card title="Population">
   {#if data.selected.total_pop.count == null}
     <div class="num-desc">{texts.nodata}</div>
   {:else}
@@ -22,7 +22,7 @@
       )}% of the total population of England and Wales
     </div>
   {/if}
-</Tile>
+</Card>
 
 <style>
   .num-big {

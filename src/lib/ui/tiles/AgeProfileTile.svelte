@@ -1,5 +1,5 @@
 <script>
-  import Tile from "$lib/layout/partial/Tile.svelte";
+  import { Card } from "@onsvisual/svelte-components";
   import ProfileChart from "$lib/chart/ProfileChart.svelte";
 
   import { texts } from "$lib/config";
@@ -9,7 +9,7 @@
   export let selected;
 </script>
 
-<Tile title="Age profile">
+<Card title="Age profile">
   {#if data.selected.residents.resident_age_18b.values === "blocked"}
     <span class="num-desc">{texts.nodata}</span>
   {:else if data.selected.residents.resident_age_18b.values.percent[0] == null}
@@ -21,7 +21,7 @@
       maskRange={computeAgeMaskRange(selected)}
     />
   {/if}
-</Tile>
+</Card>
 
 <style>
   .num-desc {

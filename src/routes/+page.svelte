@@ -262,10 +262,10 @@
 </Titleblock>
 
 <Content>
-  <Tiles title="Demographics">
+  <Cards title="Demographics">
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
-  </Tiles>
+  </Cards>
 
   <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
   <!-- <span slot="meta" style:margin-left="10px"> -->
