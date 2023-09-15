@@ -70,7 +70,7 @@
   function updateUrl() {
     // TODO: check what `goto` does
     goto(`${base}?${selected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
-      noscroll: true,
+      noScroll: true,
     });
   }
 
