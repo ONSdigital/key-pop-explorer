@@ -33,7 +33,7 @@
     Breadcrumb,
     Titleblock,
     Cards,
-    Card,
+    Twisty,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -218,6 +218,17 @@
         >people aged 65+ born in Ireland</a
       >.
     </p>
+
+    <Twisty title="Select characteristics" open>
+      <OptionPicker
+        options={varsNested}
+        clickCallback={doSelect}
+        removeCatCallback={doDeselect}
+        globalSelectedCategories={selected}
+        disabled={status === "loading"}
+      />
+    </Twisty>
+
     {#if selected[0]}
       <br />
       {#each selected as item, i}
@@ -247,28 +258,19 @@
         {/if}
       </div>
     {/if}
-
-    {#if selected.length < 3}
-      <OptionPicker
-        options={varsNested}
-        clickCallback={doSelect}
-        removeCatCallback={doDeselect}
-        globalSelectedCategories={selected}
-        disabled={status === "loading"}
-      />
-    {/if}
   </div>
 </Titleblock>
 
-<Content>
-  <Cards title="Demographics">
-    <PopulationTile {data} />
-    <AgeProfileTile {data} {selected} />
-  </Cards>
+{#if status == "success" && selected.length > 0}
+  <Content>
+    <Cards title="Demographics">
+      <PopulationTile {data} />
+      <AgeProfileTile {data} {selected} />
+    </Cards>
 
-  <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
-  <!-- <span slot="meta" style:margin-left="10px"> -->
-  <!-- <span>
+    <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
+    <!-- <span slot="meta" style:margin-left="10px"> -->
+    <!-- <span>
     <strong>Chart type:</strong>
     {#each chartTypeOptions as chartTypeOption}
       <label
@@ -282,29 +284,30 @@
     {/each}
   </span> -->
 
-  {#each datasets[0].tablesCategorised as category}
-    <Cards title={category.categoryName}>
-      {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
-        <BarChartCard
-          title={removeCategoryCountFromName(table.key)}
-          {table}
-          {data}
-          {chart_type}
-        />
-      {/each}
-    </Cards>
-    <Cards title={category.categoryName}>
-      {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
-        <BarChartCard
-          title={removeCategoryCountFromName(table.key)}
-          {table}
-          {data}
-          {chart_type}
-        />
-      {/each}
-    </Cards>
-  {/each}
-</Content>
+    {#each datasets[0].tablesCategorised as category}
+      <Cards title={category.categoryName}>
+        {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
+          <BarChartCard
+            title={removeCategoryCountFromName(table.key)}
+            {table}
+            {data}
+            {chart_type}
+          />
+        {/each}
+      </Cards>
+      <Cards title={category.categoryName}>
+        {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
+          <BarChartCard
+            title={removeCategoryCountFromName(table.key)}
+            {table}
+            {data}
+            {chart_type}
+          />
+        {/each}
+      </Cards>
+    {/each}
+  </Content>
+{/if}
 
 <style>
   :global(.tile) {
