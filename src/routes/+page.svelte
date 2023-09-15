@@ -304,16 +304,6 @@
           />
         {/each}
       </Cards>
-      <Cards title={category.categoryName}>
-        {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
-          <BarChartCard
-            title={removeCategoryCountFromName(table.key)}
-            {table}
-            {data}
-            {chart_type}
-          />
-        {/each}
-      </Cards>
     {/each}
   </Content>
 {/if}
