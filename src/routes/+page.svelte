@@ -265,7 +265,12 @@
 {#if status == "success" && selected.length > 0}
   <Content>
     <Notice>
-      The profile below is for people with all of the following characteristics:
+      {#if selected.length === 1}
+        The profile below is for people with the following characteristic:
+      {:else}
+        The profile below is for people with all of the following
+        characteristics:
+      {/if}
       <ul>
         {#each (console.log(selected), selected) as s}
           <li><strong>{s.topic}:</strong> {s.label}</li>
