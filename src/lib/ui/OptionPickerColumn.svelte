@@ -117,6 +117,10 @@
       display: none;
     }
   }
+  button.plain-button,
+  label {
+    font-size: 16px;
+  }
   button.plain-button {
     display: block;
     width: 100%;
@@ -125,7 +129,6 @@
     border: none;
     border-bottom: 1px solid #ccc;
     padding: 6px;
-    font-size: 16px;
   }
   button.plain-button:last-child {
     border-bottom: none;
