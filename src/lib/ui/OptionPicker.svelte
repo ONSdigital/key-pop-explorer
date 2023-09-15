@@ -62,10 +62,10 @@
       >
         {#if varToSelectedClassification[selectedColumn.label] > 0}
           <!-- FIXME: use proper up and down chevrons -->
-          <button on:click={fewerCategories}>v Fewer categories</button>
+          <button on:click={fewerCategories}>Show fewer</button>
         {/if}
         {#if varToSelectedClassification[selectedColumn.label] < selectedColumn.vars.length - 1}
-          <button on:click={moreCategories}>^ More categories</button>
+          <button on:click={moreCategories}>Show more</button>
         {/if}
       </OptionPickerColumn2>
     {/each}
