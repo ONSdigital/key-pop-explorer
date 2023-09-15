@@ -34,6 +34,7 @@
     Titleblock,
     Cards,
     Twisty,
+    Notice,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -263,6 +264,14 @@
 
 {#if status == "success" && selected.length > 0}
   <Content>
+    <Notice>
+      The profile below is for people with all of the following characteristics:
+      <ul>
+        {#each (console.log(selected), selected) as s}
+          <li><strong>{s.topic}:</strong> {s.label}</li>
+        {/each}
+      </ul>
+    </Notice>
     <Cards title="Demographics">
       <PopulationTile {data} />
       <AgeProfileTile {data} {selected} />
