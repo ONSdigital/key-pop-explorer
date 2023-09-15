@@ -48,20 +48,25 @@
     {/if}
   </div>
 
-  {#each options as option, i}
-    <p>
-      <input
-        type="radio"
-        id={"category-option-" + i}
-        name="selected-category"
-        checked={checkIfOptionSelected(option, globalSelectedCategories)}
-        {disabled}
-        on:click={() => clickCallback(option)}
-      /> <label for={"category-option-" + i}>{labeller(option)}</label>
-    </p>
-  {/each}
+  {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
+    At most three characteristics can be selected. To add another
+    characteristic, please remove one of the three selected ones.
+  {:else}
+    {#each options as option, i}
+      <p>
+        <input
+          type="radio"
+          id={"category-option-" + i}
+          name="selected-category"
+          checked={checkIfOptionSelected(option, globalSelectedCategories)}
+          {disabled}
+          on:click={() => clickCallback(option)}
+        /> <label for={"category-option-" + i}>{labeller(option)}</label>
+      </p>
+    {/each}
 
-  <slot />
+    <slot />
+  {/if}
 </div>
 
 <style>
