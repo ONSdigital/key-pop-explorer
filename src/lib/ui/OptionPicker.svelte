@@ -1,5 +1,6 @@
 <script>
-  import OptionPickerColumn from "./OptionPickerColumn.svelte";
+  import OptionPickerColumn1 from "./OptionPickerColumn1.svelte";
+  import OptionPickerColumn2 from "./OptionPickerColumn2.svelte";
 
   export let options = [];
   export let clickCallback = selectCat;
@@ -34,7 +35,7 @@
 </script>
 
 <div class="container">
-  <OptionPickerColumn
+  <OptionPickerColumn1
     columnTitle="Select a variable"
     bind:selected={selectedColumn}
     clickCallback={() => {
@@ -46,7 +47,7 @@
   />
   {#if selectedColumn != null}
     {#each [selectedColumn.vars[varToSelectedClassification[selectedColumn.label]]] as selectedClassification}
-      <OptionPickerColumn
+      <OptionPickerColumn2
         columnTitle={selectedColumn.label}
         bind:selected={selectedCategory}
         options={selectedClassification.cats}
@@ -55,7 +56,6 @@
         removeCatCallback={(category) =>
           removeCatCallback(selectedClassification, category)}
         backButtonCallback={() => (selectedColumn = null)}
-        hasChildren={false}
         {globalSelectedCategories}
         currentVar={selectedColumn}
         {disabled}
@@ -67,14 +67,8 @@
         {#if varToSelectedClassification[selectedColumn.label] < selectedColumn.vars.length - 1}
           <button on:click={moreCategories}>^ More categories</button>
         {/if}
-      </OptionPickerColumn>
+      </OptionPickerColumn2>
     {/each}
-    <!-- <OptionPickerColumn
-      columnTitle="Select a classification"
-      labeller={(option) => `${option.cats.length + " categories"}`}
-      bind:selected={selectedClassification}
-      options={selectedColumn.vars}
-    /> -->
   {/if}
 </div>
 
