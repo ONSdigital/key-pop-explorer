@@ -231,7 +231,12 @@
 
     {#if selected[0]}
       <Notice>
-        Selected characteristics for this profile:
+        {#if selected.length === 1}
+          The profile below is for people with the following characteristic:
+        {:else}
+          The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
+          of the following characteristics:
+        {/if}
         <br />
         {#each selected as item, i}
           {#if status == "loading"}
@@ -265,18 +270,18 @@
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
-  <Notice>
-    <!-- {#if selected.length === 1}
+  <!-- <Notice>
+    {#if selected.length === 1}
       The profile below is for people with the following characteristic:
     {:else}
       The profile below is for people with all of the following characteristics:
-    {/if} -->
+    {/if}
     <ul>
       {#each (console.log(selected), selected) as s}
         <li><strong>{s.topic}:</strong> {s.label}</li>
       {/each}
     </ul>
-  </Notice>
+  </Notice> -->
   <Cards title="Demographics">
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
