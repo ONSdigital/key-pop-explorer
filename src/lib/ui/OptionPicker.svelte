@@ -1,6 +1,7 @@
 <script>
   import OptionPickerColumn1 from "./OptionPickerColumn1.svelte";
   import OptionPickerColumn2 from "./OptionPickerColumn2.svelte";
+  import { Button } from "@onsvisual/svelte-components";
 
   export let options = [];
   export let clickCallback = selectCat;
@@ -62,10 +63,14 @@
       >
         {#if varToSelectedClassification[selectedColumn.label] > 0}
           <!-- FIXME: use proper up and down chevrons -->
-          <button on:click={fewerCategories}>Show fewer</button>
+          <Button variant={"secondary"} small={true} on:click={fewerCategories}
+            >Show fewer</Button
+          >
         {/if}
         {#if varToSelectedClassification[selectedColumn.label] < selectedColumn.vars.length - 1}
-          <button on:click={moreCategories}>Show more</button>
+          <Button variant={"secondary"} small={true} on:click={moreCategories}
+            >Show more</Button
+          >
         {/if}
       </OptionPickerColumn2>
     {/each}

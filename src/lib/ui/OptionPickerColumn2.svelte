@@ -1,4 +1,6 @@
 <script>
+  import { Button } from "@onsvisual/svelte-components";
+
   export let options = [];
   export let clickCallback = clicked;
   export let removeCatCallback = clicked;
@@ -34,16 +36,22 @@
 </script>
 
 <div class="column" class:hidden-first-column={hiddenOnMobile}>
-  {#if backButtonCallback != null}
-    <button class="hidden-on-desktop" on:click={backButtonCallback}>Back</button
-    >
-  {/if}
+  <div class:hidden-on-desktop={true}>
+    {#if backButtonCallback != null}
+      <Button variant={"secondary"} small={true} on:click={backButtonCallback}
+        >Back</Button
+      >
+    {/if}
+  </div>
 
   <div class="title-container">
     <h5 class="column-title">{columnTitle}</h5>
     {#if checkIfAnySelected(currentVar, globalSelectedCategories)}
-      <button on:click={() => removeCatCallback(currentVar)} {disabled}
-        >Clear selection</button
+      <Button
+        variant={"secondary"}
+        small={true}
+        on:click={() => removeCatCallback(currentVar)}
+        {disabled}>Clear selection</Button
       >
     {/if}
   </div>
