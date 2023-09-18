@@ -16,7 +16,6 @@
   import {
     getColor,
     capitalise,
-    makeSum,
     removeCategoryCountFromName,
     getData,
   } from "$lib/utils";
@@ -107,10 +106,7 @@
 
   function processData(d) {
     data.selected = d.data;
-    data.selected.total_pop =
-      selected.length === 0
-        ? makeSum(data.all.residents.sex.values.count)
-        : d.total_pop;
+    data.selected.total_pop = d.total_pop;
 
     data.geoPerc = [];
     let groups = null;

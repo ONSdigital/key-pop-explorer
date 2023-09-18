@@ -33,6 +33,7 @@ export async function getData(datasets, sel = [], fetch = window.fetch) {
     let url = `${endpoint}${sel.length}var_percent/${selString}.json`
     let response = await fetch(url);
     barChartData = await response.json();
+    retval.total_pop = {count: barChartData.sex.count[0] + barChartData.sex.count[1], percent: 100};
   } else {
     let url = `${endpoint}${sel.length}var-combined_percent/${selString}.json`
     let response = await fetch(url);
@@ -69,21 +70,6 @@ export async function getTopo(url, layer, fetch = window.fetch) {
 
 export function capitalise(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-export function makeSum(values) {
-  // TODO: check if this check is appropriate here.
-  if (!values) return 0;
-
-  let sum = 0;
-  for (let i=0; i<values.length; i++)
-    sum += values[i];
-  // for (let key in values) {
-  //   if (key != '-8') {
-  //     sum += values[key];
-  //   }
-  // }
-  return sum;
 }
 
 export function removeCategoryCountFromName(name) {
