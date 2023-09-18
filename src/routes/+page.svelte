@@ -6,6 +6,8 @@
   import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
 
+  import StandaloneLegend from "$lib/chart/StandaloneLegend.svelte";
+
   import { page } from "$app/stores";
   import { goto, afterNavigate } from "$app/navigation";
   import { base } from "$app/paths";
@@ -32,6 +34,7 @@
   import {
     Breadcrumb,
     Titleblock,
+    Card,
     Cards,
     Twisty,
     Notice,
@@ -301,6 +304,9 @@
 
   {#each datasets[0].tablesCategorised as category}
     <Cards title={category.categoryName}>
+      <Card colspan={3} title="Key">
+        <StandaloneLegend {selected} />
+      </Card>
       {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
         <BarChartCard
           title={removeCategoryCountFromName(table.key)}

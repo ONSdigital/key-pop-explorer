@@ -19,6 +19,7 @@
     <svelte:component
       this={chart_type}
       data={data.selected && makeDataNew("residents", table.code, data)}
+      showLegend={false}
     />
   {/if}
   <span class="num-desc">% of {populationBases[table.code]}</span>

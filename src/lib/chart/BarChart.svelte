@@ -10,6 +10,7 @@
   export let base = null;
   export let barHeight = 25;
   export let markerWidth = 3;
+  export let showLegend = true;
 
   function groupData(data, key) {
     let data_indexed = {};
@@ -40,7 +41,7 @@
   $: data_grouped = groupData(data, yKey);
 </script>
 
-{#if zDomain[1]}
+{#if showLegend && zDomain[1]}
   <ul class="legend-block">
     {#each zDomain as group, i}
       <li class:ew={i != 0}>
