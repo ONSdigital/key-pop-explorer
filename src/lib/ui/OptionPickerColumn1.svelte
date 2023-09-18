@@ -40,7 +40,7 @@
       }}
     >
       {labeller(option)}
-      <span class="right-chevron">&rsaquo;</span>
+      <span class="right-chevron">&rang;</span>
       {#if checkIfAnySelected(option, globalSelectedCategories)}
         <br />
         <div>
