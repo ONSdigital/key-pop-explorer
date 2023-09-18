@@ -30,9 +30,9 @@
     <span class:bold={false}>All people in England and Wales</span>
   </li>
   <p style="margin-top: 24px">
-    (TODO: edit this) Each grey bar shows the percentage of people in England
-    and Wales that are in the given category. Each blue bar shows the percentage
-    of people in your chosen group that are in the given category.
+    Each grey bar shows the percentage of people in England and Wales that are
+    in the given category. Each blue bar shows the percentage of people in your
+    chosen group that are in the given category.
   </p>
 </ul>
 
