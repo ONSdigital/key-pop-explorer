@@ -19,5 +19,5 @@ export async function load({ fetch }) {
     color: colors.seq[4],
   }));
 
-  return { geojson, geoCodesAndNames, geoPerc, all, selected: all, geoBreaks: [0, 100] };
+  return { geojson, geoCodesAndNames, geoPerc, all, selected: null, geoBreaks: [0, 100] };
 }
