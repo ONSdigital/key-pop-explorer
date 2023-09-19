@@ -8,6 +8,7 @@
   export let removeCatCallback = removeCat;
   export let globalSelectedCategories = [];
   export let disabled = false;
+  export let updateRadiosOnDeletion;
 
   function selectCat(variable, cat) {
     console.log(variable, cat);
@@ -57,6 +58,7 @@
         removeCatCallback={(category) =>
           removeCatCallback(selectedClassification, category)}
         backButtonCallback={() => (selectedColumn = null)}
+        bind:updateRadiosOnDeletion
         {globalSelectedCategories}
         currentVar={selectedColumn}
         {disabled}

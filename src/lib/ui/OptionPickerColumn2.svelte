@@ -13,9 +13,19 @@
   export let currentVar = null;
 
   let selectedRadio = null;
+  let recentlyDeleted = false;
+
+  export function updateRadiosOnDeletion(varCode) {
+    if (varCode == options[0].var) {
+      recentlyDeleted = true;
+      selectedRadio = null;
+    }
+  }
 
   $: {
-    if (
+    if (recentlyDeleted) {
+      recentlyDeleted = false;
+    } else if (
       selectedRadio === null ||
       selectedRadio.split("-")[0] !== options[0].var
     ) {
@@ -76,7 +86,10 @@
       <Button
         variant={"secondary"}
         small={true}
-        on:click={() => removeCatCallback(currentVar)}
+        on:click={() => {
+          removeCatCallback(currentVar);
+          updateRadiosOnDeletion();
+        }}
         {disabled}>Clear selection</Button
       >
     {/if}
