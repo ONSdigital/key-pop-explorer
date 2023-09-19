@@ -19,6 +19,8 @@
       data={data.selected && makeDataNew("residents", "resident_age_18b", data)}
       zKey="group"
       maskRange={computeAgeMaskRange(selected)}
+      base="% of all people"
+      showLegend={false}
     />
   {/if}
 </Card>

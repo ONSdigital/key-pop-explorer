@@ -2,6 +2,7 @@
   import { base } from "$app/paths";
   import { setContext } from "svelte";
   import "@onsvisual/svelte-components/css/main.css";
+  import "../app.css";
   import { themes } from "$lib/config";
   import Warning from "$lib/ui/Warning.svelte";
   import {

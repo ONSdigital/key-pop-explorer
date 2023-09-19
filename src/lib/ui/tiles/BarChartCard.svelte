@@ -9,6 +9,7 @@
   export let chart_type;
 </script>
 
+{#if data.selected.residents?.[table.code]?.values}
 <Card {title}>
   <!-- FIXME: check for missing data -->
   {#if data.selected.residents[table.code].values === "blocked"}
@@ -24,6 +25,7 @@
   {/if}
   <span class="num-desc">% of {populationBases[table.code]}</span>
 </Card>
+{/if}
 
 <style>
   .num-desc {

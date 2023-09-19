@@ -6,7 +6,8 @@
   import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
 
-  import StandaloneLegend from "$lib/chart/StandaloneLegend.svelte";
+  // import StandaloneLegend from "$lib/chart/StandaloneLegend.svelte";
+  import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
 
   import { page } from "$app/stores";
   import { goto, afterNavigate } from "$app/navigation";
@@ -37,6 +38,7 @@
     Cards,
     Twisty,
     Notice,
+    Button,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -57,11 +59,12 @@
 
   // State
   let selected = [];
+  let selectOpen = true;
   //let hovered = null;
   let status = "success"; // Options: success, fail, loading
   let u16 = false; // If age selection is 0-15 some tables won't show data
   let varcount = 0; // Number of variables successfully loaded
-  let chart_type = GroupChart;
+  let chart_type = BarChart;
 
   const getUnblockedCount = (op) =>
     unblockedCombinationCounts[
@@ -186,7 +189,12 @@
     loadData();
   }
 
+  function trimLabel(label) {
+    return label.split(": ").slice(-1)[0];
+  }
+
   afterNavigate(refreshData); // Refresh data when user navigates
+  $: console.log("selected", selected);
 </script>
 
 <svelte:head>
@@ -209,17 +217,14 @@
 <Titleblock title="Create a population group profile">
   <div slot="after">
     <p class="subtitle">
-      Select one or more identity characteristics to define a population group
-      to compare with the whole population of England and Wales. For example,
-      see <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
-      >
+      Select one or more identity characteristics to define a population group, for example
+      <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a>
       or
-      <a href="?resident_age_3a=3&country_of_birth_8a=2"
-        >people aged 65+ born in Ireland</a
-      >.
+      <a href="?resident_age_3a=3&country_of_birth_8a=2">people aged 65+ born in Ireland</a>.
+      Once selected, you will see how this group compares to the whole population of England and Wales based on Census 2021 data.
     </p>
 
-    <Twisty title="Select characteristics" open>
+    <Twisty title="Select characteristics" open={selectOpen}>
       <OptionPicker
         options={varsNested}
         clickCallback={doSelect}
@@ -227,44 +232,45 @@
         globalSelectedCategories={selected}
         disabled={status === "loading"}
       />
+      <Button variant="secondary" small on:click={(e) => e.detail.target.parentElement.parentElement.removeAttribute('open')}>Close menu</Button>
     </Twisty>
 
     {#if selected[0]}
-      <Notice>
-        {#if selected.length === 1}
-          The profile below is for people with the following characteristic:
-        {:else}
-          The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
-          of the following characteristics:
-        {/if}
-        <br />
+      <Notice mode="{status == "failed" || u16 == true ? 'pending' : 'info'}">
+        <p>
+          {#if selected.length === 1}
+            The profile below is for people with the following characteristic:
+          {:else}
+            The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
+            of the following characteristics:
+          {/if}
+        </p>
         {#each selected as item, i}
           {#if status == "loading"}
             <div class="chip chip-pending">
-              <span>{capitalise(item.topic)}: {capitalise(item.label)}</span>
+              <span>{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
               <div class="chip-loader" />
             </div>
           {:else}
             <div class="chip">
-              <span>{capitalise(item.topic)}: {capitalise(item.label)}</span>
+              <span>{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
               <button on:click={() => unSelect(item.topic)} />
             </div>
           {/if}
         {/each}
+        {#if status == "failed" || u16 == true}
+          <p style:margin="1rem 0 0">
+            Some datasets not available for selected variables.
+            {#if status == "failed"}
+              Try removing a variable to see more datasets.
+            {/if}
+            {#if u16 == true}
+              Economic indicators (employment, social status etc) not available for
+              ages 0 to 15.
+            {/if}
+          </p>
+        {/if}
       </Notice>
-    {/if}
-
-    {#if status == "failed" || u16 == true}
-      <div class="warning">
-        Some datasets not available for selected variables.
-        {#if status == "failed"}
-          Try removing a variable to see more datasets.
-        {/if}
-        {#if u16 == true}
-          Economic indicators (employment, social status etc) not available for
-          ages 0 to 15.
-        {/if}
-      </div>
     {/if}
   </div>
 </Titleblock>
@@ -282,9 +288,19 @@
       {/each}
     </ul>
   </Notice> -->
-  <Cards title="Demographics">
+  <Cards title="Demographics" height="auto">
+    <Card colspan={3} noBackground>
+      <SimpleLegend/>
+    </Card>
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
+    {#if !selected.map(d => d.key).includes("sex")}
+    <BarChartCard
+      title="Sex"
+      table={{code: "sex", key: "Sex"}}
+      {data}
+      {chart_type}/>
+    {/if}
   </Cards>
 
   <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
@@ -304,11 +320,12 @@
   </span> -->
 
   {#each datasets[0].tablesCategorised as category}
-    <Cards title={category.categoryName}>
-      <Card colspan={3} title="Key">
-        <StandaloneLegend {selected} />
+    <Cards title={category.categoryName} height="auto">
+      <Card colspan={3} noBackground>
+        <SimpleLegend/>
+        <!-- <StandaloneLegend {selected} /> -->
       </Card>
-      {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
+      {#each category.tables.filter((t) => data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
         <BarChartCard
           title={removeCategoryCountFromName(table.key)}
           {table}
@@ -339,7 +356,7 @@
     color: rgb(0, 60, 87);
   }
   .subtitle {
-    margin: 8px 0;
+    margin: 0 0 24px;
   }
   .btn {
     padding: 2px 4px;

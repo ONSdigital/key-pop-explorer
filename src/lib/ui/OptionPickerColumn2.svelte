@@ -56,25 +56,32 @@
     {/if}
   </div>
 
-  {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
-    At most three characteristics can be selected. To add another
-    characteristic, please remove one of the three selected ones.
-  {:else}
-    {#each options as option, i}
-      <p>
-        <input
-          type="radio"
-          id={"category-option-" + i}
-          name="selected-category"
-          checked={checkIfOptionSelected(option, globalSelectedCategories)}
-          {disabled}
-          on:click={() => clickCallback(option)}
-        /> <label for={"category-option-" + i}>{labeller(option)}</label>
-      </p>
-    {/each}
-
-    <slot />
-  {/if}
+  <div class="ons-radios__items">
+    {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
+      At most three characteristics can be selected. To add another
+      characteristic, please remove one of the three selected ones.
+    {:else}
+      {#each options as option, i}
+        <span class="ons-radios__item ons-radios__item--no-border">
+          <span class="ons-radio ons-radio--no-border">
+            <input
+              type="radio"
+              id={"category-option-" + i}
+              name="selected-category"
+              class="ons-radio__input ons-js-radio"
+              checked={checkIfOptionSelected(option, globalSelectedCategories)}
+              {disabled}
+              on:click={() => clickCallback(option)}
+            />
+            <label for={"category-option-" + i} class="ons-radio__label">
+              {labeller(option)}
+            </label>
+          </span>
+        </span>
+      {/each}
+      <slot />
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -85,6 +92,10 @@
   .title-container {
     display: flex;
     justify-content: space-between;
+  }
+
+  .title-container :global(button) {
+    transform: translateY(-10px);
   }
 
   .column {
@@ -113,5 +124,15 @@
   input,
   label {
     cursor: pointer;
+  }
+  .ons-radios__item {
+    border-top: 1px solid #ccc;
+    padding: 4px 4px;
+    min-height: 36px;
+    margin: 0;
+  }
+  .ons-radios__item:last-of-type {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 6px;
   }
 </style>

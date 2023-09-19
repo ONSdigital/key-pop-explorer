@@ -1,6 +1,7 @@
 <script>
   import OptionPickerColumn1 from "./OptionPickerColumn1.svelte";
   import OptionPickerColumn2 from "./OptionPickerColumn2.svelte";
+  import Icon from "./Icon.svelte";
   import { Button } from "@onsvisual/svelte-components";
 
   export let options = [];
@@ -63,13 +64,13 @@
       >
         {#if varToSelectedClassification[selectedColumn.label] > 0}
           <!-- FIXME: use proper up and down chevrons -->
-          <Button variant={"secondary"} small={true} on:click={fewerCategories}
-            >Show fewer</Button
+          <button class="btn-link" on:click={fewerCategories}
+            ><Icon type="chevron" rotation={90}/> Show fewer</button
           >
         {/if}
         {#if varToSelectedClassification[selectedColumn.label] < selectedColumn.vars.length - 1}
-          <Button variant={"secondary"} small={true} on:click={moreCategories}
-            >Show more</Button
+          <button class="btn-link" on:click={moreCategories}
+            ><Icon type="chevron" rotation={-90}/> Show more</button
           >
         {/if}
       </OptionPickerColumn2>
@@ -116,6 +117,7 @@
   .container {
     display: flex;
     flex-direction: column;
+    margin-bottom: 12px;
   }
   @media (min-width: 800px) {
     .container {

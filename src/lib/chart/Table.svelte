@@ -20,12 +20,13 @@
     width: 100%;
     line-height: 1.5;
     margin-top: 5px;
+    font-size: 14px;
   }
   .w35 {
     width: 35px;
   }
   .text-small {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
   .text-right {
     text-align: right;

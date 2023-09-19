@@ -90,14 +90,14 @@
     margin: 4px 0 1px 0;
     padding: 0;
     line-height: 1.2;
-    font-size: 0.9rem;
+    font-size: 14px;
   }
   .bold {
     font-weight: bold;
   }
   .sml {
     margin-left: 3px;
-    font-size: 0.85rem;
+    font-size: 14px;
   }
   .brackets::before {
     content: "(";

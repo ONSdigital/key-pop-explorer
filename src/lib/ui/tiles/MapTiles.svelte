@@ -14,15 +14,13 @@
   let hovered;
 </script>
 
-<Cards title="Population by area">
-  <Card colspan={3} rowspan={1} blank>
+<Cards title="Population by area" height="auto">
+  <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
-      For each lower-tier local authority area in England and Wales, the map
-      shows the count of people in the categories chosen above as a percentage
-      of the area's total population.
+      This map shows people with the selected characteristics as a percentage of each area's total population.
     </p>
   </Card>
-  <Card colspan={2} rowspan={2} blank>
+  <Card colspan={2} rowspan={2} noBackground>
     <div style:height="450px">
       <Map style={mapStyle} location={{ bounds: mapBounds }}>
         {#if data.geojson && data.geoPerc}
@@ -117,6 +115,7 @@
   }
   .subtitle {
     /* TODO avoid duplication with index.svelte */
-    margin: 8px 0;
+    font-size: 14px;
+    margin: 0;
   }
 </style>
