@@ -1,5 +1,5 @@
 <script>
-  import { Button } from "@onsvisual/svelte-components";
+  import { Button, Radios } from "@onsvisual/svelte-components";
 
   export let options = [];
   export let clickCallback = clicked;
@@ -11,6 +11,32 @@
   export let disabled = false;
   export let hiddenOnMobile = false;
   export let currentVar = null;
+
+  let selectedRadio = null;
+
+  $: {
+    if (
+      selectedRadio === null ||
+      selectedRadio.split("-")[0] !== options[0].var
+    ) {
+      selectedRadio = null;
+      for (let i = 0; i < options.length; i++) {
+        if (checkIfOptionSelected(options[i], globalSelectedCategories)) {
+          selectedRadio = options[i].var + "-" + i;
+          break;
+        }
+      }
+    } else if (
+      !checkIfOptionSelected(
+        options[+selectedRadio.split("-")[1]],
+        globalSelectedCategories
+      )
+    ) {
+      clickCallback(options[+selectedRadio.split("-")[1]]);
+    }
+  }
+
+  $: console.log(selectedRadio);
 
   function clicked(option) {
     console.log("clicked", option);
@@ -60,19 +86,15 @@
     At most three characteristics can be selected. To add another
     characteristic, please remove one of the three selected ones.
   {:else}
-    {#each options as option, i}
-      <p>
-        <input
-          type="radio"
-          id={"category-option-" + i}
-          name="selected-category"
-          checked={checkIfOptionSelected(option, globalSelectedCategories)}
-          {disabled}
-          on:click={() => clickCallback(option)}
-        /> <label for={"category-option-" + i}>{labeller(option)}</label>
-      </p>
-    {/each}
-
+    <Radios
+      items={options.map((d, i) => ({
+        id: d.var + "-" + i,
+        label: labeller(d),
+      }))}
+      bind:value={selectedRadio}
+      {disabled}
+      compact={true}
+    />
     <slot />
   {/if}
 </div>
@@ -113,5 +135,9 @@
   input,
   label {
     cursor: pointer;
+  }
+
+  :global(.ons-radio) {
+    font-size: 16px;
   }
 </style>
