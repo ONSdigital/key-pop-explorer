@@ -55,9 +55,6 @@
     { name: "Grouped bar", component: GroupChart },
   ];
 
-  // A function to deselect radio buttons in the OptionPicker
-  let updateRadiosOnDeletion;
-
   // State
   let selected = [];
   //let hovered = null;
@@ -90,13 +87,11 @@
 
   function doDeselect(variable) {
     selected = selected.filter((d) => d.topic !== variable.shortLabel);
-    updateRadiosOnDeletion(variable.key);
     updateUrl();
   }
 
-  function unSelect(item) {
-    selected = selected.filter((d) => d.topic != item.topic);
-    updateRadiosOnDeletion(item.var);
+  function unSelect(topic) {
+    selected = selected.filter((d) => d.topic != topic);
     updateUrl();
   }
 
@@ -229,7 +224,6 @@
         options={varsNested}
         clickCallback={doSelect}
         removeCatCallback={doDeselect}
-        bind:updateRadiosOnDeletion
         globalSelectedCategories={selected}
         disabled={status === "loading"}
       />
@@ -253,7 +247,7 @@
           {:else}
             <div class="chip">
               <span>{capitalise(item.topic)}: {capitalise(item.label)}</span>
-              <button on:click={() => unSelect(item)} />
+              <button on:click={() => unSelect(item.topic)} />
             </div>
           {/if}
         {/each}
