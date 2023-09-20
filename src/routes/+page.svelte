@@ -248,14 +248,14 @@
         {#each selected as item, i}
           {#if status == "loading"}
             <div class="chip chip-pending">
-              <span>{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+              <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
               <div class="chip-loader" />
             </div>
           {:else}
-            <div class="chip">
-              <span>{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
-              <button on:click={() => unSelect(item.topic)} />
-            </div>
+            <button class="chip" on:click={() => unSelect(item.topic)}>
+              <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+              <span class="chip-ready" />
+            </button>
           {/if}
         {/each}
         {#if status == "failed" || u16 == true}
@@ -322,7 +322,7 @@
   {#each datasets[0].tablesCategorised as category}
     <Cards title={category.categoryName} height="auto">
       <Card colspan={3} noBackground>
-        <SimpleLegend/>
+        <SimpleLegend>{category.categoryDescription}</SimpleLegend>
         <!-- <StandaloneLegend {selected} /> -->
       </Card>
       {#each category.tables.filter((t) => data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
@@ -403,7 +403,7 @@
   }
   .chip {
     display: inline-flex;
-    vertical-align: middle;
+    align-items: center;
     background-color: rgb(231, 243, 236);
     font-size: 0.9rem;
     border: 1.5px solid #0f8243;
@@ -416,27 +416,36 @@
     background-color: #fef4ee;
     border-color: #ff803b;
   }
-  .chip span {
-    padding: 0 10px;
+  .chip-text {
+    font-size: 16px !important;
+    padding: 0 8px 0 4px;
   }
-  .chip button {
+  .chip-ready {
+    display: block;
+    box-sizing: border-box;
     background: #0f8243
       url("https://bothness.github.io/geo-draw/img/x-close.svg") no-repeat
       center;
     margin: 0;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     border: none;
     border-radius: 50%;
   }
   .chip-loader {
+    display: block;
     box-sizing: border-box;
+    margin: 0;
     border: 5px solid rgba(0, 0, 0, 0.2);
     border-radius: 50%;
     border-top: 5px solid #ff803b;
     border-right: 5px solid #ff803b;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 0.75s linear infinite;
   }

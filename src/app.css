@@ -9,13 +9,15 @@
   left: 50% !important;
   top: 50% !important;
 }
+button {
+  font-family: "OpenSans","Helvetica Neue",arial,sans-serif !important;
+}
 button.btn-link {
   color: var(--link, #206095);
   background: none;
   border: none;
   margin: 0;
   padding: 4px 0 0;
-  font-family: revert !important;
   text-decoration: underline;
   text-underline-position: under;
 }
@@ -29,4 +31,11 @@ button.btn-link:focus {
   color: var(--text, #222);
   background-color: var(--ons-color-sun-yellow, #fbc900);
   box-shadow: var(--ons-color-sun-yellow, #fbc900) 0px -2px 0px 0px, var(--text, #222) 0px 4px 0px 0px;
+}
+button.ons-breadcrumb__link {
+  color: var(--text, #222);
+  margin-bottom: 18px;
+}
+.ons-card {
+  margin: 0;
 }

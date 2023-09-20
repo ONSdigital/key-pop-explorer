@@ -1,6 +1,7 @@
 [
     {
         "category_name": "Population",
+        "category_description": "People, their living arrangements and where they come from.",
         "classification_codes": [
             "legal_partnership_status_6a",
             "country_of_birth_3a",
@@ -10,12 +11,14 @@
     },
     {
         "category_name": "Education",
+        "category_description": "People in education and qualifications they hold.",
         "classification_codes": [
             "highest_qualification"
         ]
     },
     {
         "category_name": "Identity",
+        "category_description": "How people identify themselves and their beliefs.",
         "classification_codes": [
             "ethnic_group_tb_6a",
             "national_identity_all_4a",
@@ -25,6 +28,7 @@
     },
     {
         "category_name": "Health",
+        "category_description": "People's general health and caring responsibilities.",
         "classification_codes": [
             "health_in_general",
             "disability_3a",
@@ -33,6 +37,7 @@
     },
     {
         "category_name": "Work",
+        "category_description": "All about people's jobs and employment.",
         "classification_codes": [
             "workplace_travel_8a",
             "transport_to_workplace_12a",

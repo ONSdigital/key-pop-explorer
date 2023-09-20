@@ -77,6 +77,7 @@
     position: relative;
     width: 100%;
     line-height: 1;
+    font-size: 14px;
   }
   .block {
     position: absolute;
