@@ -1,6 +1,7 @@
 <script>
   import { Card, Cards } from "@onsvisual/svelte-components";
-  import { Map, MapSource, MapLayer } from "@onsvisual/svelte-maps";
+  import { Map, MapSource, MapLayer, MapTooltip } from "@onsvisual/svelte-maps";
+  import { onMount } from "svelte";
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
 
@@ -49,13 +50,23 @@
                 ],
                 "fill-opacity": 0.8,
               }}
-              order="highway_name_other"
-            />
+              order="place_other">
+              <MapTooltip content={hovered ? data.geoCodesLookup[hovered].name : ""}/>
+            </MapLayer>
             <MapLayer
               id="lad-line"
               type="line"
               paint={{
-                "line-color": "orange",
+                "line-color": "white",
+                "line-width": 0.3,
+              }}
+              order="place_other"
+            />
+            <MapLayer
+              id="lad-hover"
+              type="line"
+              paint={{
+                "line-color": "black",
                 "line-width": 2,
                 "line-opacity": [
                   "case",
@@ -64,7 +75,7 @@
                   0,
                 ],
               }}
-              order="highway_name_other"
+              order="place_other"
             />
           </MapSource>
         {/if}

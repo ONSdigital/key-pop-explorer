@@ -1,14 +1,3 @@
-.ons-radios__items {
-  font-size: 0.9em;
-}
-.ons-radios__item {
-  display: block;
-  margin-bottom: 4px;
-}
-.ons-radio__input::after {
-  left: 50% !important;
-  top: 50% !important;
-}
 button {
   font-family: "OpenSans","Helvetica Neue",arial,sans-serif !important;
 }

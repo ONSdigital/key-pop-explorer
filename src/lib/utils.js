@@ -107,3 +107,7 @@ export function calcPopPercentString(percentage) {
   if (pctString !== "0.0") return pctString;
   return "Less than 0.05";
 }
+
+export function trimLabel(label) {
+  return label.split(": ").slice(-1)[0];
+}

@@ -1,6 +1,5 @@
 <script>
   export let hovered = null;
-  export let selected = null;
   export let lineWidth = 3;
   export let height = 15;
   export let breaks = [0, 20, 40, 60, 80, 100];
@@ -44,25 +43,13 @@
   <div class="tick tick-end" style="left: 100%;">
     {formatTick(breaks[breaks.length - 1])}{suffix}
   </div>
-  {#if selected}
+  {#if typeof hovered === "number"}
     <div
-      class="marker"
-      style="width: {lineWidth}px; left: calc({pos(
-        selected,
-        breaks
-      )}% - {lineWidth / 2}px);"
-    />
-    <div class="value" style="left: {pos(selected, breaks)}%">
-      {formatVal(selected)}{suffix}
-    </div>
-  {/if}
-  {#if hovered}
-    <div
-      class="marker marker-hovered"
-      style="width: {lineWidth}px; left: calc({pos(
+      class="marker "
+      style:left="{pos(
         hovered,
         breaks
-      )}% - {lineWidth / 2}px);"
+      )}%"
     />
     <div class="value" style="left: {pos(hovered, breaks)}%">
       {formatVal(hovered)}{suffix}
@@ -111,17 +98,18 @@
     position: absolute;
     z-index: 2;
     top: -10px;
-    height: calc(100% + 10px);
-    background-color: black;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 16px solid #222;
+    transform: translateX(-50%);
   }
   .value {
     position: absolute;
-    top: -32px;
+    top: -30px;
     text-align: center;
     transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.8);
-  }
-  .marker-hovered {
-    background-color: orange;
   }
 </style>

@@ -34,6 +34,10 @@
     }
     return false;
   }
+
+  function focusMe(el, first) {
+    if (first) el.focus();
+  }
 </script>
 
 <div class="column" class:hidden-first-column={hiddenOnMobile}>
@@ -58,37 +62,37 @@
         variant={"secondary"}
         small={true}
         on:click={() => removeCatCallback(currentVar)}
-        {disabled}>Clear selection</Button
+        {disabled}>Remove selection</Button
       >
     {/if}
   </div>
 
-  <div class="ons-radios__items">
-    {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
+  {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
       At most three characteristics can be selected. To add another
       characteristic, please remove one of the three selected ones.
     {:else}
+  <div class="ons-radios__items">
+      {#key options}
       {#each options as option, i}
-        <span class="ons-radios__item ons-radios__item--no-border">
+        <button
+          use:focusMe={i === 0}
+          class="ons-radios__item ons-radios__item--no-border"
+          class:ons-radio__checked={checkIfOptionSelected(option, globalSelectedCategories)}
+          on:click={() => clickCallback(option)}
+          {disabled}>
           <span class="ons-radio ons-radio--no-border">
-            <input
-              type="radio"
-              id={"category-option-" + i}
-              name="selected-category"
-              class="ons-radio__input ons-js-radio"
-              checked={checkIfOptionSelected(option, globalSelectedCategories)}
-              {disabled}
-              on:click={() => clickCallback(option)}
-            />
-            <label for={"category-option-" + i} class="ons-radio__label">
+            <span
+              class="ons-radio__input ons-js-radio"/>
+            <span class="ons-radio__label">
               {labeller(option)}
-            </label>
+            </span>
           </span>
-        </span>
+        </button>
       {/each}
-      <slot />
-    {/if}
+      {/key}
   </div>
+  <slot />
+  {/if}
 </div>
 
 <style>
@@ -107,6 +111,7 @@
 
   .column {
     width: 100%;
+    font-size: 16px;
   }
   @media (min-width: 800px) {
     .column {
@@ -132,14 +137,38 @@
   label {
     cursor: pointer;
   }
-  .ons-radios__item {
+  button.ons-radios__item {
+    display: block;
+    background: none;
+    width: 100%;
+    border: none;
     border-top: 1px solid #ccc;
     padding: 4px 4px;
     min-height: 36px;
     margin: 0;
   }
+  button.ons-radios__item:focus {
+    outline: 3px solid var(--ons-color-sun-yellow, #fbc900);
+  }
   .ons-radios__item:last-of-type {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc !important;
     margin-bottom: 6px;
+  }
+  .ons-radio__input {
+    background: white !important;
+    transform: translateY(-4px);
+  }
+  .ons-radio__input::after {
+    left: 50% !important;
+    top: 50% !important;
+  }
+  .ons-radio__checked {
+    background-color: rgb(245, 245, 246) !important;
+  }
+  .ons-radio__checked .ons-radio__input {
+    background: currentColor !important;
+  }
+  .ons-radio__label {
+    text-align: left;
   }
 </style>

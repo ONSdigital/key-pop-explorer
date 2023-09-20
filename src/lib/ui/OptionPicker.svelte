@@ -47,6 +47,7 @@
     {globalSelectedCategories}
     hiddenOnMobile={selectedColumn != null}
   />
+  {#key selectedColumn}
   {#if selectedColumn != null}
     {#each [selectedColumn.vars[varToSelectedClassification[selectedColumn.label]]] as selectedClassification}
       <OptionPickerColumn2
@@ -76,6 +77,7 @@
       </OptionPickerColumn2>
     {/each}
   {/if}
+  {/key}
 </div>
 
 {#if false}

@@ -1,5 +1,6 @@
 <script>
   import Icon from "./Icon.svelte";
+  import { trimLabel } from "$lib/utils";
 
   export let options = [];
   export let clickCallback = clicked;
@@ -45,11 +46,11 @@
       <span class="right-chevron"><Icon type="chevron"/></span>
       {#if checkIfAnySelected(option, globalSelectedCategories)}
         <br />
-        <div>
-          Selected: {checkIfAnySelected(
+        <div class="selected-item-label">
+          Selected: {trimLabel(checkIfAnySelected(
             option,
             globalSelectedCategories
-          )}
+          ))}
         </div>
       {/if}
     </button>
@@ -94,16 +95,19 @@
   button.plain-button:last-child {
     border-bottom: 1px solid #ccc;
   }
+  button.plain-button:focus {
+    outline: 3px solid var(--ons-color-sun-yellow, #fbc900);
+  }
   button.selected {
     background-color: var(--link, #206095);
     color: white;
   }
-  button div {
+  button div.selected-item-label {
     color: #555;
     margin: 0;
     padding: 6px 0;
     margin-left: 9px;
-    font-size: 16px;
+    font-size: 14px;
   }
   button.selected div {
     color: white;
