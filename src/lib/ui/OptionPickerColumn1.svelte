@@ -1,4 +1,7 @@
 <script>
+  import Icon from "./Icon.svelte";
+  import { trimLabel } from "$lib/utils";
+
   export let options = [];
   export let clickCallback = clicked;
   export let backButtonCallback = null;
@@ -40,14 +43,14 @@
       }}
     >
       {labeller(option)}
-      <span class="right-chevron">&rang;</span>
+      <span class="right-chevron"><Icon type="chevron"/></span>
       {#if checkIfAnySelected(option, globalSelectedCategories)}
         <br />
-        <div>
-          Currently selected: {checkIfAnySelected(
+        <div class="selected-item-label">
+          Selected: {trimLabel(checkIfAnySelected(
             option,
             globalSelectedCategories
-          )}
+          ))}
         </div>
       {/if}
     </button>
@@ -66,7 +69,7 @@
   @media (min-width: 800px) {
     .column {
       width: 50%;
-      padding-right: 9px;
+      padding-right: 20px;
     }
     .hidden-first-column {
       display: initial;
@@ -77,6 +80,7 @@
   }
   button.plain-button {
     font-size: 16px;
+    font-family:"OpenSans","Helvetica Neue",arial,sans-serif !important;
   }
   button.plain-button {
     display: block;
@@ -84,22 +88,26 @@
     background-color: white;
     text-align: left;
     border: none;
-    border-bottom: 1px solid #ccc;
-    padding: 6px;
+    border-top: 1px solid #ccc;
+    padding: 6px 4px;
+    min-height: 36px;
   }
   button.plain-button:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #ccc;
+  }
+  button.plain-button:focus {
+    outline: 3px solid var(--ons-color-sun-yellow, #fbc900);
   }
   button.selected {
-    background-color: steelblue;
+    background-color: var(--link, #206095);
     color: white;
   }
-  button div {
+  button div.selected-item-label {
     color: #555;
     margin: 0;
-    padding: 0;
+    padding: 6px 0;
     margin-left: 9px;
-    font-size: 12px;
+    font-size: 14px;
   }
   button.selected div {
     color: white;

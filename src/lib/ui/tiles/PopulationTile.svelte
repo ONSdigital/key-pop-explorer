@@ -17,9 +17,9 @@
     </div>
     <div class="num-suffix">people</div>
     <div class="num-desc">
-      <Em color="lightgrey" />{calcPopPercentString(
+      <Em color="lightgrey">{calcPopPercentString(
         data.selected.total_pop.percent
-      )}% of the total population of England and Wales
+      )}%</Em> of the total population of England and Wales
     </div>
   {/if}
 </Card>
@@ -27,9 +27,10 @@
 <style>
   .num-big {
     display: block;
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: bold;
     line-height: 1.2;
+    white-space: nowrap;
   }
   .num-suffix {
     display: block;

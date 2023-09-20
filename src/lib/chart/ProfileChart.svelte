@@ -12,6 +12,7 @@
   export let maskRange = null;
   export let base = null;
   export let base_ext = ", 5 year age bands";
+  export let showLegend = true;
 
   function stackData(data, key) {
     let data_indexed = {};
@@ -60,8 +61,8 @@
   $: data_stacked = stackData(data, zKey);
 </script>
 
-<ul class="legend-block">
-  {#if zDomain[1]}
+{#if showLegend && zDomain[1]}
+  <ul class="legend-block">
     {#each zDomain as group, i}
       <li>
         <div
@@ -71,8 +72,8 @@
         <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
       </li>
     {/each}
-  {/if}
-</ul>
+  </ul>
+{/if}
 
 <div class="bar-group" style:height="{height}px">
   {#each data_stacked as stack, i}
@@ -154,7 +155,7 @@
   .x-scale {
     position: relative;
     border-top: 1.5px solid #555;
-    font-size: 0.9rem;
+    font-size: 14px;
     width: 100%;
   }
   .bar-group > div {
@@ -187,6 +188,7 @@
     padding: 0;
     margin: 0 0 5px 0;
     min-height: 1rem;
+    font-size: 14px;
   }
   ul.legend-block > li {
     display: inline-block;

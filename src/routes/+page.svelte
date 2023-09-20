@@ -1,23 +1,15 @@
 <script>
-  import MapTiles from "../lib/ui/tiles/MapTiles.svelte";
-
-  import BarChartCard from "../lib/ui/tiles/BarChartCard.svelte";
-
-  import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
-  import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
-
-  import StandaloneLegend from "$lib/chart/StandaloneLegend.svelte";
-
   import { page } from "$app/stores";
   import { goto, afterNavigate } from "$app/navigation";
   import { base } from "$app/paths";
-  import { onMount, setContext } from "svelte";
+  import { setContext } from "svelte";
   import { ckmeans } from "simple-statistics";
   import {
     getColor,
     capitalise,
     removeCategoryCountFromName,
     getData,
+    trimLabel,
   } from "$lib/utils";
   import {
     themes,
@@ -37,11 +29,16 @@
     Cards,
     Twisty,
     Notice,
+    Button,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
-  import Content from "$lib/layout/Content.svelte";
   import OptionPicker from "$lib/ui/OptionPicker.svelte";
+  import MapTiles from "../lib/ui/tiles/MapTiles.svelte";
+  import BarChartCard from "../lib/ui/tiles/BarChartCard.svelte";
+  import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
+  import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
+  import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
 
   export let data;
 
@@ -57,11 +54,12 @@
 
   // State
   let selected = [];
+  let selectOpen = true;
   //let hovered = null;
   let status = "success"; // Options: success, fail, loading
   let u16 = false; // If age selection is 0-15 some tables won't show data
   let varcount = 0; // Number of variables successfully loaded
-  let chart_type = GroupChart;
+  let chart_type = BarChart;
 
   const getUnblockedCount = (op) =>
     unblockedCombinationCounts[
@@ -74,6 +72,7 @@
     // TODO: check what `goto` does
     goto(`${base}?${selected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
       noScroll: true,
+      keepFocus: true
     });
   }
 
@@ -109,31 +108,25 @@
     data.selected.total_pop = d.total_pop;
 
     data.geoPerc = [];
-    let groups = null;
+    let groups;
 
-    if (true) {
-      // FIXME: check this against Ahmad's previous version,
-      //     and probably create 100% data in Python for no selections.
-      data.geoCodesAndNames.forEach(({ code, name }) => {
-        let value =
-          selected.length === 0
-            ? 100
-            : d.mapData[code] != null
-            ? d.mapData[code][1]
-            : null;
-        data.geoPerc.push({ code: code, name, value });
-      });
+    // FIXME: check this against Ahmad's previous version,
+    //     and probably create 100% data in Python for no selections.
+    data.geoCodesAndNames.forEach(({ code, name }) => {
+      let value =
+        selected.length === 0
+          ? 100
+          : d.mapData[code] != null
+          ? d.mapData[code][1]
+          : null;
+      data.geoPerc.push({ code: code, name, value });
+    });
 
-      let vals = data.geoPerc.map((d) => d.value).filter((d) => d != null);
-      groups =
-        vals.length === 0 ? null : ckmeans(vals, Math.min(5, vals.length));
-    } else {
-      data.geoCodesAndNames.forEach(({ code, name }) => {
-        data.geoPerc.push({ code, name, value: null });
-      });
-    }
+    let vals = data.geoPerc.map((d) => d.value).filter((d) => d != null);
+    groups =
+      vals.length === 0 ? null : ckmeans(vals, Math.min(5, vals.length));
 
-    if (groups == null) {
+    if (!groups) {
       data.geoPerc.forEach((d) => (d.color = colors.nodata));
       data.geoBreaks = [0, 100];
     } else if (selected.length === 0) {
@@ -187,6 +180,7 @@
   }
 
   afterNavigate(refreshData); // Refresh data when user navigates
+  $: console.log("selected", selected);
 </script>
 
 <svelte:head>
@@ -209,17 +203,14 @@
 <Titleblock title="Create a population group profile">
   <div slot="after">
     <p class="subtitle">
-      Select one or more identity characteristics to define a population group
-      to compare with the whole population of England and Wales. For example,
-      see <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a
-      >
+      Select one or more identity characteristics to define a population group, for example
+      <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a>
       or
-      <a href="?resident_age_3a=3&country_of_birth_8a=2"
-        >people aged 65+ born in Ireland</a
-      >.
+      <a href="?resident_age_3a=3&country_of_birth_8a=2">people aged 65+ born in Ireland</a>.
+      Once selected, you will see how this group compares to the whole population of England and Wales based on Census 2021 data.
     </p>
 
-    <Twisty title="Select characteristics" open>
+    <Twisty title="Select characteristics" open={selectOpen}>
       <OptionPicker
         options={varsNested}
         clickCallback={doSelect}
@@ -227,88 +218,75 @@
         globalSelectedCategories={selected}
         disabled={status === "loading"}
       />
+      <Button variant="secondary" small on:click={(e) => e.detail.target.parentElement.parentElement.removeAttribute('open')}>Close menu</Button>
     </Twisty>
 
     {#if selected[0]}
-      <Notice>
-        {#if selected.length === 1}
-          The profile below is for people with the following characteristic:
-        {:else}
-          The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
-          of the following characteristics:
-        {/if}
-        <br />
-        {#each selected as item, i}
-          {#if status == "loading"}
-            <div class="chip chip-pending">
-              <span>{capitalise(item.topic)}: {capitalise(item.label)}</span>
-              <div class="chip-loader" />
-            </div>
-          {:else}
-            <div class="chip">
-              <span>{capitalise(item.topic)}: {capitalise(item.label)}</span>
-              <button on:click={() => unSelect(item.topic)} />
-            </div>
+      <Notice mode="{status == "failed" || u16 == true ? 'pending' : 'info'}">
+        <div aria-live="polite">
+          <p>
+            {#if selected.length === 1}
+              The profile below is for people with the following characteristic:
+            {:else}
+              The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
+              of the following characteristics:
+            {/if}
+          </p>
+          {#each selected as item, i}
+            {#if status == "loading"}
+              <div class="chip chip-pending">
+                <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+                <div class="chip-loader" />
+              </div>
+            {:else}
+              <button class="chip" on:click={() => unSelect(item.topic)}>
+                <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+                <span class="chip-ready" />
+              </button>
+            {/if}
+          {/each}
+          {#if status == "failed" || u16 == true}
+            <p style:margin="1rem 0 0">
+              Some datasets not available for selected variables.
+              {#if status == "failed"}
+                Try removing a variable to see more datasets.
+              {/if}
+              {#if u16 == true}
+                Economic indicators (employment, social status etc) not available for
+                ages 0 to 15.
+              {/if}
+            </p>
           {/if}
-        {/each}
+        </div>
       </Notice>
-    {/if}
-
-    {#if status == "failed" || u16 == true}
-      <div class="warning">
-        Some datasets not available for selected variables.
-        {#if status == "failed"}
-          Try removing a variable to see more datasets.
-        {/if}
-        {#if u16 == true}
-          Economic indicators (employment, social status etc) not available for
-          ages 0 to 15.
-        {/if}
-      </div>
     {/if}
   </div>
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
-  <!-- <Notice>
-    {#if selected.length === 1}
-      The profile below is for people with the following characteristic:
-    {:else}
-      The profile below is for people with all of the following characteristics:
-    {/if}
-    <ul>
-      {#each (console.log(selected), selected) as s}
-        <li><strong>{s.topic}:</strong> {s.label}</li>
-      {/each}
-    </ul>
-  </Notice> -->
-  <Cards title="Demographics">
+  <Cards title="Demographics" height="auto">
+    <Card colspan={3} noBackground>
+      <SimpleLegend>Number of people, age and sex compared to the population as a whole.</SimpleLegend>
+    </Card>
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
+    {#if !selected.map(d => d.key).includes("sex")}
+    <BarChartCard
+      title="Sex"
+      table={{code: "sex", key: "Sex"}}
+      {data}
+      {chart_type}/>
+    {/if}
   </Cards>
 
   <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
-  <!-- <span slot="meta" style:margin-left="10px"> -->
-  <!-- <span>
-    <strong>Chart type:</strong>
-    {#each chartTypeOptions as chartTypeOption}
-      <label
-        ><input
-          type="radio"
-          bind:group={chart_type}
-          name="chart-type"
-          value={chartTypeOption.component}
-        />{chartTypeOption.name}</label
-      >
-    {/each}
-  </span> -->
 
   {#each datasets[0].tablesCategorised as category}
-    <Cards title={category.categoryName}>
-      <Card colspan={3} title="Key">
-        <StandaloneLegend {selected} />
+    <Cards title={category.categoryName} height="auto">
+      <Card colspan={3} noBackground>
+        <SimpleLegend>{category.categoryDescription}</SimpleLegend>
       </Card>
-      {#each category.tables.filter((t) => !t.code.startsWith("resident_age") && data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
+      {#each category.tables.filter((t) => data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
         <BarChartCard
           title={removeCategoryCountFromName(table.key)}
           {table}
@@ -339,54 +317,14 @@
     color: rgb(0, 60, 87);
   }
   .subtitle {
-    margin: 8px 0;
-  }
-  .btn {
-    padding: 2px 4px;
-    margin: 0;
-    border: 2px solid #206095;
-    cursor: pointer;
-    color: #206095;
-    background-color: lightgrey;
+    margin: 0 0 24px;
   }
   button {
     cursor: pointer;
   }
-  .btn {
-    color: white;
-    background: #0f8243;
-    font-weight: bold;
-    border: 0;
-    border-radius: 3px;
-    box-shadow: 0 3px #193c23;
-    padding: 7px 20px;
-    transform: translate(0, -1.5px);
-  }
-  .btn:hover {
-    background-color: #30693c;
-  }
-  .btn:active {
-    box-shadow: none;
-    transform: translate(0, 1.5px);
-  }
-  .warning {
-    background-color: #fef4ee;
-    border: none;
-    border-left: 5px solid #ff803b;
-    padding: 10px;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-  }
-  .num-desc {
-    display: block;
-    margin-top: 10px;
-    color: #707070;
-    font-size: 14px;
-    line-height: 1.3;
-  }
   .chip {
     display: inline-flex;
-    vertical-align: middle;
+    align-items: center;
     background-color: rgb(231, 243, 236);
     font-size: 0.9rem;
     border: 1.5px solid #0f8243;
@@ -395,31 +333,43 @@
     margin: 0 5px 5px 0;
     line-height: normal;
   }
+  button.chip:focus {
+    outline: 3px solid var(--ons-color-sun-yellow, #fbc900);
+  }
   .chip-pending {
     background-color: #fef4ee;
     border-color: #ff803b;
   }
-  .chip span {
-    padding: 0 10px;
+  .chip-text {
+    font-size: 16px !important;
+    padding: 0 8px 0 4px;
   }
-  .chip button {
+  .chip-ready {
+    display: block;
+    box-sizing: border-box;
     background: #0f8243
       url("https://bothness.github.io/geo-draw/img/x-close.svg") no-repeat
       center;
     margin: 0;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     border: none;
     border-radius: 50%;
   }
   .chip-loader {
+    display: block;
     box-sizing: border-box;
+    margin: 0;
     border: 5px solid rgba(0, 0, 0, 0.2);
     border-radius: 50%;
     border-top: 5px solid #ff803b;
     border-right: 5px solid #ff803b;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 0.75s linear infinite;
   }

@@ -1,5 +1,6 @@
 <script>
   import { Button } from "@onsvisual/svelte-components";
+  import Icon from "./Icon.svelte";
 
   export let options = [];
   export let clickCallback = clicked;
@@ -33,14 +34,24 @@
     }
     return false;
   }
+
+  function focusMe(el, first) {
+    if (first) el.focus();
+  }
 </script>
 
 <div class="column" class:hidden-first-column={hiddenOnMobile}>
   <div class:hidden-on-desktop={true}>
     {#if backButtonCallback != null}
-      <Button variant={"secondary"} small={true} on:click={backButtonCallback}
-        >Back</Button
-      >
+    <ol class="ons-breadcrumb__items ons-u-fs-s">
+      <li class="ons-breadcrumb__item" id="breadcrumb-1">
+        <button class="btn-link ons-breadcrumb__link" on:click={backButtonCallback}
+        >Back</button>
+        <svg class="ons-svg-icon svelte-w4p0hu" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor">
+          <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)"></path>
+        </svg>
+      </li>
+    </ol>
     {/if}
   </div>
 
@@ -51,29 +62,36 @@
         variant={"secondary"}
         small={true}
         on:click={() => removeCatCallback(currentVar)}
-        {disabled}>Clear selection</Button
+        {disabled}>Remove selection</Button
       >
     {/if}
   </div>
 
   {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
-    At most three characteristics can be selected. To add another
-    characteristic, please remove one of the three selected ones.
-  {:else}
-    {#each options as option, i}
-      <p>
-        <input
-          type="radio"
-          id={"category-option-" + i}
-          name="selected-category"
-          checked={checkIfOptionSelected(option, globalSelectedCategories)}
-          {disabled}
+      At most three characteristics can be selected. To add another
+      characteristic, please remove one of the three selected ones.
+    {:else}
+  <div class="ons-radios__items">
+      {#key options}
+      {#each options as option, i}
+        <button
+          use:focusMe={i === 0}
+          class="ons-radios__item ons-radios__item--no-border"
+          class:ons-radio__checked={checkIfOptionSelected(option, globalSelectedCategories)}
           on:click={() => clickCallback(option)}
-        /> <label for={"category-option-" + i}>{labeller(option)}</label>
-      </p>
-    {/each}
-
-    <slot />
+          {disabled}>
+          <span class="ons-radio ons-radio--no-border">
+            <span
+              class="ons-radio__input ons-js-radio"/>
+            <span class="ons-radio__label">
+              {labeller(option)}
+            </span>
+          </span>
+        </button>
+      {/each}
+      {/key}
+  </div>
+  <slot />
   {/if}
 </div>
 
@@ -87,8 +105,13 @@
     justify-content: space-between;
   }
 
+  .title-container :global(button) {
+    transform: translateY(-10px);
+  }
+
   .column {
     width: 100%;
+    font-size: 16px;
   }
   @media (min-width: 800px) {
     .column {
@@ -113,5 +136,39 @@
   input,
   label {
     cursor: pointer;
+  }
+  button.ons-radios__item {
+    display: block;
+    background: none;
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ccc;
+    padding: 4px 4px;
+    min-height: 36px;
+    margin: 0;
+  }
+  button.ons-radios__item:focus {
+    outline: 3px solid var(--ons-color-sun-yellow, #fbc900);
+  }
+  .ons-radios__item:last-of-type {
+    border-bottom: 1px solid #ccc !important;
+    margin-bottom: 6px;
+  }
+  .ons-radio__input {
+    background: white !important;
+    transform: translateY(-4px);
+  }
+  .ons-radio__input::after {
+    left: 50% !important;
+    top: 50% !important;
+  }
+  .ons-radio__checked {
+    background-color: rgb(245, 245, 246) !important;
+  }
+  .ons-radio__checked .ons-radio__input {
+    background: currentColor !important;
+  }
+  .ons-radio__label {
+    text-align: left;
   }
 </style>

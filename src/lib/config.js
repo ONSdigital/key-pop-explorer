@@ -74,6 +74,7 @@ outputClassifications.forEach(c => {
 outputClassificationsCategorised.forEach(category => {
 	datasets[0].tablesCategorised.push({
 		categoryName: category.category_name,
+		categoryDescription: category.category_description,
 		tables: []
 	});
 	for (const code of category.classification_codes) {

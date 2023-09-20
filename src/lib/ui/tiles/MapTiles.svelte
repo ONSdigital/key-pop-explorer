@@ -1,6 +1,7 @@
 <script>
   import { Card, Cards } from "@onsvisual/svelte-components";
-  import { Map, MapSource, MapLayer } from "@onsvisual/svelte-maps";
+  import { Map, MapSource, MapLayer, MapTooltip } from "@onsvisual/svelte-maps";
+  import { onMount } from "svelte";
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
 
@@ -14,15 +15,13 @@
   let hovered;
 </script>
 
-<Cards title="Population by area">
-  <Card colspan={3} rowspan={1} blank>
+<Cards title="Population by area" height="auto">
+  <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
-      For each lower-tier local authority area in England and Wales, the map
-      shows the count of people in the categories chosen above as a percentage
-      of the area's total population.
+      People with the selected characteristics as a proportion of whole population.
     </p>
   </Card>
-  <Card colspan={2} rowspan={2} blank>
+  <Card colspan={2} rowspan={2} noBackground>
     <div style:height="450px">
       <Map style={mapStyle} location={{ bounds: mapBounds }}>
         {#if data.geojson && data.geoPerc}
@@ -51,13 +50,23 @@
                 ],
                 "fill-opacity": 0.8,
               }}
-              order="highway_name_other"
-            />
+              order="place_other">
+              <MapTooltip content={hovered ? data.geoCodesLookup[hovered].name : ""}/>
+            </MapLayer>
             <MapLayer
               id="lad-line"
               type="line"
               paint={{
-                "line-color": "orange",
+                "line-color": "white",
+                "line-width": 0.3,
+              }}
+              order="place_other"
+            />
+            <MapLayer
+              id="lad-hover"
+              type="line"
+              paint={{
+                "line-color": "black",
                 "line-width": 2,
                 "line-opacity": [
                   "case",
@@ -66,7 +75,7 @@
                   0,
                 ],
               }}
-              order="highway_name_other"
+              order="place_other"
             />
           </MapSource>
         {/if}
@@ -117,6 +126,7 @@
   }
   .subtitle {
     /* TODO avoid duplication with index.svelte */
-    margin: 8px 0;
+    font-size: 16px;
+    margin: -10px 0 0;
   }
 </style>
