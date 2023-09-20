@@ -17,7 +17,7 @@
 <Cards title="Population by area" height="auto">
   <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
-      This map shows people with the selected characteristics as a percentage of each area's total population.
+      People with the selected characteristics as a proportion of whole population.
     </p>
   </Card>
   <Card colspan={2} rowspan={2} noBackground>
@@ -115,7 +115,7 @@
   }
   .subtitle {
     /* TODO avoid duplication with index.svelte */
-    font-size: 14px;
-    margin: 0;
+    font-size: 16px;
+    margin: -10px 0 0;
   }
 </style>

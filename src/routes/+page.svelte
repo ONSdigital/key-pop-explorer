@@ -290,7 +290,7 @@
   </Notice> -->
   <Cards title="Demographics" height="auto">
     <Card colspan={3} noBackground>
-      <SimpleLegend/>
+      <SimpleLegend>Number of people, age and sex compared to the population as a whole.</SimpleLegend>
     </Card>
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
