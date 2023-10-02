@@ -14,6 +14,7 @@
   import {
     themes,
     vars,
+    codes,
     varsNested,
     mapStyle,
     mapBounds,
@@ -39,6 +40,10 @@
   import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
   import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
+
+  import Handlebars from "handlebars";
+  import JSZip from "jszip";
+  import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 
   export let data;
 
@@ -72,7 +77,7 @@
     // TODO: check what `goto` does
     goto(`${base}?${selected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
       noScroll: true,
-      keepFocus: true
+      keepFocus: true,
     });
   }
 
@@ -103,6 +108,65 @@
     return breaks;
   }
 
+  function downloadData(data) {
+    const odsData = {
+      selectedCharacteristics: [
+        {
+          variable: "Placeholder variable 1",
+          category: "Placeholder category 1",
+        },
+        {
+          variable: "Placeholder variable 2",
+          category: "Placeholder category 2",
+        },
+      ],
+      tableHeadings: ["Category", "Selected group", "England and Wales"],
+      sheets: [],
+    };
+    for (let table of datasets[0].tables) {
+      if (table.code === "resident_age_23a") continue;
+      if (data.selected.residents[table.code].values == null) continue;
+      let sheet = {
+        sheetName: table.key,
+        tableName: table.code,
+        rowData: codes[table.code].map((d, i) => ({
+          name: d.label,
+          values: [
+            data.selected.residents[table.code].values.percent[i],
+            data.all.residents[table.code].values.percent[i],
+          ],
+        })),
+      };
+      odsData.sheets.push(sheet);
+    }
+    console.log({ data, vars, datasets, codes, odsData });
+
+    let zipFiles = accessibleSpreadsheetCreator(odsData, Handlebars);
+    const z = new JSZip();
+    for (let { filename, contents } of zipFiles) {
+      z.file(filename, contents);
+    }
+    z.generateAsync({ type: "blob", compression: "DEFLATE" }).then((d) => {
+      let blob = new Blob([d], {
+        type: "application/vnd.oasis.opendocument.spreadsheet",
+      });
+      let url = URL.createObjectURL(blob);
+
+      // The method of creating a anchor tag and clicking it is from https://stackoverflow.com/a/18197341
+      var element = document.createElement("a");
+      element.setAttribute("href", url);
+      element.setAttribute("download", "data-download.ods");
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+      URL.revokeObjectURL(url);
+    });
+  }
+
   function processData(d) {
     data.selected = d.data;
     data.selected.total_pop = d.total_pop;
@@ -123,8 +187,7 @@
     });
 
     let vals = data.geoPerc.map((d) => d.value).filter((d) => d != null);
-    groups =
-      vals.length === 0 ? null : ckmeans(vals, Math.min(5, vals.length));
+    groups = vals.length === 0 ? null : ckmeans(vals, Math.min(5, vals.length));
 
     if (!groups) {
       data.geoPerc.forEach((d) => (d.color = colors.nodata));
@@ -145,6 +208,7 @@
     }
 
     varcount = selected.length;
+
     status = "success";
   }
 
@@ -203,11 +267,14 @@
 <Titleblock title="Create a population group profile">
   <div slot="after">
     <p class="subtitle">
-      Select one or more identity characteristics to define a population group, for example
+      Select one or more identity characteristics to define a population group,
+      for example
       <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a>
       or
-      <a href="?resident_age_3a=3&country_of_birth_8a=2">people aged 65+ born in Ireland</a>.
-      Once selected, you will see how this group compares to the whole population of England and Wales based on Census 2021 data.
+      <a href="?resident_age_3a=3&country_of_birth_8a=2"
+        >people aged 65+ born in Ireland</a
+      >. Once selected, you will see how this group compares to the whole
+      population of England and Wales based on Census 2021 data.
     </p>
 
     <Twisty title="Select characteristics" open={selectOpen}>
@@ -218,11 +285,17 @@
         globalSelectedCategories={selected}
         disabled={status === "loading"}
       />
-      <Button variant="secondary" small on:click={(e) => e.detail.target.parentElement.parentElement.removeAttribute('open')}>Close menu</Button>
+      <Button
+        variant="secondary"
+        small
+        on:click={(e) =>
+          e.detail.target.parentElement.parentElement.removeAttribute("open")}
+        >Close menu</Button
+      >
     </Twisty>
 
     {#if selected[0]}
-      <Notice mode="{status == "failed" || u16 == true ? 'pending' : 'info'}">
+      <Notice mode={status == "failed" || u16 == true ? "pending" : "info"}>
         <div aria-live="polite">
           <p>
             {#if selected.length === 1}
@@ -235,12 +308,20 @@
           {#each selected as item, i}
             {#if status == "loading"}
               <div class="chip chip-pending">
-                <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+                <span class="chip-text"
+                  >{capitalise(item.topic)}: {capitalise(
+                    trimLabel(item.label)
+                  )}</span
+                >
                 <div class="chip-loader" />
               </div>
             {:else}
               <button class="chip" on:click={() => unSelect(item.topic)}>
-                <span class="chip-text">{capitalise(item.topic)}: {capitalise(trimLabel(item.label))}</span>
+                <span class="chip-text"
+                  >{capitalise(item.topic)}: {capitalise(
+                    trimLabel(item.label)
+                  )}</span
+                >
                 <span class="chip-ready" />
               </button>
             {/if}
@@ -252,8 +333,8 @@
                 Try removing a variable to see more datasets.
               {/if}
               {#if u16 == true}
-                Economic indicators (employment, social status etc) not available for
-                ages 0 to 15.
+                Economic indicators (employment, social status etc) not
+                available for ages 0 to 15.
               {/if}
             </p>
           {/if}
@@ -264,18 +345,27 @@
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
+  <Cards title="Download the data" height="auto">
+    <Card colspan={3} noBackground>
+      <Button on:click={() => downloadData(data)}>Save</Button>
+    </Card>
+  </Cards>
+
   <Cards title="Demographics" height="auto">
     <Card colspan={3} noBackground>
-      <SimpleLegend>Number of people, age and sex compared to the population as a whole.</SimpleLegend>
+      <SimpleLegend
+        >Number of people, age and sex compared to the population as a whole.</SimpleLegend
+      >
     </Card>
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
-    {#if !selected.map(d => d.key).includes("sex")}
-    <BarChartCard
-      title="Sex"
-      table={{code: "sex", key: "Sex"}}
-      {data}
-      {chart_type}/>
+    {#if !selected.map((d) => d.key).includes("sex")}
+      <BarChartCard
+        title="Sex"
+        table={{ code: "sex", key: "Sex" }}
+        {data}
+        {chart_type}
+      />
     {/if}
   </Cards>
 
