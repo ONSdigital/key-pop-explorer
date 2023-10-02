@@ -345,9 +345,10 @@
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
-  <Cards title="Download the data" height="auto">
+  <Cards title="Download and print" height="auto">
     <Card colspan={3} noBackground>
-      <Button on:click={() => downloadData(data)}>Save</Button>
+      <Button on:click={() => downloadData(data)}>Download</Button>
+      <Button on:click={() => print()}>Print</Button>
     </Card>
   </Cards>
 
