@@ -6,6 +6,7 @@
   import { themes } from "$lib/config";
   import Warning from "$lib/ui/Warning.svelte";
   import {
+    PhaseBanner,
     Header,
     Main,
     Footer,
@@ -21,10 +22,7 @@
   <link rel="icon" href="{base}/favicon.png" />
 </svelte:head>
 
-<Warning>
-  WARNING! This is a prototype. Data is synthetic. It is NOT actual 2021 Census
-  data.
-</Warning>
+<PhaseBanner phase="prototype"/>
 <Header />
 <Main>
   <slot />

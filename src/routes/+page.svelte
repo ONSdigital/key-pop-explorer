@@ -26,6 +26,7 @@
   import {
     Breadcrumb,
     Titleblock,
+    Container,
     Card,
     Cards,
     Twisty,
@@ -373,9 +374,11 @@
       </Notice>
       {#if getAvailableChartCounts(data).missing > 0}
         <Notice mode={"info"}>
-          {getAvailableChartCounts(data).missing}
-          of {getAvailableChartCounts(data).missing +
-            getAvailableChartCounts(data).available} charts are unavailable.
+          <strong>
+            {getAvailableChartCounts(data).available}
+            of {getAvailableChartCounts(data).missing +
+              getAvailableChartCounts(data).available} charts available.
+          </strong><br/>
           <!-- TODO: distinguish between tables missing because same as input selection and disclosive ones -->
           <a
             href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
@@ -389,12 +392,12 @@
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
-  <Cards title="Download and print" height="auto">
-    <Card colspan={3} noBackground>
-      <Button on:click={() => downloadData(data)}>Download</Button>
-      <Button on:click={() => print()}>Print</Button>
-    </Card>
-  </Cards>
+  <Container cls="show-overflow" width="wide">
+    <div class="action-buttons">
+      <Button on:click={() => downloadData(data)} variant="secondary" icon="download" small>Download profile</Button>
+      <Button on:click={() => print()} variant="secondary" icon="print" small>Print profile</Button>
+    </div>
+  </Container>
 
   <Cards title="Demographics" height="auto">
     <Card colspan={3} noBackground>
@@ -526,5 +529,13 @@
     100% {
       transform: rotate(360deg);
     }
+  }
+  .action-buttons {
+    text-align: right;
+    margin-top: -20px;
+    padding-bottom: 3px;
+  }
+  :global(.ons-panel) {
+    margin-bottom: 0 !important;
   }
 </style>
