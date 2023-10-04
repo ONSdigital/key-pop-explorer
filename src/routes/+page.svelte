@@ -376,6 +376,12 @@
           {getAvailableChartCounts(data).missing}
           of {getAvailableChartCounts(data).missing +
             getAvailableChartCounts(data).available} charts are unavailable.
+          <!-- TODO: distinguish between tables missing because same as input selection and disclosive ones -->
+          <a
+            href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
+            >Protecting personal data</a
+          >
+          prevents some datasets from being included.
         </Notice>
       {/if}
     {/if}
