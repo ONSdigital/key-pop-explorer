@@ -108,6 +108,37 @@
     return breaks;
   }
 
+  function chartIsAvailable(tableCode, data) {
+    const values = data.selected.residents[tableCode].values;
+    return values !== "blocked" && values !== undefined;
+  }
+
+  function getAvailableChartCounts(data) {
+    let available = 0,
+      missing = 0;
+
+    for (const category of datasets[0].tablesCategorised) {
+      for (const t of category.tables) {
+        if (chartIsAvailable(t.code, data)) {
+          ++available;
+        } else {
+          console.log(t.code);
+          ++missing;
+        }
+      }
+    }
+
+    return { available, missing };
+  }
+
+  // {#each datasets[0].tablesCategorised as category}
+  //   {#if category.tables.some((t) => chartIsAvailable(t.code))}
+  //     <Cards title={category.categoryName} height="auto">
+  //       <Card colspan={3} noBackground>
+  //         <SimpleLegend>{category.categoryDescription}</SimpleLegend>
+  //       </Card>
+  //       {#each category.tables.filter((t) => chartIsAvailable(t.code)) as table}
+
   function downloadData(data) {
     const odsData = {
       selectedCharacteristics: [
@@ -340,6 +371,13 @@
           {/if}
         </div>
       </Notice>
+      {#if getAvailableChartCounts(data).missing > 0}
+        <Notice mode={"info"}>
+          {getAvailableChartCounts(data).missing}
+          of {getAvailableChartCounts(data).missing +
+            getAvailableChartCounts(data).available} charts are unavailable.
+        </Notice>
+      {/if}
     {/if}
   </div>
 </Titleblock>
@@ -373,19 +411,21 @@
   <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
 
   {#each datasets[0].tablesCategorised as category}
-    <Cards title={category.categoryName} height="auto">
-      <Card colspan={3} noBackground>
-        <SimpleLegend>{category.categoryDescription}</SimpleLegend>
-      </Card>
-      {#each category.tables.filter((t) => data.selected.residents[t.code].values !== "blocked" && data.selected.residents[t.code].values !== undefined) as table}
-        <BarChartCard
-          title={removeCategoryCountFromName(table.key)}
-          {table}
-          {data}
-          {chart_type}
-        />
-      {/each}
-    </Cards>
+    {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
+      <Cards title={category.categoryName} height="auto">
+        <Card colspan={3} noBackground>
+          <SimpleLegend>{category.categoryDescription}</SimpleLegend>
+        </Card>
+        {#each category.tables.filter( (t) => chartIsAvailable(t.code, data) ) as table}
+          <BarChartCard
+            title={removeCategoryCountFromName(table.key)}
+            {table}
+            {data}
+            {chart_type}
+          />
+        {/each}
+      </Cards>
+    {/if}
   {/each}
 {/if}
 
