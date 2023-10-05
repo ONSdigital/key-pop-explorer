@@ -91,6 +91,7 @@ export let vars = [];
 
 inputClassifications.forEach(c => {
     c = allClassifications[c];
+    c.label = c.label.replace('Disability - Equality act disabled', 'Disability');
     vars.push({
         label: c.label,
 				shortLabel: c.label.replace(new RegExp(" \\(.*$"), ""),
