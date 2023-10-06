@@ -425,7 +425,9 @@
     </Card>
     <PopulationTile {data} />
     <AgeProfileTile {data} {selected} />
-    {#if !selected.map((d) => d.key).includes("sex")}
+    {#if !selected
+      .map((d) => d.key)
+      .includes("sex") && data.selected.residents["sex"].values !== "blocked"}
       <BarChartCard
         title="Sex"
         table={{ code: "sex", key: "Sex" }}
