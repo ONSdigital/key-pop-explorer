@@ -30,7 +30,7 @@ export const themes = {
 export const texts = {
 	comparison: 'vs whole population',
 	nodata: 'Data not available.',
-	blocked: '(TODO: reword or just do\'t show chart?) Data not available due to disclosure control'
+	blocked: 'Data not available.'
 };
 
 export const colors = {
