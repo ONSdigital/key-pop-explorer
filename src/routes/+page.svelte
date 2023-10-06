@@ -383,7 +383,7 @@
           {/if}
         </div>
       </Notice>
-      {#if data.selected != null && getAvailableChartCounts(data).missing > 0}
+      {#if data.selected != null && getAvailableChartCounts(data).missing > 0 && data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
         <Notice mode={"info"}>
           <strong>
             {getAvailableChartCounts(data).available}
@@ -435,25 +435,26 @@
     {/if}
   </Cards>
 
-  <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
-
-  {#each datasets[0].tablesCategorised as category}
-    {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
-      <Cards title={category.categoryName} height="auto">
-        <Card colspan={3} noBackground>
-          <SimpleLegend>{category.categoryDescription}</SimpleLegend>
-        </Card>
-        {#each category.tables.filter( (t) => chartIsAvailable(t.code, data) ) as table}
-          <BarChartCard
-            title={removeCategoryCountFromName(table.key)}
-            {table}
-            {data}
-            {chart_type}
-          />
-        {/each}
-      </Cards>
-    {/if}
-  {/each}
+  {#if data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
+    <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
+    {#each datasets[0].tablesCategorised as category}
+      {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
+        <Cards title={category.categoryName} height="auto">
+          <Card colspan={3} noBackground>
+            <SimpleLegend>{category.categoryDescription}</SimpleLegend>
+          </Card>
+          {#each category.tables.filter( (t) => chartIsAvailable(t.code, data) ) as table}
+            <BarChartCard
+              title={removeCategoryCountFromName(table.key)}
+              {table}
+              {data}
+              {chart_type}
+            />
+          {/each}
+        </Cards>
+      {/if}
+    {/each}
+  {/if}
 {/if}
 
 <style>
