@@ -20,3 +20,4 @@ The following URLs include some edge-case selections. These might be useful for 
 - Population around 3000, four charts missing, most data missing from map: http://localhost:5173/?country_of_birth_8a=3&main_language_23a=16&national_identity_all_9a=4
 - Population less than 100: http://localhost:5173/?main_language_11a=1&english_proficiency=5
 - Age filtered: http://localhost:5173/?main_language_11a=1&resident_age_3a=2
+- Age under 16: http://localhost:5173/?resident_age_3a=1

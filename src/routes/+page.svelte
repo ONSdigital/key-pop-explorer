@@ -338,7 +338,7 @@
     </Twisty>
 
     {#if selected[0]}
-      <Notice mode={status == "failed" || u16 == true ? "pending" : "info"}>
+      <Notice mode={status == "failed" ? "error" : "info"}>
         <div aria-live="polite">
           {#if status != "failed"}
             <p>
