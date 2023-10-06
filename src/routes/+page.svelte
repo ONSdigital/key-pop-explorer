@@ -114,22 +114,33 @@
     return values !== "blocked" && values !== undefined;
   }
 
-  function getAvailableChartCounts(data) {
-    let available = 0,
-      missing = 0;
-
-    for (const category of datasets[0].tablesCategorised) {
-      for (const t of category.tables) {
-        if (chartIsAvailable(t.code, data)) {
-          ++available;
-        } else {
-          console.log(t.code);
-          ++missing;
-        }
+  function addAvailableChartCountsForListOfCodes(data, tableCodes, counts) {
+    for (const tableCode of tableCodes) {
+      if (chartIsAvailable(tableCode, data)) {
+        ++counts.available;
+      } else if (data.selected.residents[tableCode].values !== undefined) {
+        // Don't count it as missing if the data is not there because the chart
+        // is for one of the selected input variables
+        ++counts.missing;
       }
     }
+  }
 
-    return { available, missing };
+  function getAvailableChartCounts(data) {
+    let counts = { available: 0, missing: 0 };
+    for (const category of datasets[0].tablesCategorised) {
+      addAvailableChartCountsForListOfCodes(
+        data,
+        category.tables.map((t) => t.code),
+        counts
+      );
+    }
+    addAvailableChartCountsForListOfCodes(
+      data,
+      ["sex", "resident_age_18b"],
+      counts
+    );
+    return counts;
   }
 
   // {#each datasets[0].tablesCategorised as category}
@@ -372,13 +383,13 @@
           {/if}
         </div>
       </Notice>
-      {#if getAvailableChartCounts(data).missing > 0}
+      {#if data.selected != null && getAvailableChartCounts(data).missing > 0}
         <Notice mode={"info"}>
           <strong>
             {getAvailableChartCounts(data).available}
             of {getAvailableChartCounts(data).missing +
               getAvailableChartCounts(data).available} charts available.
-          </strong><br/>
+          </strong><br />
           <!-- TODO: distinguish between tables missing because same as input selection and disclosive ones -->
           <a
             href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
@@ -394,8 +405,15 @@
 {#if status == "success" && selected.length > 0}
   <Container cls="show-overflow" width="wide">
     <div class="action-buttons">
-      <Button on:click={() => downloadData(data)} variant="secondary" icon="download" small>Download profile</Button>
-      <Button on:click={() => print()} variant="secondary" icon="print" small>Print profile</Button>
+      <Button
+        on:click={() => downloadData(data)}
+        variant="secondary"
+        icon="download"
+        small>Download profile</Button
+      >
+      <Button on:click={() => print()} variant="secondary" icon="print" small
+        >Print profile</Button
+      >
     </div>
   </Container>
 
