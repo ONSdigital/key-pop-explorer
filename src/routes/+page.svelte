@@ -252,7 +252,7 @@
 
     varcount = selected.length;
 
-    status = "success";
+    status = data.selected.total_pop.count == null ? "failed" : "success";
   }
 
   function loadData() {
@@ -340,14 +340,17 @@
     {#if selected[0]}
       <Notice mode={status == "failed" || u16 == true ? "pending" : "info"}>
         <div aria-live="polite">
-          <p>
-            {#if selected.length === 1}
-              The profile below is for people with the following characteristic:
-            {:else}
-              The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
-              of the following characteristics:
-            {/if}
-          </p>
+          {#if status != "failed"}
+            <p>
+              {#if selected.length === 1}
+                The profile below is for people with the following
+                characteristic:
+              {:else}
+                The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
+                of the following characteristics:
+              {/if}
+            </p>
+          {/if}
           {#each selected as item, i}
             {#if status == "loading"}
               <div class="chip chip-pending">
@@ -369,16 +372,15 @@
               </button>
             {/if}
           {/each}
-          {#if status == "failed" || u16 == true}
+          {#if status == "failed"}
             <p style:margin="1rem 0 0">
-              Some datasets not available for selected variables.
-              {#if status == "failed"}
-                Try removing a variable to see more datasets.
-              {/if}
-              {#if u16 == true}
-                Economic indicators (employment, social status etc) not
-                available for ages 0 to 15.
-              {/if}
+              No data is available for the selected variables. Try removing a
+              variable to see more datasets.
+            </p>
+          {:else if u16 == true}
+            <p style:margin="1rem 0 0">
+              Economic indicators (employment, social status etc) are not
+              available for ages 0 to 15.
             </p>
           {/if}
         </div>
