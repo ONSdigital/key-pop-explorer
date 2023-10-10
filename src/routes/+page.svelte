@@ -153,21 +153,26 @@
 
   function downloadData(data) {
     const odsData = {
-      selectedCharacteristics: [
-        {
-          variable: "Placeholder variable 1",
-          category: "Placeholder category 1",
-        },
-        {
-          variable: "Placeholder variable 2",
-          category: "Placeholder category 2",
-        },
+      coverSheetContents: [
+        { isSubtitle: true, text: "Subtitle 1" },
+        { isSubtitle: false, text: "Text 1a" },
+        { isSubtitle: false, text: "Text 1b" },
+        { isSubtitle: true, text: "Subtitle 2" },
+        { isSubtitle: false, text: "Text 2a" },
+        { isSubtitle: false, text: "Text 2b" },
       ],
-      tableHeadings: ["Category", "Selected group", "England and Wales"],
+      tableHeadings: [
+        "Category",
+        "Selected group %",
+        "England and Wales %",
+        "Selected group count",
+        "England and Wales count",
+      ],
       sheets: [],
     };
     for (let table of datasets[0].tables) {
       if (table.code === "resident_age_23a") continue;
+      if (!chartIsAvailable(table.code, data)) continue;
       if (data.selected.residents[table.code].values == null) continue;
       let sheet = {
         sheetName: table.key,
@@ -177,6 +182,8 @@
           values: [
             data.selected.residents[table.code].values.percent[i],
             data.all.residents[table.code].values.percent[i],
+            data.selected.residents[table.code].values.count[i],
+            data.all.residents[table.code].values.count[i],
           ],
         })),
       };
@@ -189,7 +196,7 @@
     for (let { filename, contents } of zipFiles) {
       z.file(filename, contents);
     }
-    z.generateAsync({ type: "blob", compression: "DEFLATE" }).then((d) => {
+    z.generateAsync({ type: "blob" }).then((d) => {
       let blob = new Blob([d], {
         type: "application/vnd.oasis.opendocument.spreadsheet",
       });
