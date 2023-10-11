@@ -36,7 +36,7 @@ export const texts = {
 export const colors = {
 	cat: ['#206095', '#A8BD3A', '#003C57', '#27A0CC', '#118C7B', '#F66068', '#746CB1', '#22D0B6', 'lightgrey'],
 	seq: ["#d5f690", "#5bc4b1", "#2e9daa", "#0079a2", "#005583"],
-	nodata: "#999"
+	nodata: "lightgrey"
 };
 export const spacer = '&nbsp;&nbsp;&nbsp;&nbsp;';
 export const arrow = '&rtrif;&nbsp;&nbsp;'

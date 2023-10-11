@@ -1,9 +1,9 @@
 <script>
   import { Card, Cards } from "@onsvisual/svelte-components";
   import { Map, MapSource, MapLayer, MapTooltip } from "@onsvisual/svelte-maps";
-  import { onMount } from "svelte";
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
+  import NoData from "$lib/chart/NoData.svelte";
 
   export let data;
   export let mapStyle;
@@ -13,6 +13,23 @@
   export let colors;
 
   let hovered;
+
+  $: lookup = ((data) => {
+    const lkp = {};
+    console.log("data", data);
+    if (Array.isArray(data)) data.forEach(d => lkp[d.code] = d);
+    return lkp;
+  })(data.geoPerc);
+
+  const makeLabel = (code) => {
+    let label = "";
+    if (code) {
+      label = `<b>${data.geoCodesLookup[hovered].name}</b><br/>`;
+      const value = lookup?.[code]?.value;
+      label += value != null ? `${value}%` : "No data";
+    }
+    return label;
+  }
 </script>
 
 <Cards title="Population by area" height="auto">
@@ -51,7 +68,7 @@
                 "fill-opacity": 0.8,
               }}
               order="place_other">
-              <MapTooltip content={hovered ? data.geoCodesLookup[hovered].name : ""}/>
+              <MapTooltip content={makeLabel(hovered)}/>
             </MapLayer>
             <MapLayer
               id="lad-line"
@@ -82,7 +99,8 @@
       </Map>
     </div>
     {#if data.geoBreaks && data.geoPerc}
-      <div style:height="38px" style:width="100%">
+    <div class="map-legend">
+      <div class="map-legend-breaks">
         <BreaksChart
           breaks={data.geoBreaks}
           hovered={hovered && data.geoPerc.find((d) => d.code == hovered)
@@ -91,6 +109,10 @@
           colors={data.geoBreaks[1] == 100 ? [colors.seq[4]] : colors.seq}
         />
       </div>
+      <div class="map-legend-nodata">
+        <NoData/>
+      </div>
+    </div>
     {/if}
   </Card>
   <Card title="Areas with high %">
@@ -128,5 +150,25 @@
     /* TODO avoid duplication with index.svelte */
     font-size: 16px;
     margin: -10px 0 0;
+  }
+  .map-legend {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+  }
+  .map-legend > div {
+    height: 100%;
+  }
+  .map-legend > .map-legend-breaks {
+    flex-grow: 1;
+    overflow: visible;
+  }
+  .map-legend > .map-legend-nodata {
+    width: 80px;
+    min-width: 80px;
+    flex-grow: 0;
+    padding-left: 8px;
+    overflow: visible;
   }
 </style>
