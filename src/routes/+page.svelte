@@ -29,7 +29,6 @@
     Container,
     Card,
     Cards,
-    Twisty,
     Notice,
     Button,
   } from "@onsvisual/svelte-components";
@@ -41,6 +40,7 @@
   import PopulationTile from "../lib/ui/tiles/PopulationTile.svelte";
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
   import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
+  import Twisty from "$lib/ui/Twisty.svelte";
 
   import Handlebars from "handlebars";
   import JSZip from "jszip";
@@ -60,7 +60,7 @@
 
   // State
   let selected = [];
-  let selectOpen = true;
+  let selectOpen = false;
   //let hovered = null;
   let status = "success"; // Options: success, fail, loading
   let u16 = false; // If age selection is 0-15 some tables won't show data
@@ -87,6 +87,7 @@
       ...selected.filter((d) => d.topic !== variable.shortLabel),
       { topic: variable.shortLabel, key: variable.key, ...cat },
     ];
+    selectOpen = false;
     updateUrl();
   }
 
@@ -328,23 +329,6 @@
       population of England and Wales based on Census 2021 data.
     </p>
 
-    <Twisty title="Select characteristics" open={selectOpen}>
-      <OptionPicker
-        options={varsNested}
-        clickCallback={doSelect}
-        removeCatCallback={doDeselect}
-        globalSelectedCategories={selected}
-        disabled={status === "loading"}
-      />
-      <Button
-        variant="secondary"
-        small
-        on:click={(e) =>
-          e.detail.target.parentElement.parentElement.removeAttribute("open")}
-        >Close menu</Button
-      >
-    </Twisty>
-
     {#if selected[0]}
       <Notice mode={status == "failed" ? "error" : "info"}>
         <div aria-live="polite">
@@ -408,7 +392,18 @@
           prevents some datasets from being included.
         </Notice>
       {/if}
+      <div style:height="24px"/>
     {/if}
+
+    <Twisty title="{!selected[0] ? "Start creating profile" : selected[2] ? "Change selected characteristics" : "Add another characteristic"}" bind:open={selectOpen}>
+      <OptionPicker
+        options={varsNested}
+        clickCallback={doSelect}
+        removeCatCallback={doDeselect}
+        globalSelectedCategories={selected}
+        disabled={status === "loading"}
+      />
+    </Twisty>
   </div>
 </Titleblock>
 

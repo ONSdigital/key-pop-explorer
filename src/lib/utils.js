@@ -2,7 +2,7 @@ import { feature } from 'topojson-client';
 
 import { maskRanges, codes } from "$lib/config";
 
-const endpoint = "https://raw.githubusercontent.com/jtrim-ons/key-pop-api-downloader/main/generated/";
+const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
 
 function getSelString(sel) {
   let selected = [...sel].sort((a, b) => a.key.localeCompare(b.key));
