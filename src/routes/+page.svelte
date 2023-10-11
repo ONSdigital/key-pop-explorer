@@ -177,6 +177,7 @@
       let sheet = {
         sheetName: table.key,
         tableName: table.code,
+        sheetIntroText: ['Source: Census 2021 from the Office for National Statistics'],
         rowData: codes[table.code].map((d, i) => ({
           name: d.label,
           values: [
