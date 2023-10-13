@@ -154,13 +154,11 @@
 
   function downloadData(data) {
     const odsData = {
+      coverSheetTitle:
+        "Data Downloaded from 'Create a Population Group Profile'",
       coverSheetContents: [
-        { isSubtitle: true, text: "Subtitle 1" },
-        { isSubtitle: false, text: "Text 1a" },
-        { isSubtitle: false, text: "Text 1b" },
-        { isSubtitle: true, text: "Subtitle 2" },
-        { isSubtitle: false, text: "Text 2a" },
-        { isSubtitle: false, text: "Text 2b" },
+        "## Source",
+        "Census 2021 from the Office for National Statistics",
       ],
       tableHeadings: [
         "Category",
@@ -171,6 +169,33 @@
       ],
       sheets: [],
     };
+    let geoPerc = data.geoPerc.filter((d) => d.value != null);
+    if (geoPerc.length > 0) {
+      odsData.sheets.push({
+        sheetName: "Percentage of Population, by Local Authority",
+        tableName: "percentage_of_population",
+        sheetIntroText: [
+          "Source: Census 2021 from the Office for National Statistics",
+        ],
+        columns: [
+          {
+            heading: "Local Authority",
+            style: "text",
+            values: geoPerc.map((d) => d.name),
+          },
+          {
+            heading: "% of Local Authority Population",
+            style: "number_1dp",
+            values: geoPerc.map((d) => d.value),
+          },
+          {
+            heading: "Count",
+            style: "number_with_commas",
+            values: geoPerc.map((d) => d.count),
+          },
+        ],
+      });
+    }
     for (let table of datasets[0].tables) {
       if (table.code === "resident_age_23a") continue;
       if (!chartIsAvailable(table.code, data)) continue;
@@ -178,16 +203,36 @@
       let sheet = {
         sheetName: table.key,
         tableName: table.code,
-        sheetIntroText: ['Source: Census 2021 from the Office for National Statistics'],
-        rowData: codes[table.code].map((d, i) => ({
-          name: d.label,
-          values: [
-            data.selected.residents[table.code].values.percent[i],
-            data.all.residents[table.code].values.percent[i],
-            data.selected.residents[table.code].values.count[i],
-            data.all.residents[table.code].values.count[i],
-          ],
-        })),
+        sheetIntroText: [
+          "Source: Census 2021 from the Office for National Statistics",
+        ],
+        columns: [
+          {
+            heading: "Category",
+            style: "text",
+            values: codes[table.code].map((d) => d.label),
+          },
+          {
+            heading: "Selected group\n(%)",
+            style: "number_1dp",
+            values: data.selected.residents[table.code].values.percent,
+          },
+          {
+            heading: "England and Wales\n(%)",
+            style: "number_1dp",
+            values: data.all.residents[table.code].values.percent,
+          },
+          {
+            heading: "Selected group\n(count)",
+            style: "number_with_commas",
+            values: data.selected.residents[table.code].values.count,
+          },
+          {
+            heading: "England and Wales\n(count)",
+            style: "number_with_commas",
+            values: data.all.residents[table.code].values.count,
+          },
+        ],
       };
       odsData.sheets.push(sheet);
     }
@@ -235,7 +280,13 @@
           : d.mapData[code] != null
           ? d.mapData[code][1]
           : null;
-      data.geoPerc.push({ code: code, name, value });
+      let count =
+        selected.length === 0
+          ? -1
+          : d.mapData[code] != null
+          ? d.mapData[code][0]
+          : null;
+      data.geoPerc.push({ code: code, name, value, count });
     });
 
     let vals = data.geoPerc.map((d) => d.value).filter((d) => d != null);
@@ -392,10 +443,17 @@
           prevents some datasets from being included.
         </Notice>
       {/if}
-      <div style:height="24px"/>
+      <div style:height="24px" />
     {/if}
 
-    <Twisty title="{!selected[0] ? "Start creating profile" : selected[2] ? "Change selected characteristics" : "Add another characteristic"}" bind:open={selectOpen}>
+    <Twisty
+      title={!selected[0]
+        ? "Start creating profile"
+        : selected[2]
+        ? "Change selected characteristics"
+        : "Add another characteristic"}
+      bind:open={selectOpen}
+    >
       <OptionPicker
         options={varsNested}
         clickCallback={doSelect}

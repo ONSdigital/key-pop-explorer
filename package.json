@@ -13,7 +13,7 @@
     "@onsvisual/svelte-maps": "^1.1.6",
     "@sveltejs/adapter-static": "^2.0.3",
     "@sveltejs/kit": "^1.24.1",
-    "accessible-spreadsheet-creator": "^0.0.11",
+    "accessible-spreadsheet-creator": "^0.0.15",
     "d3-dsv": "latest",
     "d3-scale": "latest",
     "gh-pages": "^3.2.3",
