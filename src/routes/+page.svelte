@@ -33,6 +33,7 @@
     Cards,
     Notice,
     Button,
+    analyticsEvent,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -89,6 +90,12 @@
       ...selected.filter((d) => d.topic !== variable.shortLabel),
       { topic: variable.shortLabel, key: variable.key, ...cat },
     ];
+    analyticsEvent({
+      event: "variableSelect",
+      variable: variable.shortLabel,
+      category: cat.label,
+      count: selected.length
+    });
     selectOpen = false;
     activeColumn = null;
     activeCategory = null;
@@ -179,6 +186,19 @@
       document.body.removeChild(element);
       URL.revokeObjectURL(url);
     });
+    analyticsEvent({
+      event: "fileDownload",
+      fileExtension: "ods",
+      selection: selected.map(s => `${s.topic}: ${s.label}`)
+    });
+  }
+
+  function printPage() {
+    console.log({
+      event: "pagePrint",
+      selection: selected.map(s => `${s.topic}: ${s.label}`)
+    });
+    print();
   }
 
   function processData(d) {
@@ -387,14 +407,14 @@
 {#if status == "success" && selected.length > 0}
   <Container cls="show-overflow" width="wide">
     <div class="action-buttons">
+      <Button on:click={printPage} variant="secondary" icon="print" small
+        >Print profile</Button
+      >
       <Button
         on:click={() => downloadData(data)}
         variant="secondary"
         icon="download"
-        small>Download profile</Button
-      >
-      <Button on:click={() => print()} variant="secondary" icon="print" small
-        >Print profile</Button
+        small>Download data</Button
       >
     </div>
   </Container>

@@ -27,6 +27,14 @@ export const themes = {
   }
 };
 
+// Analytics config
+export const analyticsProps = {
+	"contentTitle": "Create a population group profile",
+	"releaseDate": "20231024",
+	"contentType": "exploratory",
+	"outputSeries": "populationgroupprofiles"
+};
+
 export const texts = {
 	comparison: 'vs whole population',
 	nodata: 'Data not available.',

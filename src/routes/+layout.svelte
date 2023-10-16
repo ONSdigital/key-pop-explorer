@@ -3,9 +3,9 @@
   import { setContext } from "svelte";
   import "@onsvisual/svelte-components/css/main.css";
   import "../app.css";
-  import { themes } from "$lib/config";
-  import Warning from "$lib/ui/Warning.svelte";
+  import { themes, analyticsProps } from "$lib/config";
   import {
+    AnalyticsBanner,
     PhaseBanner,
     Header,
     Main,
@@ -22,6 +22,7 @@
   <link rel="icon" href="{base}/favicon.png" />
 </svelte:head>
 
+<AnalyticsBanner {analyticsProps}/>
 <PhaseBanner phase="prototype"/>
 <Header />
 <Main>
