@@ -2,13 +2,17 @@
   import OptionPickerColumn1 from "./OptionPickerColumn1.svelte";
   import OptionPickerColumn2 from "./OptionPickerColumn2.svelte";
   import Icon from "./Icon.svelte";
-  import { Button } from "@onsvisual/svelte-components";
+  // import { Button } from "@onsvisual/svelte-components";
 
   export let options = [];
   export let clickCallback = selectCat;
   export let removeCatCallback = removeCat;
   export let globalSelectedCategories = [];
   export let disabled = false;
+
+  export let activeColumn = null;
+  //let activeClassification = null;
+  export let activeCategory = null;
 
   function selectCat(variable, cat) {
     console.log(variable, cat);
@@ -18,10 +22,6 @@
     console.log(variable, cat);
   }
 
-  let selectedColumn = null;
-  //let selectedClassification = null;
-  let selectedCategory = null;
-
   $: varToSelectedClassification = (function () {
     let result = {};
     options.forEach((opt) => (result[opt.label] = 0));
@@ -29,47 +29,47 @@
   })();
 
   function moreCategories() {
-    ++varToSelectedClassification[selectedColumn.label];
+    ++varToSelectedClassification[activeColumn.label];
   }
   function fewerCategories() {
-    --varToSelectedClassification[selectedColumn.label];
+    --varToSelectedClassification[activeColumn.label];
   }
 </script>
 
 <div class="container">
   <OptionPickerColumn1
     columnTitle="Select a variable"
-    bind:selected={selectedColumn}
+    bind:selected={activeColumn}
     clickCallback={() => {
-      //selectedClassification = null;
+      //activeClassification = null;
     }}
     {options}
     {globalSelectedCategories}
-    hiddenOnMobile={selectedColumn != null}
+    hiddenOnMobile={activeColumn != null}
   />
-  {#key selectedColumn}
-  {#if selectedColumn != null}
-    {#each [selectedColumn.vars[varToSelectedClassification[selectedColumn.label]]] as selectedClassification}
+  {#key activeColumn}
+  {#if activeColumn != null}
+    {#each [activeColumn.vars[varToSelectedClassification[activeColumn.label]]] as activeClassification}
       <OptionPickerColumn2
-        columnTitle={selectedColumn.label}
-        bind:selected={selectedCategory}
-        options={selectedClassification.cats}
+        columnTitle={activeColumn.label}
+        bind:selected={activeCategory}
+        options={activeClassification.cats}
         clickCallback={(category) =>
-          clickCallback(selectedClassification, category)}
+          clickCallback(activeClassification, category)}
         removeCatCallback={(category) =>
-          removeCatCallback(selectedClassification, category)}
-        backButtonCallback={() => (selectedColumn = null)}
+          removeCatCallback(activeClassification, category)}
+        backButtonCallback={() => (activeColumn = null)}
         {globalSelectedCategories}
-        currentVar={selectedColumn}
+        currentVar={activeColumn}
         {disabled}
       >
-        {#if varToSelectedClassification[selectedColumn.label] > 0}
+        {#if varToSelectedClassification[activeColumn.label] > 0}
           <!-- FIXME: use proper up and down chevrons -->
           <button class="btn-link" on:click={fewerCategories}
             ><Icon type="chevron" rotation={90}/> Show fewer</button
           >
         {/if}
-        {#if varToSelectedClassification[selectedColumn.label] < selectedColumn.vars.length - 1}
+        {#if varToSelectedClassification[activeColumn.label] < activeColumn.vars.length - 1}
           <button class="btn-link" on:click={moreCategories}
             ><Icon type="chevron" rotation={-90}/> Show more</button
           >
@@ -80,7 +80,7 @@
   {/key}
 </div>
 
-{#if false}
+<!-- {#if false}
   <div>
     {#each options as option}
       <details>
@@ -108,7 +108,7 @@
       </details>
     {/each}
   </div>
-{/if}
+{/if} -->
 
 <style>
   li {

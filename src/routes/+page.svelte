@@ -66,6 +66,8 @@
   let u16 = false; // If age selection is 0-15 some tables won't show data
   let varcount = 0; // Number of variables successfully loaded
   let chart_type = BarChart;
+  let activeColumn = null;
+  let activeCategory = null;
 
   const getUnblockedCount = (op) =>
     unblockedCombinationCounts[
@@ -88,6 +90,8 @@
       { topic: variable.shortLabel, key: variable.key, ...cat },
     ];
     selectOpen = false;
+    activeColumn = null;
+    activeCategory = null;
     updateUrl();
   }
 
@@ -373,6 +377,8 @@
         removeCatCallback={doDeselect}
         globalSelectedCategories={selected}
         disabled={status === "loading"}
+        bind:activeColumn
+        bind:activeCategory
       />
     </Twisty>
   </div>
