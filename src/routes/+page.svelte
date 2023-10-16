@@ -194,7 +194,7 @@
   }
 
   function printPage() {
-    console.log({
+    analyticsEvent({
       event: "pagePrint",
       selection: selected.map(s => `${s.topic}: ${s.label}`)
     });
