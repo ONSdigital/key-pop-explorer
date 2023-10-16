@@ -288,14 +288,16 @@
 </script>
 
 <svelte:head>
-  <title>Create a population group profile</title>
-  <meta name="description" content="" />
-  <meta property="og:title" content="Create a population group profile" />
+  <title>Create a population group profile - Census 2021 - ONS</title>
+  <meta property="og:title" content="Create a population group profile - Census 2021" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content={base} />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:description" content="" />
-  <meta name="description" content="" />
+  <meta property="og:image" content="https://www.ons.gov.uk{base}/img/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:description" content="Select multiple datasets to define a population group based on Census 2021 England and Wales data." />
+  <meta name="description" content="Select multiple datasets to define a population group based on Census 2021 England and Wales data." />
+  <meta property="og:url" content="https://www.ons.gov.uk{base}" />
+  <link rel="canonical" href="https://www.ons.gov.uk{base}" />
 </svelte:head>
 
 <Breadcrumb
