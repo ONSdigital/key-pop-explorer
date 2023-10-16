@@ -236,12 +236,13 @@
       };
       odsData.sheets.push(sheet);
     }
-    console.log({ data, vars, datasets, codes, odsData });
 
     let zipFiles = accessibleSpreadsheetCreator(odsData, Handlebars);
     const z = new JSZip();
     for (let { filename, contents } of zipFiles) {
-      z.file(filename, contents);
+      z.file(filename, contents, {
+        compression: filename === "mimetype" ? "STORE" : "DEFLATE",
+      });
     }
     z.generateAsync({ type: "blob" }).then((d) => {
       let blob = new Blob([d], {
