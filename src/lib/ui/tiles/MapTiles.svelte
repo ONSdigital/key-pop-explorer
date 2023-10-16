@@ -115,9 +115,11 @@
             colors={data.geoBreaks[1] == 100 ? [colors.seq[4]] : colors.seq}
           />
         </div>
-        <div class="map-legend-nodata">
-          <NoData />
-        </div>
+        {#if data.geoPerc.some((d) => d.value === null)}
+          <div class="map-legend-nodata">
+            <NoData />
+          </div>
+        {/if}
       </div>
     {/if}
   </Card>
