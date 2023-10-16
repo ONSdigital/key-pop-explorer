@@ -36,7 +36,7 @@
   <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
       People with the selected characteristics as a proportion of whole
-      population.
+      population in each area.
     </p>
   </Card>
   <Card colspan={2} rowspan={2} noBackground>
