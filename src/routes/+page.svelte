@@ -285,12 +285,12 @@
     <p class="subtitle">
       Select one or more identity characteristics to define a population group,
       for example
-      <a href="?religion_tb=7&country_of_birth_3a=1">Sikhs born in the UK</a>
+      <a href="?disability_3a=1&country_of_birth_3a=1">people born in the UK who are disabled</a>
       or
-      <a href="?resident_age_3a=3&country_of_birth_8a=2"
-        >people aged 65+ born in Ireland</a
+      <a href="?resident_age_3a=3&passports_all_4a=2"
+        >people aged 65 and over who hold a non-UK passort</a
       >. Once selected, you will see how this group compares to the whole
-      population of England and Wales based on Census 2021 data.
+      population of England and Wales, based on Census 2021 data.
     </p>
 
     {#if selected[0]}
