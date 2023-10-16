@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href="{base}/favicon.png" />
+  <link rel="icon" href="{base}/favicon.ico" />
 </svelte:head>
 
 <AnalyticsBanner {analyticsProps}/>
