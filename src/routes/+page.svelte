@@ -148,7 +148,7 @@
   //       {#each category.tables.filter((t) => chartIsAvailable(t.code)) as table}
 
   function downloadData(data) {
-    let zipFiles = createOdsZipFiles(data, datasets);
+    let zipFiles = createOdsZipFiles(data, datasets, selected);
 
     const z = new JSZip();
     for (let { filename, contents } of zipFiles) {
@@ -307,7 +307,7 @@
               {/if}
             </p>
           {/if}
-          {#each selected as item, i}
+          {#each selected as item}
             {#if status == "loading"}
               <div class="chip chip-pending">
                 <span class="chip-text"

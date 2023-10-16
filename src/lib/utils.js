@@ -119,14 +119,29 @@ export function chartIsAvailable(tableCode, data) {
   return values !== "blocked" && values !== undefined;
 }
 
-export function createOdsZipFiles(data, datasets) {
+function createCoverSheetContents(selected) {
+  let coverSheetContents = [
+    "## Source",
+    "Census 2021 from the Office for National Statistics",
+    "## Selected population group",
+  ];
+
+  coverSheetContents.push(
+    "This profile is for people with the following characteristic" + (selected.length > 1 ? 's' : '')
+  )
+
+  for (const item of selected) {
+    coverSheetContents.push(` - ${item.topic}: ${trimLabel(item.label)}`);
+  }
+
+  return coverSheetContents;
+}
+
+export function createOdsZipFiles(data, datasets, selected) {
   const odsData = {
     coverSheetTitle:
       "Data Downloaded from 'Create a Population Group Profile'",
-    coverSheetContents: [
-      "## Source",
-      "Census 2021 from the Office for National Statistics",
-    ],
+    coverSheetContents: createCoverSheetContents(selected),
     tableHeadings: [
       "Category",
       "Selected group %",
