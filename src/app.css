@@ -33,8 +33,12 @@ button.ons-breadcrumb__link {
 	page-break-inside: avoid;
 }
 
+.pgp-map-tiles {
+	page-break-inside: avoid;
+}
+
 @media print {
   body {
-      width: 1000px;
+    width: 1000px;
   }
 }

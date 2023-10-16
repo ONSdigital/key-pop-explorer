@@ -17,7 +17,7 @@
   $: lookup = ((data) => {
     const lkp = {};
     console.log("data", data);
-    if (Array.isArray(data)) data.forEach(d => lkp[d.code] = d);
+    if (Array.isArray(data)) data.forEach((d) => (lkp[d.code] = d));
     return lkp;
   })(data.geoPerc);
 
@@ -29,18 +29,23 @@
       label += value != null ? `${value}%` : "No data";
     }
     return label;
-  }
+  };
 </script>
 
-<Cards title="Population by area" height="auto">
+<Cards title="Population by area" height="auto" cls="pgp-map-tiles">
   <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
-      People with the selected characteristics as a proportion of whole population.
+      People with the selected characteristics as a proportion of whole
+      population.
     </p>
   </Card>
   <Card colspan={2} rowspan={2} noBackground>
     <div style:height="450px">
-      <Map style={mapStyle} location={{ bounds: mapBounds }}>
+      <Map
+        style={mapStyle}
+        location={{ bounds: mapBounds }}
+        options={{ preserveDrawingBuffer: true }}
+      >
         {#if data.geojson && data.geoPerc}
           <MapSource
             id="lad"
@@ -67,8 +72,9 @@
                 ],
                 "fill-opacity": 0.8,
               }}
-              order="place_other">
-              <MapTooltip content={makeLabel(hovered)}/>
+              order="place_other"
+            >
+              <MapTooltip content={makeLabel(hovered)} />
             </MapLayer>
             <MapLayer
               id="lad-line"
@@ -99,20 +105,20 @@
       </Map>
     </div>
     {#if data.geoBreaks && data.geoPerc}
-    <div class="map-legend">
-      <div class="map-legend-breaks">
-        <BreaksChart
-          breaks={data.geoBreaks}
-          hovered={hovered && data.geoPerc.find((d) => d.code == hovered)
-            ? data.geoPerc.find((d) => d.code == hovered).value
-            : null}
-          colors={data.geoBreaks[1] == 100 ? [colors.seq[4]] : colors.seq}
-        />
+      <div class="map-legend">
+        <div class="map-legend-breaks">
+          <BreaksChart
+            breaks={data.geoBreaks}
+            hovered={hovered && data.geoPerc.find((d) => d.code == hovered)
+              ? data.geoPerc.find((d) => d.code == hovered).value
+              : null}
+            colors={data.geoBreaks[1] == 100 ? [colors.seq[4]] : colors.seq}
+          />
+        </div>
+        <div class="map-legend-nodata">
+          <NoData />
+        </div>
       </div>
-      <div class="map-legend-nodata">
-        <NoData/>
-      </div>
-    </div>
     {/if}
   </Card>
   <Card title="Areas with high %">
