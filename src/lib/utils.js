@@ -123,11 +123,12 @@ function createCoverSheetContents(selected) {
   let coverSheetContents = [
     "## Source",
     "Census 2021 from the Office for National Statistics",
+    `[View this profile on the ONS website](${document.location.href})`,
     "## Selected population group",
   ];
 
   coverSheetContents.push(
-    "This profile is for people with the following characteristic" + (selected.length > 1 ? 's' : '')
+    "This profile is for people with the following characteristic" + (selected.length > 1 ? 's.' : '.')
   )
 
   for (const item of selected) {
@@ -138,6 +139,7 @@ function createCoverSheetContents(selected) {
 }
 
 export function createOdsZipFiles(data, datasets, selected) {
+  console.log({ data, datasets, selected })
   const odsData = {
     coverSheetTitle:
       "Data Downloaded from 'Create a Population Group Profile'",
@@ -151,6 +153,32 @@ export function createOdsZipFiles(data, datasets, selected) {
     ],
     sheets: [],
   };
+
+  odsData.sheets.push({
+    sheetName: "Total population",
+    tableName: "total_population",
+    sheetIntroText: [
+      "Source: Census 2021 from the Office for National Statistics",
+    ],
+    columns: [
+      {
+        heading: "Group",
+        style: "text",
+        values: ["Selected group"],
+      },
+      {
+        heading: "Count",
+        style: "number_with_commas",
+        values: [data.selected.total_pop.count],
+      },
+      {
+        heading: "% of England and Wales population",
+        style: "number_1dp",
+        values: [data.selected.total_pop.percent],
+      },
+    ],
+  });
+
   let geoPerc = data.geoPerc.filter((d) => d.value != null);
   if (geoPerc.length > 0) {
     odsData.sheets.push({
