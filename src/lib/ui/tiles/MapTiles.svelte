@@ -32,7 +32,7 @@
   };
 </script>
 
-<Cards title="Population by area" height="auto" cls="pgp-map-tiles">
+<Cards title="Population by area" height="auto" cls="ons-cards pgp-map-tiles">
   <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
       People with the selected characteristics as a proportion of whole
