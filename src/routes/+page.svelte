@@ -10,6 +10,8 @@
     removeCategoryCountFromName,
     getData,
     trimLabel,
+    createOdsZipFiles,
+    chartIsAvailable,
   } from "$lib/utils";
   import {
     themes,
@@ -42,9 +44,7 @@
   import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
   import Twisty from "$lib/ui/Twisty.svelte";
 
-  import Handlebars from "handlebars";
   import JSZip from "jszip";
-  import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 
   export let data;
 
@@ -110,11 +110,6 @@
     return breaks;
   }
 
-  function chartIsAvailable(tableCode, data) {
-    const values = data.selected.residents[tableCode].values;
-    return values !== "blocked" && values !== undefined;
-  }
-
   function addAvailableChartCountsForListOfCodes(data, tableCodes, counts) {
     for (const tableCode of tableCodes) {
       if (chartIsAvailable(tableCode, data)) {
@@ -153,91 +148,8 @@
   //       {#each category.tables.filter((t) => chartIsAvailable(t.code)) as table}
 
   function downloadData(data) {
-    const odsData = {
-      coverSheetTitle:
-        "Data Downloaded from 'Create a Population Group Profile'",
-      coverSheetContents: [
-        "## Source",
-        "Census 2021 from the Office for National Statistics",
-      ],
-      tableHeadings: [
-        "Category",
-        "Selected group %",
-        "England and Wales %",
-        "Selected group count",
-        "England and Wales count",
-      ],
-      sheets: [],
-    };
-    let geoPerc = data.geoPerc.filter((d) => d.value != null);
-    if (geoPerc.length > 0) {
-      odsData.sheets.push({
-        sheetName: "Percentage of Population, by Local Authority",
-        tableName: "percentage_of_population",
-        sheetIntroText: [
-          "Source: Census 2021 from the Office for National Statistics",
-        ],
-        columns: [
-          {
-            heading: "Local Authority",
-            style: "text",
-            values: geoPerc.map((d) => d.name),
-          },
-          {
-            heading: "% of Local Authority Population",
-            style: "number_1dp",
-            values: geoPerc.map((d) => d.value),
-          },
-          {
-            heading: "Count",
-            style: "number_with_commas",
-            values: geoPerc.map((d) => d.count),
-          },
-        ],
-      });
-    }
-    for (let table of datasets[0].tables) {
-      if (table.code === "resident_age_23a") continue;
-      if (!chartIsAvailable(table.code, data)) continue;
-      if (data.selected.residents[table.code].values == null) continue;
-      let sheet = {
-        sheetName: table.key,
-        tableName: table.code,
-        sheetIntroText: [
-          "Source: Census 2021 from the Office for National Statistics",
-        ],
-        columns: [
-          {
-            heading: "Category",
-            style: "text",
-            values: codes[table.code].map((d) => d.label),
-          },
-          {
-            heading: "Selected group\n(%)",
-            style: "number_1dp",
-            values: data.selected.residents[table.code].values.percent,
-          },
-          {
-            heading: "England and Wales\n(%)",
-            style: "number_1dp",
-            values: data.all.residents[table.code].values.percent,
-          },
-          {
-            heading: "Selected group\n(count)",
-            style: "number_with_commas",
-            values: data.selected.residents[table.code].values.count,
-          },
-          {
-            heading: "England and Wales\n(count)",
-            style: "number_with_commas",
-            values: data.all.residents[table.code].values.count,
-          },
-        ],
-      };
-      odsData.sheets.push(sheet);
-    }
+    let zipFiles = createOdsZipFiles(data, datasets);
 
-    let zipFiles = accessibleSpreadsheetCreator(odsData, Handlebars);
     const z = new JSZip();
     for (let { filename, contents } of zipFiles) {
       z.file(filename, contents, {

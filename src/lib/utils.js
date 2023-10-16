@@ -2,21 +2,23 @@ import { feature } from 'topojson-client';
 
 import { maskRanges, codes } from "$lib/config";
 
+import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
+
 const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
 
 function getSelString(sel) {
   let selected = [...sel].sort((a, b) => a.key.localeCompare(b.key));
   let selString = sel.length == 0 ?
-      "data" :
-      selected.map((s, i) => {
-        if (i < selected.length - 1)
-          return `${s.key}-${s.code}`;
-        else
-          return `${s.key}`;
-      }).join('/');
+    "data" :
+    selected.map((s, i) => {
+      if (i < selected.length - 1)
+        return `${s.key}-${s.code}`;
+      else
+        return `${s.key}`;
+    }).join('/');
   return {
     selString,
-    lastCode: sel.length > 0 ? selected[selected.length-1].code : null
+    lastCode: sel.length > 0 ? selected[selected.length - 1].code : null
   };
 }
 
@@ -25,15 +27,15 @@ export async function getData(datasets, sel = [], fetch = window.fetch) {
     throw new Error("OLD FORMAT!");
   }
 
-  let {selString, lastCode} = getSelString(sel);
-  let retval = {data: {}};
+  let { selString, lastCode } = getSelString(sel);
+  let retval = { data: {} };
 
   let barChartData;
   if (sel.length === 0) {
     let url = `${endpoint}${sel.length}var_percent/${selString}.json`
     let response = await fetch(url);
     barChartData = await response.json();
-    retval.total_pop = {count: barChartData.sex.count[0] + barChartData.sex.count[1], percent: 100};
+    retval.total_pop = { count: barChartData.sex.count[0] + barChartData.sex.count[1], percent: 100 };
   } else {
     let url = `${endpoint}${sel.length}var-combined_percent/${selString}.json`
     let response = await fetch(url);
@@ -46,7 +48,7 @@ export async function getData(datasets, sel = [], fetch = window.fetch) {
   for (let dataset of datasets) {
     retval.data[dataset.key] = {};
     for (let table of dataset.tables) {
-      retval.data[dataset.key][table.code] = {values: barChartData[table.code]};
+      retval.data[dataset.key][table.code] = { values: barChartData[table.code] };
     }
   }
 
@@ -110,4 +112,97 @@ export function calcPopPercentString(percentage) {
 
 export function trimLabel(label) {
   return label.split(": ").slice(-1)[0];
+}
+
+export function chartIsAvailable(tableCode, data) {
+  const values = data.selected.residents[tableCode].values;
+  return values !== "blocked" && values !== undefined;
+}
+
+export function createOdsZipFiles(data, datasets) {
+  const odsData = {
+    coverSheetTitle:
+      "Data Downloaded from 'Create a Population Group Profile'",
+    coverSheetContents: [
+      "## Source",
+      "Census 2021 from the Office for National Statistics",
+    ],
+    tableHeadings: [
+      "Category",
+      "Selected group %",
+      "England and Wales %",
+      "Selected group count",
+      "England and Wales count",
+    ],
+    sheets: [],
+  };
+  let geoPerc = data.geoPerc.filter((d) => d.value != null);
+  if (geoPerc.length > 0) {
+    odsData.sheets.push({
+      sheetName: "Percentage of Population, by Local Authority",
+      tableName: "percentage_of_population",
+      sheetIntroText: [
+        "Source: Census 2021 from the Office for National Statistics",
+      ],
+      columns: [
+        {
+          heading: "Local Authority",
+          style: "text",
+          values: geoPerc.map((d) => d.name),
+        },
+        {
+          heading: "% of Local Authority Population",
+          style: "number_1dp",
+          values: geoPerc.map((d) => d.value),
+        },
+        {
+          heading: "Count",
+          style: "number_with_commas",
+          values: geoPerc.map((d) => d.count),
+        },
+      ],
+    });
+  }
+  for (let table of datasets[0].tables) {
+    if (table.code === "resident_age_23a") continue;
+    if (!chartIsAvailable(table.code, data)) continue;
+    if (data.selected.residents[table.code].values == null) continue;
+    let sheet = {
+      sheetName: table.key,
+      tableName: table.code,
+      sheetIntroText: [
+        "Source: Census 2021 from the Office for National Statistics",
+      ],
+      columns: [
+        {
+          heading: "Category",
+          style: "text",
+          values: codes[table.code].map((d) => d.label),
+        },
+        {
+          heading: "Selected group\n(%)",
+          style: "number_1dp",
+          values: data.selected.residents[table.code].values.percent,
+        },
+        {
+          heading: "England and Wales\n(%)",
+          style: "number_1dp",
+          values: data.all.residents[table.code].values.percent,
+        },
+        {
+          heading: "Selected group\n(count)",
+          style: "number_with_commas",
+          values: data.selected.residents[table.code].values.count,
+        },
+        {
+          heading: "England and Wales\n(count)",
+          style: "number_with_commas",
+          values: data.all.residents[table.code].values.count,
+        },
+      ],
+    };
+    odsData.sheets.push(sheet);
+  }
+
+  return accessibleSpreadsheetCreator(odsData);
 }
