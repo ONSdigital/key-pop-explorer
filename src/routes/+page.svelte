@@ -96,9 +96,6 @@
       category: cat.label,
       count: selected.length
     });
-    selectOpen = false;
-    activeColumn = null;
-    activeCategory = null;
     updateUrl();
   }
 
@@ -283,7 +280,13 @@
     loadData();
   }
 
-  afterNavigate(refreshData); // Refresh data when user navigates
+  // Refresh data and reset option picker state when user navigates
+  afterNavigate(() => {
+    refreshData();
+    selectOpen = false;
+    activeColumn = null;
+    activeCategory = null;
+  });
   $: console.log("selected", selected);
 </script>
 
@@ -310,12 +313,12 @@
   <div slot="after">
     <p class="subtitle">
       Select one or more identity characteristics to define a population group,
-      for example
-      <a href="?disability_3a=1&country_of_birth_3a=1">people born in the UK who are disabled</a>
-      or
-      <a href="?resident_age_3a=3&passports_all_4a=2"
-        >people aged 65 and over who hold a non-UK passort</a
-      >. Once selected, you will see how this group compares to the whole
+      for example people whose
+      <a href="?main_language_23a=6" data-sveltekit-noscroll>main language is Spanish</a>
+      or people
+      <a href="?disability_3a=1&country_of_birth_3a=1" data-sveltekit-noscroll
+        >born in the UK who are disabled under the Equality Act</a
+      >. Once selected, you will see how your selected group compares to the whole
       population of England and Wales, based on Census 2021 data.
     </p>
 
