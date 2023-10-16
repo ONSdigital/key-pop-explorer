@@ -32,3 +32,9 @@ button.ons-breadcrumb__link {
 .tile__content {
 	page-break-inside: avoid;
 }
+
+@media print {
+  body {
+      width: 1000px;
+  }
+}
