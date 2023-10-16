@@ -28,4 +28,4 @@
 <Main>
   <slot />
 </Main>
-<Footer />
+<Footer theme="dark"/>
