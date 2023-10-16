@@ -44,13 +44,7 @@
     {formatTick(breaks[breaks.length - 1])}{suffix}
   </div>
   {#if typeof hovered === "number"}
-    <div
-      class="marker "
-      style:left="{pos(
-        hovered,
-        breaks
-      )}%"
-    />
+    <div class="marker" style:left="{pos(hovered, breaks)}%" />
     <div class="value" style="left: {pos(hovered, breaks)}%">
       {formatVal(hovered)}{suffix}
     </div>
@@ -70,6 +64,8 @@
     position: absolute;
     top: 0;
     height: 100%;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   .line {
     position: absolute;

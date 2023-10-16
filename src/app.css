@@ -28,3 +28,7 @@ button.ons-breadcrumb__link {
 .ons-card {
   margin: 0;
 }
+
+.tile__content {
+	page-break-inside: avoid;
+}

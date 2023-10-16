@@ -4,13 +4,8 @@
 </script>
 
 <div class="container" style="height: {height}px">
-  <div
-    class="block"
-    style="width: 100%; background-color: {color};"
-  />
-  <div class="tick">
-    No data
-  </div>
+  <div class="block" style="width: 100%; background-color: {color};" />
+  <div class="tick">No data</div>
 </div>
 
 <style>
@@ -26,6 +21,8 @@
     position: absolute;
     top: 0;
     height: 100%;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   .tick {
     line-height: normal;

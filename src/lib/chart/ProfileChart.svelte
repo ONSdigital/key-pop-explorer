@@ -169,7 +169,9 @@
     padding-top: 2px;
   }
   .bar {
-    background-color: #27a0cc;
+    background-color: #27a0cc !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   .mask {
     background-color: rgb(245, 245, 246);
