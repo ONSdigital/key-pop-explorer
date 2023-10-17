@@ -211,7 +211,7 @@ export function createOdsZipFiles(data, datasets, selected) {
     if (!chartIsAvailable(table.code, data)) continue;
     if (data.selected.residents[table.code].values == null) continue;
     let sheet = {
-      sheetName: table.key,
+      sheetName: removeCategoryCountFromName(table.key).replace('Age (B)', 'Age'),
       tableName: table.code,
       sheetIntroText: [
         "Source: Census 2021 from the Office for National Statistics",
