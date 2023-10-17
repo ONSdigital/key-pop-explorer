@@ -94,7 +94,7 @@
       event: "variableSelect",
       variable: variable.shortLabel,
       category: cat.label,
-      count: selected.length
+      count: selected.length,
     });
     updateUrl();
   }
@@ -173,7 +173,12 @@
       // The method of creating a anchor tag and clicking it is from https://stackoverflow.com/a/18197341
       var element = document.createElement("a");
       element.setAttribute("href", url);
-      element.setAttribute("download", "data-download.ods");
+
+      const odsDownloadFilename =
+        "population-profile-" +
+        selected.map((d) => `${d.key}-${d.code}`).join("-") +
+        ".ods";
+      element.setAttribute("download", odsDownloadFilename);
 
       element.style.display = "none";
       document.body.appendChild(element);
@@ -186,14 +191,14 @@
     analyticsEvent({
       event: "fileDownload",
       fileExtension: "ods",
-      selection: selected.map(s => `${s.topic}: ${s.label}`)
+      selection: selected.map((s) => `${s.topic}: ${s.label}`),
     });
   }
 
   function printPage() {
     analyticsEvent({
       event: "pagePrint",
-      selection: selected.map(s => `${s.topic}: ${s.label}`)
+      selection: selected.map((s) => `${s.topic}: ${s.label}`),
     });
     print();
   }
@@ -292,13 +297,22 @@
 
 <svelte:head>
   <title>Create a population group profile - Census 2021 - ONS</title>
-  <meta property="og:title" content="Create a population group profile - Census 2021" />
+  <meta
+    property="og:title"
+    content="Create a population group profile - Census 2021"
+  />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://www.ons.gov.uk{base}/img/og.png">
-  <meta property="og:image:type" content="image/png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:description" content="Select multiple datasets to define a population group based on Census 2021 England and Wales data." />
-  <meta name="description" content="Select multiple datasets to define a population group based on Census 2021 England and Wales data." />
+  <meta property="og:image" content="https://www.ons.gov.uk{base}/img/og.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    property="og:description"
+    content="Select multiple datasets to define a population group based on Census 2021 England and Wales data."
+  />
+  <meta
+    name="description"
+    content="Select multiple datasets to define a population group based on Census 2021 England and Wales data."
+  />
   <meta property="og:url" content="https://www.ons.gov.uk{base}" />
   <link rel="canonical" href="https://www.ons.gov.uk{base}" />
 </svelte:head>
@@ -314,12 +328,14 @@
     <p class="subtitle">
       Select one or more identity characteristics to define a population group,
       for example people whose
-      <a href="?main_language_23a=6" data-sveltekit-noscroll>main language is Spanish</a>
+      <a href="?main_language_23a=6" data-sveltekit-noscroll
+        >main language is Spanish</a
+      >
       or people
       <a href="?disability_3a=1&country_of_birth_3a=1" data-sveltekit-noscroll
         >born in the UK who are disabled under the Equality Act</a
-      >. Once selected, you will see how your selected group compares to the whole
-      population of England and Wales, based on Census 2021 data.
+      >. Once selected, you will see how your selected group compares to the
+      whole population of England and Wales, based on Census 2021 data.
     </p>
 
     {#if selected[0]}
