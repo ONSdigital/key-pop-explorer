@@ -12,6 +12,7 @@
   export let maskRange = null;
   export let base = null;
   export let base_ext = ", 5 year age bands";
+  export let ageShadingNote = null;
   export let showLegend = true;
 
   function stackData(data, key) {
@@ -134,6 +135,10 @@
 
 {#if base}
   <small>{base}{base_ext}</small>
+{/if}
+
+{#if ageShadingNote}
+  <small>{ageShadingNote}</small>
 {/if}
 
 <style>
