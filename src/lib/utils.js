@@ -179,7 +179,8 @@ export function createOdsZipFiles(data, datasets, selected) {
     ],
   });
 
-  let geoPerc = data.geoPerc.filter((d) => d.value != null);
+  let geoPerc = data.geoPerc.filter((d) => d.value != null)
+    .sort((a, b) => a.name.localeCompare(b.name, 'en-GB'));
   if (geoPerc.length > 0) {
     odsData.sheets.push({
       sheetName: "Percentage of Population, by Local Authority",
