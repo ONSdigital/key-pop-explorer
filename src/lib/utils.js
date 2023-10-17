@@ -121,17 +121,18 @@ export function chartIsAvailable(tableCode, data) {
 
 function createCoverSheetContents(selected) {
   let coverSheetContents = [
-    "This spreadsheet contains the source data for a profile generated using the tool 'Create a population group profile' on the Office for National Statistics website.",
+    "This spreadsheet contains the data for a profile generated using the tool 'Create a population group profile' on the Office for National Statistics website.",
+    `[View this profile on the ONS website](${document.location.href})`,
     "## Source",
     "Census 2021 from the Office for National Statistics",
-    `[View this profile on the ONS website](${document.location.href})`,
     "## Selected population group",
     "This profile is for people with the following characteristic" + (selected.length > 1 ? 's.' : '.'),
     ...selected.map(item => ` - ${item.topic}: ${trimLabel(item.label)}`),
     "## More Census data",
-    "[Other census datasets are avaiable on the ONS website.](https://www.ons.gov.uk/census)",
+    "[Other census datasets are available on the ONS website.](https://www.ons.gov.uk/census)",
     "## Contact",
-    "TODO!"
+    "[Email Census Customer Services](mailto:census.customerservices@ons.gov.uk?subject=Create%20a%20population%20group%20profile)",
+    "Phone +44 1329 444972"
   ];
 
   return coverSheetContents;
