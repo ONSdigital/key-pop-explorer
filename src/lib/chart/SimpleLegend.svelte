@@ -48,4 +48,13 @@
     width: 3px;
     margin: 0 2px 0 15px;
   }
+  .bold {
+    font-weight: bold;
+  }
+  .brackets::before {
+    content: "(";
+  }
+  .brackets::after {
+    content: ")";
+  }
 </style>

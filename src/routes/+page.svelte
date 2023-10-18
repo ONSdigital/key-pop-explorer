@@ -156,6 +156,11 @@
   //       {#each category.tables.filter((t) => chartIsAvailable(t.code)) as table}
 
   function downloadData(data) {
+    analyticsEvent({
+      event: "fileDownload",
+      fileExtension: "ods",
+      selection: selected.map((s) => `${s.topic}: ${s.label}`),
+    });
     let zipFiles = createOdsZipFiles(data, datasets, selected);
 
     const z = new JSZip();
@@ -168,30 +173,23 @@
       let blob = new Blob([d], {
         type: "application/vnd.oasis.opendocument.spreadsheet",
       });
-      let url = URL.createObjectURL(blob);
+      let urlClass = window.URL || window.webkitURL || window;
+      let url = urlClass.createObjectURL(blob);
 
       // The method of creating a anchor tag and clicking it is from https://stackoverflow.com/a/18197341
-      var element = document.createElement("a");
-      element.setAttribute("href", url);
-
-      const odsDownloadFilename =
-        "population-profile-" +
+      let a = document.createElement("a");
+      a.download = "population-profile-" +
         selected.map((d) => `${d.key}-${d.code}`).join("-") +
         ".ods";
-      element.setAttribute("download", odsDownloadFilename);
+      a.href = url;
+      a.style.display = "none";
 
-      element.style.display = "none";
-      document.body.appendChild(element);
+      document.body.appendChild(a);
 
-      element.click();
+      a.click();
 
-      document.body.removeChild(element);
-      URL.revokeObjectURL(url);
-    });
-    analyticsEvent({
-      event: "fileDownload",
-      fileExtension: "ods",
-      selection: selected.map((s) => `${s.topic}: ${s.label}`),
+      document.body.removeChild(a);
+      // URL.revokeObjectURL(url);
     });
   }
 
