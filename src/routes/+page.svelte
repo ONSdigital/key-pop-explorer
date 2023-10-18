@@ -178,7 +178,8 @@
 
       // The method of creating a anchor tag and clicking it is from https://stackoverflow.com/a/18197341
       let a = document.createElement("a");
-      a.download = "population-profile-" +
+      a.download =
+        "population-profile-" +
         selected.map((d) => `${d.key}-${d.code}`).join("-") +
         ".ods";
       a.href = url;
@@ -530,8 +531,8 @@
     display: block;
     box-sizing: border-box;
     background: #0f8243
-      url("https://bothness.github.io/geo-draw/img/x-close.svg") no-repeat
-      center;
+      url('data:image/svg+xml;utf8,<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path fill="white" d="M17.9,7.3L13.2,12l4.7,4.7l-1.2,1.2L12,13.2l-4.7,4.7l-1.2-1.2l4.7-4.7L6.1,7.3l1.2-1.2l4.7,4.7l4.7-4.7L17.9,7.3z"/></svg>')
+      no-repeat center;
     margin: 0;
     width: 20px;
     height: 20px;
