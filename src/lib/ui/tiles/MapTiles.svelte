@@ -4,6 +4,7 @@
   import BreaksChart from "$lib/chart/BreaksChart.svelte";
   import Table from "$lib/chart/Table.svelte";
   import NoData from "$lib/chart/NoData.svelte";
+  import { base } from "$app/paths";
 
   export let data;
   export let mapStyle;
@@ -42,6 +43,7 @@
   <Card colspan={2} rowspan={2} noBackground>
     <div style:height="450px">
       <Map
+        css="{base}/css/maplibre-gl.css"
         style={mapStyle}
         location={{ bounds: mapBounds }}
         options={{
