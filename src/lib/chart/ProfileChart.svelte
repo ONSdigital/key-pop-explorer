@@ -41,7 +41,7 @@
     } else {
       return (
         `calc(${(Math.floor(x) / xDomain.length) * 100}% +` +
-        `(${(1 / xDomain.length) * 100}% - 2px) * ${x % 1})`
+        ` (${(1 / xDomain.length) * 100}% - 2px) * ${x % 1})`
       );
     }
   }
