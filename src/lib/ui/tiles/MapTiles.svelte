@@ -44,7 +44,13 @@
       <Map
         style={mapStyle}
         location={{ bounds: mapBounds }}
-        options={{ preserveDrawingBuffer: true }}
+        options={{
+          preserveDrawingBuffer: true,
+          maxBounds: [-9, 47, 4, 61],
+          cooperativeGestures: true,
+        }}
+        maxzoom={10}
+        controls
       >
         {#if data.geojson && data.geoPerc}
           <MapSource
