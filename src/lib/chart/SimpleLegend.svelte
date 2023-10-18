@@ -1,15 +1,10 @@
 <p class="legend-text">
-  <slot/>
+  <slot />
 </p>
 <ul class="legend-block">
-  {#each [
-    "People with the selected characteristics",
-    "All people in England and Wales"
-  ] as group, i}
+  {#each ["People with the selected characteristics", "All people in England and Wales"] as group, i}
     <li class:ew={i != 0}>
-      <div
-        class="legend-vis {i == 0 ? 'bar' : 'marker'}"
-      />
+      <div class="legend-vis {i == 0 ? 'bar' : 'marker'}" />
       <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
     </li>
   {/each}
@@ -28,7 +23,7 @@
     font-size: 14px;
   }
   ul.legend-block > li {
-    display: inline-block;
+    display: inline-flex;
     margin: 0 4px 0 0;
     padding: 0;
   }
@@ -40,13 +35,13 @@
   .bar {
     background-color: #27a0cc;
     width: 18px;
-    margin: 0 2px 0 0;
+    margin: 0 6px 0 0;
   }
   .marker {
     border-left-color: black;
     border-left-style: solid;
     width: 3px;
-    margin: 0 2px 0 15px;
+    margin: 0 6px 0 15px;
   }
   .bold {
     font-weight: bold;
