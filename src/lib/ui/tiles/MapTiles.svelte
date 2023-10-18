@@ -10,6 +10,7 @@
   export let mapStyle;
   export let ladBounds;
   export let mapBounds;
+  export let maxBounds;
   export let selected;
   export let colors;
 
@@ -47,8 +48,8 @@
         style={mapStyle}
         location={{ bounds: mapBounds }}
         options={{
+          maxBounds,
           preserveDrawingBuffer: true,
-          maxBounds: [-9, 47, 4, 61],
           cooperativeGestures: true,
         }}
         maxzoom={10}

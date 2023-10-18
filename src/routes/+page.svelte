@@ -20,6 +20,7 @@
     varsNested,
     mapStyle,
     mapBounds,
+    maxBounds,
     datasets,
     unblockedCombinationCounts,
     ladBounds,
@@ -460,7 +461,7 @@
   </Cards>
 
   {#if data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
-    <MapTiles {data} {mapStyle} {mapBounds} {ladBounds} {selected} {colors} />
+    <MapTiles {data} {mapStyle} {mapBounds} {maxBounds} {ladBounds} {selected} {colors} />
     {#each datasets[0].tablesCategorised as category}
       {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
         <Cards title={category.categoryName} height="auto">

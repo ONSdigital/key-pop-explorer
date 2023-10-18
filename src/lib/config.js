@@ -135,6 +135,7 @@ console.log(varsNested)
 
 export const mapStyle = mapStyle_;
 export const mapBounds = [-6.3603, 49.8823, 1.7637, 55.8112];
+export const maxBounds = [-9.5, 47, 4.5, 61];
 export const ladBounds = {
 	url: "/data/ltla2021.json",
 	layer: "ltla",
