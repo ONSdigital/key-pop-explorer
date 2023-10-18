@@ -22,8 +22,8 @@
     "layercake": "latest",
     "parse-color": "^1.0.0",
     "simple-statistics": "^7.7.3",
-    "svelte": "^3.34.0",
-    "svelte-preprocess": "^4.7.3",
+    "svelte": "^4.2.1",
+    "svelte-preprocess": "^5.0.4",
     "topojson-client": "^3.1.0"
   },
   "type": "module"
