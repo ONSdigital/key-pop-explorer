@@ -297,13 +297,19 @@
     loadData();
   }
 
-  function shoudShowMissingDataNotice(data) {
+  function totalPopIsAtLeast100(data) {
+    return (
+      data.selected.total_pop.count != null &&
+      data.selected.total_pop.count >= 100
+    );
+  }
+
+  function shouldShowMissingDataNotice(data) {
     return (
       data.selected != null &&
       getAvailableChartCounts(data).available !=
         getAvailableChartCounts(data).total &&
-      data.selected.total_pop.count != null &&
-      data.selected.total_pop.count >= 100
+      totalPopIsAtLeast100(data)
     );
   }
 
@@ -403,7 +409,7 @@
           {/if}
         </div>
       </Notice>
-      {#if shoudShowMissingDataNotice(data)}
+      {#if shouldShowMissingDataNotice(data)}
         <Notice mode={"info"}>
           <strong>
             {getAvailableChartCounts(data).available}
@@ -483,7 +489,7 @@
     {/if}
   </Cards>
 
-  {#if data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
+  {#if totalPopIsAtLeast100(data)}
     <MapTiles
       {data}
       {mapStyle}
