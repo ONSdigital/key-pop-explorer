@@ -85,16 +85,30 @@ export function computeAgeMaskRange(selected) {
   return null;
 }
 
+export const religionComparatorByName = (a, b) => {
+  if (a.label === b.label) return 0;
+  if (a.label === "Not answered") return 1;
+  if (b.label === "Not answered") return -1;
+  if (a.label === "Other religion") return 1;
+  if (b.label === "Other religion") return -1;
+  return a.label.localeCompare(b.label, "en-GB");
+};
+
 export function makeDataNew(group, dataset, data) {
   let valsAll = data.all[group][dataset].values;
   let valsSelected = data.selected[group][dataset].values;
 
   let arr = [];
 
-  codes[dataset].forEach((cd, i) => {
+  let datasetCodes = codes[dataset].map((cd, i) => ({ ...cd, index: i }));
+  if (dataset === "religion_tb") {
+    datasetCodes = [...datasetCodes].sort(religionComparatorByName);
+  }
+
+  datasetCodes.forEach((cd) => {
     let label = cd.label;
-    let valAll = valsAll.percent[i];
-    let valSelected = valsSelected.percent[i];
+    let valAll = valsAll.percent[cd.index];
+    let valSelected = valsSelected.percent[cd.index];
     if (data.selected.total_pop != data.all.total_pop)
       arr.push({ group: "This group", category: label, value: valSelected });
     arr.push({ group: "Whole population", category: label, value: valAll });

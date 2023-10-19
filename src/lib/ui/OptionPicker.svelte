@@ -2,6 +2,7 @@
   import OptionPickerColumn1 from "./OptionPickerColumn1.svelte";
   import OptionPickerColumn2 from "./OptionPickerColumn2.svelte";
   import Icon from "./Icon.svelte";
+  import { religionComparatorByName } from "$lib/utils";
   // import { Button } from "@onsvisual/svelte-components";
 
   export let options = [];
@@ -34,6 +35,16 @@
   function fewerCategories() {
     --varToSelectedClassification[activeColumn.label];
   }
+
+  function getCategoryList(classification) {
+    console.log(classification);
+    if (classification.key !== "religion_tb") {
+      return classification.cats;
+    }
+
+    // Sort alphabetically, with Other and Not Answered at the end
+    return classification.cats.sort(religionComparatorByName);
+  }
 </script>
 
 <div class="container">
@@ -48,35 +59,35 @@
     hiddenOnMobile={activeColumn != null}
   />
   {#key activeColumn}
-  {#if activeColumn != null}
-    {#each [activeColumn.vars[varToSelectedClassification[activeColumn.label]]] as activeClassification}
-      <OptionPickerColumn2
-        columnTitle={activeColumn.label}
-        bind:selected={activeCategory}
-        options={activeClassification.cats}
-        clickCallback={(category) =>
-          clickCallback(activeClassification, category)}
-        removeCatCallback={(category) =>
-          removeCatCallback(activeClassification, category)}
-        backButtonCallback={() => (activeColumn = null)}
-        {globalSelectedCategories}
-        currentVar={activeColumn}
-        {disabled}
-      >
-        {#if varToSelectedClassification[activeColumn.label] > 0}
-          <!-- FIXME: use proper up and down chevrons -->
-          <button class="btn-link" on:click={fewerCategories}
-            ><Icon type="chevron" rotation={90}/> Show fewer</button
-          >
-        {/if}
-        {#if varToSelectedClassification[activeColumn.label] < activeColumn.vars.length - 1}
-          <button class="btn-link" on:click={moreCategories}
-            ><Icon type="chevron" rotation={-90}/> Show more</button
-          >
-        {/if}
-      </OptionPickerColumn2>
-    {/each}
-  {/if}
+    {#if activeColumn != null}
+      {#each [activeColumn.vars[varToSelectedClassification[activeColumn.label]]] as activeClassification}
+        <OptionPickerColumn2
+          columnTitle={activeColumn.label}
+          bind:selected={activeCategory}
+          options={getCategoryList(activeClassification)}
+          clickCallback={(category) =>
+            clickCallback(activeClassification, category)}
+          removeCatCallback={(category) =>
+            removeCatCallback(activeClassification, category)}
+          backButtonCallback={() => (activeColumn = null)}
+          {globalSelectedCategories}
+          currentVar={activeColumn}
+          {disabled}
+        >
+          {#if varToSelectedClassification[activeColumn.label] > 0}
+            <!-- FIXME: use proper up and down chevrons -->
+            <button class="btn-link" on:click={fewerCategories}
+              ><Icon type="chevron" rotation={90} /> Show fewer</button
+            >
+          {/if}
+          {#if varToSelectedClassification[activeColumn.label] < activeColumn.vars.length - 1}
+            <button class="btn-link" on:click={moreCategories}
+              ><Icon type="chevron" rotation={-90} /> Show more</button
+            >
+          {/if}
+        </OptionPickerColumn2>
+      {/each}
+    {/if}
   {/key}
 </div>
 
