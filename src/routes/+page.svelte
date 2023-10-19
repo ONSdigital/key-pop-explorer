@@ -121,18 +121,26 @@
 
   function addAvailableChartCountsForListOfCodes(data, tableCodes, counts) {
     for (const tableCode of tableCodes) {
-      if (chartIsAvailable(tableCode, data)) {
-        ++counts.available;
-      } else if (data.selected.residents[tableCode].values !== undefined) {
-        // Don't count it as missing if the data is not there because the chart
+      const values = data.selected.residents[tableCode].values;
+      if (values === undefined) {
+        // Don't count this one, because the chart
         // is for one of the selected input variables
-        ++counts.missing;
+      } else if (values === "blocked") {
+        ++counts.missingBecauseDisclosive;
+      } else if (values.percent[0] == null) {
+        ++counts.missingAgeUnder16;
+      } else {
+        ++counts.available;
       }
     }
   }
 
   function getAvailableChartCounts(data) {
-    let counts = { available: 0, missing: 0 };
+    let counts = {
+      available: 0,
+      missingBecauseDisclosive: 0,
+      missingAgeUnder16: 0,
+    };
     for (const category of datasets[0].tablesCategorised) {
       addAvailableChartCountsForListOfCodes(
         data,
@@ -145,6 +153,10 @@
       ["sex", "resident_age_18b"],
       counts
     );
+    counts.total =
+      counts.available +
+      counts.missingAgeUnder16 +
+      counts.missingBecauseDisclosive;
     return counts;
   }
 
@@ -285,6 +297,16 @@
     loadData();
   }
 
+  function shoudShowMissingDataNotice(data) {
+    return (
+      data.selected != null &&
+      getAvailableChartCounts(data).available !=
+        getAvailableChartCounts(data).total &&
+      data.selected.total_pop.count != null &&
+      data.selected.total_pop.count >= 100
+    );
+  }
+
   // Refresh data and reset option picker state when user navigates
   afterNavigate(() => {
     refreshData();
@@ -378,27 +400,28 @@
               No data is available for the selected variables. Try removing a
               variable to see more datasets.
             </p>
-          {:else if u16 == true}
-            <p style:margin="1rem 0 0">
-              Economic indicators (employment, social status etc) are not
-              available for ages 0 to 15.
-            </p>
           {/if}
         </div>
       </Notice>
-      {#if data.selected != null && getAvailableChartCounts(data).missing > 0 && data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
+      {#if shoudShowMissingDataNotice(data)}
         <Notice mode={"info"}>
           <strong>
             {getAvailableChartCounts(data).available}
-            of {getAvailableChartCounts(data).missing +
-              getAvailableChartCounts(data).available} charts available.
-          </strong><br />
-          <!-- TODO: distinguish between tables missing because same as input selection and disclosive ones -->
-          <a
-            href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
-            >Protecting personal data</a
-          >
-          prevents some datasets from being included.
+            of {getAvailableChartCounts(data).total} charts available.
+          </strong>
+          {#if getAvailableChartCounts(data).missingBecauseDisclosive > 0}
+            <br />
+            <a
+              href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
+              >Protecting personal data</a
+            >
+            prevents some datasets from being included.
+          {/if}
+          {#if u16 && getAvailableChartCounts(data).missingAgeUnder16 > 0}
+            <br />
+            Economic indicators (employment, social status etc) are not available
+            for ages 0 to 15.
+          {/if}
         </Notice>
       {/if}
       <div style:height="24px" />
@@ -461,7 +484,15 @@
   </Cards>
 
   {#if data.selected.total_pop.count != null && data.selected.total_pop.count >= 100}
-    <MapTiles {data} {mapStyle} {mapBounds} {maxBounds} {ladBounds} {selected} {colors} />
+    <MapTiles
+      {data}
+      {mapStyle}
+      {mapBounds}
+      {maxBounds}
+      {ladBounds}
+      {selected}
+      {colors}
+    />
     {#each datasets[0].tablesCategorised as category}
       {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
         <Cards title={category.categoryName} height="auto">

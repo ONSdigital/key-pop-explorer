@@ -116,7 +116,9 @@ export function trimLabel(label) {
 
 export function chartIsAvailable(tableCode, data) {
   const values = data.selected.residents[tableCode].values;
-  return values !== "blocked" && values !== undefined;
+  return values !== "blocked"
+    && values !== undefined
+    && values.percent[0] != null;
 }
 
 function createCoverSheetContents(selected) {
