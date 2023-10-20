@@ -35,6 +35,8 @@
     Notice,
     Button,
     analyticsEvent,
+    Section,
+    ShareButtons,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -455,20 +457,6 @@
 </Titleblock>
 
 {#if status == "success" && selected.length > 0}
-  <Container cls="show-overflow" width="wide">
-    <div class="action-buttons">
-      <Button on:click={printPage} variant="secondary" icon="print" small
-        >Print profile</Button
-      >
-      <Button
-        on:click={() => downloadData(data)}
-        variant="secondary"
-        icon="download"
-        small>Download data</Button
-      >
-    </div>
-  </Container>
-
   <Cards title="Demographics" height="auto">
     <Card colspan={3} noBackground>
       <SimpleLegend
@@ -517,6 +505,22 @@
       {/if}
     {/each}
   {/if}
+  <Section>
+    <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
+    <div>
+      <Button on:click={printPage} variant="secondary" icon="print"
+        >Print profile</Button
+      >
+      {#if totalPopIsAtLeast100(data)}
+        <Button
+          on:click={() => downloadData(data)}
+          variant="secondary"
+          icon="download">Download data</Button
+        >
+      {/if}
+    </div>
+  </Section>
+  <ShareButtons title="Share this profile" />
 {/if}
 
 <style>
@@ -610,11 +614,6 @@
     100% {
       transform: rotate(360deg);
     }
-  }
-  .action-buttons {
-    text-align: right;
-    margin-top: -20px;
-    padding-bottom: 3px;
   }
   :global(.ons-panel) {
     margin-bottom: 0 !important;
