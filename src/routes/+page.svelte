@@ -521,7 +521,7 @@
         <Button
           on:click={() => downloadData(data)}
           variant="secondary"
-          icon="download">Download data</Button
+          icon="download">Download data (ODS, &lt;100 kB)</Button
         >
       {/if}
     </div>
