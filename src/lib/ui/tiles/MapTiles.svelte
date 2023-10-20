@@ -37,7 +37,7 @@
 <Cards title="Population by area" height="auto" cls="ons-cards pgp-map-tiles">
   <Card colspan={3} rowspan={1} noBackground>
     <p class="subtitle">
-      People with the selected characteristics as a proportion of whole
+      People with the selected characteristics as a proportion of the whole
       population in each area.
     </p>
   </Card>
