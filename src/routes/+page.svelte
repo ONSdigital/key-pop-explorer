@@ -493,6 +493,11 @@
           <Card colspan={3} noBackground>
             <SimpleLegend>{category.categoryDescription}</SimpleLegend>
           </Card>
+          {#if category.qualityInformationHtml}
+            <Card colspan={3} noBackground>
+              <Notice important>{@html category.qualityInformationHtml}</Notice>
+            </Card>
+          {/if}
           {#each category.tables.filter( (t) => chartIsAvailable(t.code, data) ) as table}
             <BarChartCard
               title={removeCategoryCountFromName(table.key)}

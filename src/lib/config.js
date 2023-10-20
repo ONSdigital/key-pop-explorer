@@ -20,11 +20,11 @@ export const themes = {
 	},
 	'dark': {
 		'name': 'dark',
-    'text': '#fff',
-    'muted': '#bbb',
-    'pale': '#333',
-    'background': '#222'
-  }
+		'text': '#fff',
+		'muted': '#bbb',
+		'pale': '#333',
+		'background': '#222'
+	}
 };
 
 // Analytics config
@@ -55,7 +55,7 @@ outputClassifications.forEach(c => {
 	if (c.categories == null) {
 		codes[classification.id] = classification.categories
 			.filter(d => d.id != '-8')
-			.map(d => ({label: d.label, cells: [d.id]}));
+			.map(d => ({ label: d.label, cells: [d.id] }));
 	} else {
 		codes[classification.id] = c.categories;
 	}
@@ -63,7 +63,7 @@ outputClassifications.forEach(c => {
 
 // The datasets used for charts
 export let datasets = [
-  {
+	{
 		key: 'residents',
 		code: 'Usual-Residents',
 		tables: [],
@@ -73,23 +73,24 @@ export let datasets = [
 
 outputClassifications.forEach(c => {
 	const classification = allClassifications[c.code];
-    datasets[0].tables.push({
-        key: classification.label,
-        code: classification.id
-    });
+	datasets[0].tables.push({
+		key: classification.label,
+		code: classification.id
+	});
 });
 
 outputClassificationsCategorised.forEach(category => {
 	datasets[0].tablesCategorised.push({
 		categoryName: category.category_name,
 		categoryDescription: category.category_description,
+		qualityInformationHtml: category.quality_information_html,
 		tables: []
 	});
 	for (const code of category.classification_codes) {
 		const classification = allClassifications[code];
-			datasets[0].tablesCategorised[datasets[0].tablesCategorised.length - 1].tables.push({
-				key: classification.label,
-				code: classification.id
+		datasets[0].tablesCategorised[datasets[0].tablesCategorised.length - 1].tables.push({
+			key: classification.label,
+			code: classification.id
 		});
 
 	}
@@ -98,19 +99,19 @@ outputClassificationsCategorised.forEach(category => {
 export let vars = [];
 
 inputClassifications.forEach(c => {
-    c = allClassifications[c];
-    c.label = c.label.replace('Disability - Equality act disabled', 'Disability');
-    vars.push({
-        label: c.label,
-				shortLabel: c.label.replace(new RegExp(" \\(.*$"), ""),
-        key: c.id,
-        cats: c.categories.filter(d => d.id !== '-8').map(d => ({
-            var: c.id,
-            code: d.id,
-            label: d.label,
-						newFormat: true
-        }))
-    });
+	c = allClassifications[c];
+	c.label = c.label.replace('Disability - Equality act disabled', 'Disability');
+	vars.push({
+		label: c.label,
+		shortLabel: c.label.replace(new RegExp(" \\(.*$"), ""),
+		key: c.id,
+		cats: c.categories.filter(d => d.id !== '-8').map(d => ({
+			var: c.id,
+			code: d.id,
+			label: d.label,
+			newFormat: true
+		}))
+	});
 });
 
 vars.sort((a, b) => a.label.localeCompare(b.label));
@@ -126,7 +127,7 @@ function nestVars(vars) {
 		nested[l].sort((a, b) => a.cats.length - b.cats.length);
 	}
 	let result = [];
-	shortLabels.forEach(label => result.push({label, vars: nested[label]}));
+	shortLabels.forEach(label => result.push({ label, vars: nested[label] }));
 	return result;
 }
 
@@ -163,6 +164,6 @@ export const maskRanges = {
 	}
 };
 
-for (let i=0; i<18; i++) {
+for (let i = 0; i < 18; i++) {
 	maskRanges.resident_age_18b["" + (i + 1)] = [i, i + 1];
 }
