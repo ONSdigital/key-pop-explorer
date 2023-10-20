@@ -22,7 +22,8 @@
       "national_identity_all_4a",
       "religion_tb",
       "english_proficiency"
-    ]
+    ],
+    "quality_information_html": "There are quality considerations for the <a target=\"_blank\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/methodologies/ethnicgroupnationalidentitylanguageandreligionqualityinformationforcensus2021\">national identity</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/methodologies/ethnicgroupnationalidentitylanguageandreligionqualityinformationforcensus2021\">religion</a> data."
   },
   {
     "category_name": "Health",
@@ -45,6 +46,6 @@
       "ns_sec_10a",
       "hours_per_week_worked"
     ],
-    "quality_information_html": "There are pandemic-related quality considerations for <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/methodologies/traveltoworkqualityinformationforcensus2021\">travel to work</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/methodologies/labourmarketqualityinformationforcensus2021\">labour market</a> variables."
+    "quality_information_html": "There are pandemic-related quality considerations for <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/methodologies/traveltoworkqualityinformationforcensus2021\">travel to work</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/methodologies/labourmarketqualityinformationforcensus2021\">labour market</a> data."
   }
 ]
