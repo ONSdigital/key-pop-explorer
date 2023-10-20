@@ -372,10 +372,10 @@
           {#if status != "failed"}
             <p>
               {#if selected.length === 1}
-                The profile below is for people with the following
+                The profile below is for people who share the following
                 characteristic:
               {:else}
-                The profile below is for people with {#if selected.length === 2}both{:else}all{/if}
+                The profile below is for people who share {#if selected.length === 2}both{:else}all{/if}
                 of the following characteristics:
               {/if}
             </p>

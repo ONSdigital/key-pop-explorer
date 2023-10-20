@@ -142,7 +142,7 @@ function createCoverSheetContents(selected) {
     "## Source",
     "Census 2021 from the Office for National Statistics",
     "## Selected population group",
-    "This profile is for people with the following characteristic" + (selected.length > 1 ? 's.' : '.'),
+    "This profile is for people who share the following characteristic" + (selected.length > 1 ? 's.' : '.'),
     ...selected.map(item => ` - ${item.topic}: ${trimLabel(item.label)}`),
     "## More Census data",
     "[Other census datasets are available on the ONS website.](https://www.ons.gov.uk/census)",
