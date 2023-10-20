@@ -41,4 +41,8 @@ button.ons-breadcrumb__link {
   body {
     width: 1000px;
   }
+
+  .ons-btn {
+    display: none;
+  }
 }

@@ -511,22 +511,24 @@
       {/if}
     {/each}
   {/if}
-  <Section>
-    <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
-    <div>
-      <Button on:click={printPage} variant="secondary" icon="print"
-        >Print profile</Button
-      >
-      {#if totalPopIsAtLeast100(data)}
-        <Button
-          on:click={() => downloadData(data)}
-          variant="secondary"
-          icon="download">Download data (ODS, &lt;100 kB)</Button
+  <div class="hide-when-printing">
+    <Section>
+      <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
+      <div>
+        <Button on:click={printPage} variant="secondary" icon="print"
+          >Print profile</Button
         >
-      {/if}
-    </div>
-  </Section>
-  <ShareButtons title="Share this profile" />
+        {#if totalPopIsAtLeast100(data)}
+          <Button
+            on:click={() => downloadData(data)}
+            variant="secondary"
+            icon="download">Download data (ODS, &lt;100 kB)</Button
+          >
+        {/if}
+      </div>
+    </Section>
+    <ShareButtons title="Share this profile" />
+  </div>
 {/if}
 
 <style>
@@ -623,5 +625,11 @@
   }
   :global(.ons-panel) {
     margin-bottom: 0 !important;
+  }
+
+  @media print {
+    .hide-when-printing {
+      display: none;
+    }
   }
 </style>
