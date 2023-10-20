@@ -37,6 +37,13 @@ button.ons-breadcrumb__link {
 	page-break-inside: avoid;
 }
 
+@media (max-width: 600px) {
+  .use-this-profile-buttons button {
+    margin-bottom: 9px !important;
+    margin-left: 0px !important;
+  }
+}
+
 @media print {
   body {
     width: 1000px;

@@ -514,7 +514,7 @@
   <div class="hide-when-printing">
     <Section>
       <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
-      <div>
+      <div class="use-this-profile-buttons">
         <Button on:click={printPage} variant="secondary" icon="print"
           >Print profile</Button
         >
