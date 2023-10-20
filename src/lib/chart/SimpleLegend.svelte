@@ -1,7 +1,7 @@
 <p class="legend-text">
   <slot />
 </p>
-<ul class="legend-block">
+<ul aria-hidden="true" class="legend-block">
   {#each ["People with the selected characteristics", "All people in England and Wales"] as group, i}
     <li class:ew={i != 0}>
       <div class="legend-vis {i == 0 ? 'bar' : 'marker'}" />
