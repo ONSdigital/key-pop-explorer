@@ -69,7 +69,6 @@
 </script>
 
 <table class="visuallyhidden">
-  {console.log(data)}
   <thead>
     <tr>
       <th>Age group</th><th>Proportion of selected group</th><th
