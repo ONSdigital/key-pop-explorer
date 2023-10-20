@@ -47,6 +47,7 @@
   import AgeProfileTile from "../lib/ui/tiles/AgeProfileTile.svelte";
   import SimpleLegend from "$lib/chart/SimpleLegend.svelte";
   import Twisty from "$lib/ui/Twisty.svelte";
+  import Caveat from "$lib/ui/Caveat.svelte";
 
   import JSZip from "jszip";
 
@@ -495,7 +496,7 @@
           </Card>
           {#if category.qualityInformationHtml}
             <Card colspan={3} noBackground>
-              <Notice important>{@html category.qualityInformationHtml}</Notice>
+              <Caveat>{@html category.qualityInformationHtml}</Caveat>
             </Card>
           {/if}
           {#each category.tables.filter( (t) => chartIsAvailable(t.code, data) ) as table}
