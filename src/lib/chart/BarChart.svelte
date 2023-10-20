@@ -41,46 +41,69 @@
   $: data_grouped = groupData(data, yKey);
 </script>
 
-{#if showLegend && zDomain[1]}
-  <ul class="legend-block">
-    {#each zDomain as group, i}
-      <li class:ew={i != 0}>
-        <div
-          class="legend-vis {i == 0 ? 'bar' : 'marker'}"
-          style:height="1rem"
-          style:width={i == 0 ? "1rem" : markerWidth + "px"}
-        />
-        <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
-      </li>
+<table class="visuallyhidden">
+  <thead>
+    <tr>
+      <th>Category</th><th>Proportion of selected group</th><th
+        >Proportion of whole population</th
+      >
+    </tr>
+  </thead>
+  <tbody>
+    {#each data_grouped as group}
+      <tr>
+        <td>{group.label}</td>
+        {#each group.values as d, i}
+          <td>{formatTick(d[xKey])}{suffix}</td>
+        {/each}
+      </tr>
     {/each}
-  </ul>
-{/if}
+  </tbody>
+</table>
 
-{#each data_grouped as group}
-  <div class="label-group">
-    {group.label}
-    <span class="nowrap">
-      {#each group.values as d, i}
-        <span class="label {i == 0 ? 'bold' : 'sml brackets'}"
-          >{formatTick(d[xKey])}{suffix}</span
-        >
+<div aria-hidden="true">
+  {#if showLegend && zDomain[1]}
+    <ul class="legend-block">
+      {#each zDomain as group, i}
+        <li class:ew={i != 0}>
+          <div
+            class="legend-vis {i == 0 ? 'bar' : 'marker'}"
+            style:height="1rem"
+            style:width={i == 0 ? "1rem" : markerWidth + "px"}
+          />
+          <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
+        </li>
       {/each}
-    </span>
-  </div>
-  <div class="bar-group" style:height="{barHeight}px">
-    {#each group.values as d, i}
-      {#if i == 0}
-        <div class="bar" style:left="0" style:width="{xScale(d[xKey])}%" />
-      {:else}
-        <div
-          class="marker"
-          style:left="calc({xScale(d[xKey])}% - {markerWidth / 2}px)"
-          style:border-left-width="{markerWidth}px"
-        />
-      {/if}
-    {/each}
-  </div>
-{/each}
+    </ul>
+  {/if}
+
+  {#each data_grouped as group}
+    <div class="label-group">
+      {group.label}
+      <span class="nowrap">
+        {#each group.values as d, i}
+          <span class="label {i == 0 ? 'bold' : 'sml brackets'}"
+            >{formatTick(d[xKey])}{suffix}</span
+          >
+        {/each}
+      </span>
+    </div>
+    <div class="bar-group" style:height="{barHeight}px">
+      {#each group.values as d, i}
+        {#if i == 0}
+          <div class="bar" style:left="0" style:width="{xScale(d[xKey])}%" />
+        {:else}
+          <div
+            class="marker"
+            style:left="calc({xScale(d[xKey])}% - {markerWidth / 2}px)"
+            style:border-left-width="{markerWidth}px"
+          />
+        {/if}
+      {/each}
+    </div>
+  {/each}
+</div>
+
 {#if base}
   <small>{base}</small>
 {/if}

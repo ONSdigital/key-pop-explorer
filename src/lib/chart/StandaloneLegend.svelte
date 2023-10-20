@@ -12,7 +12,7 @@
   export let base = null;
 </script>
 
-<ul class="legend-block">
+<ul aria-hidden="true" class="legend-block">
   <li>
     <div class="legend-vis bar" />
     <span class:bold={true}

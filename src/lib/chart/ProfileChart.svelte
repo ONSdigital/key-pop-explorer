@@ -60,77 +60,105 @@
   $: yScale = (value) => Math.abs(value / yDomain[1]) * 100;
 
   $: data_stacked = stackData(data, zKey);
+  $: data_for_table = ((data_stacked) =>
+    data_stacked[0].values.map((d, i) => ({
+      category: d.category,
+      selected_value: d.value,
+      all_value: data_stacked[1].values[i].value,
+    })))(data_stacked);
 </script>
 
-{#if showLegend && zDomain[1]}
-  <ul class="legend-block">
-    {#each zDomain as group, i}
-      <li>
-        <div
-          class="legend-vis {i == 0 ? 'bar' : 'marker-vis'}"
-          style:border-bottom-width="{i == 0 ? 0 : markerWidth}px"
-        />
-        <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
-      </li>
+<table class="visuallyhidden">
+  {console.log(data)}
+  <thead>
+    <tr>
+      <th>Age group</th><th>Proportion of selected group</th><th
+        >Proportion of whole population</th
+      >
+    </tr>
+  </thead>
+  <tbody>
+    {#each data_for_table || [] as row}
+      <tr>
+        <td>{row.category}</td>
+        <td>{row.selected_value}</td>
+        <td>{row.all_value}</td>
+      </tr>
     {/each}
-  </ul>
-{/if}
+  </tbody>
+</table>
 
-<div class="bar-group" style:height="{height}px">
-  {#each data_stacked as stack, i}
-    {#if i == 0}
-      {#each stack.values as d, j}
-        <div
-          use:tooltip
-          title={`${d[xKey]}: ${formatTick(d[yKey])}%` +
-            (data_stacked.length > 1
-              ? ` (${formatTick(data_stacked[i + 1].values[j][yKey])}%)`
-              : "")}
-          class="bar"
-          style:bottom="0"
-          style:height="{yScale(d[yKey])}%"
-          style:left="calc({(j / xDomain.length) * 100}%)"
-          style:width="calc({(1 / xDomain.length) * 100}% - 2px)"
-        />
+<div aria-hidden="true">
+  {#if showLegend && zDomain[1]}
+    <ul class="legend-block">
+      {#each zDomain as group, i}
+        <li>
+          <div
+            class="legend-vis {i == 0 ? 'bar' : 'marker-vis'}"
+            style:border-bottom-width="{i == 0 ? 0 : markerWidth}px"
+          />
+          <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
+        </li>
       {/each}
-    {:else}
-      {#each stack.values as d, j}
-        <div
-          class="marker"
-          style:bottom="calc({yScale(d[yKey])}% - {markerWidth / 2}px)"
-          style:height="0px"
-          style:left="{(j / xDomain.length) * 100}%"
-          style:width="calc({(1 / xDomain.length) * 100}% - 2px)"
-          style:border-bottom-width="{markerWidth}px"
-        />
-      {/each}
-    {/if}
-  {/each}
-  {#if maskRange != null}
-    {#if maskRange[0] != 0}
-      <div
-        class="mask"
-        style:bottom="0"
-        style:height="{maskHeight(data_stacked)}%"
-        style:left="0"
-        style:width={maskPos(maskRange[0])}
-      />
-    {/if}
-    {#if maskRange[1] != 18}
-      <div
-        class="mask"
-        style:bottom="0"
-        style:height="{maskHeight(data_stacked)}%"
-        style:left={maskPos(maskRange[1])}
-        style:right="2px"
-      />
-    {/if}
+    </ul>
   {/if}
-</div>
 
-<div class="x-scale" style:height="1rem">
-  <div style:left="0">{minmax[0]}</div>
-  <div style:right="0">{minmax[1]}</div>
+  <div class="bar-group" style:height="{height}px">
+    {#each data_stacked as stack, i}
+      {#if i == 0}
+        {#each stack.values as d, j}
+          <div
+            use:tooltip
+            title={`${d[xKey]}: ${formatTick(d[yKey])}%` +
+              (data_stacked.length > 1
+                ? ` (${formatTick(data_stacked[i + 1].values[j][yKey])}%)`
+                : "")}
+            class="bar"
+            style:bottom="0"
+            style:height="{yScale(d[yKey])}%"
+            style:left="calc({(j / xDomain.length) * 100}%)"
+            style:width="calc({(1 / xDomain.length) * 100}% - 2px)"
+          />
+        {/each}
+      {:else}
+        {#each stack.values as d, j}
+          <div
+            class="marker"
+            style:bottom="calc({yScale(d[yKey])}% - {markerWidth / 2}px)"
+            style:height="0px"
+            style:left="{(j / xDomain.length) * 100}%"
+            style:width="calc({(1 / xDomain.length) * 100}% - 2px)"
+            style:border-bottom-width="{markerWidth}px"
+          />
+        {/each}
+      {/if}
+    {/each}
+    {#if maskRange != null}
+      {#if maskRange[0] != 0}
+        <div
+          class="mask"
+          style:bottom="0"
+          style:height="{maskHeight(data_stacked)}%"
+          style:left="0"
+          style:width={maskPos(maskRange[0])}
+        />
+      {/if}
+      {#if maskRange[1] != 18}
+        <div
+          class="mask"
+          style:bottom="0"
+          style:height="{maskHeight(data_stacked)}%"
+          style:left={maskPos(maskRange[1])}
+          style:right="2px"
+        />
+      {/if}
+    {/if}
+  </div>
+
+  <div class="x-scale" style:height="1rem">
+    <div style:left="0">{minmax[0]}</div>
+    <div style:right="0">{minmax[1]}</div>
+  </div>
 </div>
 
 {#if base}
