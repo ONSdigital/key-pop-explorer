@@ -208,8 +208,6 @@
     data.geoPerc = [];
     let groups;
 
-    // FIXME: check this against Ahmad's previous version,
-    //     and probably create 100% data in Python for no selections.
     data.geoCodesAndNames.forEach(({ code, name }) => {
       let value =
         selected.length === 0
