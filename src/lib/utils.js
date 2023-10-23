@@ -167,7 +167,7 @@ function makeSheetIntroText(table, selected) {
 
   if (codes[table.code].some(d => d.cells.length > 1)) {
     sheetIntroText.push(`The data on this sheet is based on  the variable "${table.key}" (${table.code}).`);
-    sheetIntroText.push(`"Some categories have been merged to create the ${codes[table.code].length} categories shown.`);
+    sheetIntroText.push(`Some categories have been merged to create the ${codes[table.code].length} categories shown.`);
   }
 
   return sheetIntroText;
