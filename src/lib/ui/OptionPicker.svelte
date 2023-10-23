@@ -12,8 +12,6 @@
   export let disabled = false;
 
   export let activeColumn = null;
-  //let activeClassification = null;
-  export let activeCategory = null;
 
   function selectCat(variable, cat) {
     console.log(variable, cat);
@@ -62,7 +60,6 @@
       {#each [activeColumn.vars[varToSelectedClassification[activeColumn.label]]] as activeClassification}
         <OptionPickerColumn2
           columnTitle={activeColumn.label}
-          bind:selected={activeCategory}
           options={getCategoryList(activeClassification)}
           clickCallback={(category) =>
             clickCallback(activeClassification, category)}

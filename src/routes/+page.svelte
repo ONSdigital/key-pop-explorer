@@ -72,7 +72,6 @@
   let varcount = 0; // Number of variables successfully loaded
   let chart_type = BarChart;
   let activeColumn = null;
-  let activeCategory = null;
 
   const getUnblockedCount = (op) =>
     unblockedCombinationCounts[
@@ -321,7 +320,6 @@
     refreshData();
     selectOpen = false;
     activeColumn = null;
-    activeCategory = null;
   });
 </script>
 
@@ -450,7 +448,6 @@
         globalSelectedCategories={selected}
         disabled={status === "loading"}
         bind:activeColumn
-        bind:activeCategory
       />
     </Twisty>
   </div>
