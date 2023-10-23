@@ -168,7 +168,6 @@ function makeSheetIntroText(tableCode, selected) {
 }
 
 export function createOdsZipFiles(data, datasets, selected) {
-  console.log({ data, datasets, selected })
   const odsData = {
     coverSheetTitle:
       "Data Downloaded from 'Create a Population Group Profile'",

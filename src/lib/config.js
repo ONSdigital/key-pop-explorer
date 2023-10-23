@@ -132,7 +132,6 @@ function nestVars(vars) {
 }
 
 export let varsNested = nestVars(vars);
-console.log(varsNested)
 
 export const mapStyle = mapStyle_;
 export const mapBounds = [-6.3603, 49.8823, 1.7637, 55.8112];

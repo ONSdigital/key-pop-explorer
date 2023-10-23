@@ -18,7 +18,6 @@
 
   $: lookup = ((data) => {
     const lkp = {};
-    console.log("data", data);
     if (Array.isArray(data)) data.forEach((d) => (lkp[d.code] = d));
     return lkp;
   })(data.geoPerc);

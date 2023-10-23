@@ -37,7 +37,6 @@
   }
 
   function getCategoryList(classification) {
-    console.log(classification);
     if (classification.key !== "religion_tb") {
       return classification.cats;
     }

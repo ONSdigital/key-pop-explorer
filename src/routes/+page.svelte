@@ -323,7 +323,6 @@
     activeColumn = null;
     activeCategory = null;
   });
-  $: console.log("selected", selected);
 </script>
 
 <svelte:head>
