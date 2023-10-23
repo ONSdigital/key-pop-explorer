@@ -150,7 +150,6 @@
           .filter((d) => d.value != null)
           .sort((a, b) => b.value - a.value)
           .slice(-5)}
-        offset={data.geoPerc.filter((d) => d.value != null).length - 4}
       />
     {:else}
       <span class="muted">Make a selection to see rankings.</span>
