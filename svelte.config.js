@@ -16,7 +16,7 @@ const config = {
 			handleHttpError: 'warn'
 		},
 		paths: {
-			base: production ? '/key-pop-explorer' : '',
+			base: production ? '/visualisations/populationprofiles' : '',
 			relative: false
 		}
 	}
