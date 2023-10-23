@@ -154,14 +154,20 @@ function createCoverSheetContents(selected) {
   return coverSheetContents;
 }
 
-function makeSheetIntroText(tableCode, selected) {
+function makeSheetIntroText(table, selected) {
+  //table, codes[table.code]
   let sheetIntroText = [
     "Source: Census 2021 from the Office for National Statistics",
   ];
 
-  if (tableCode === "resident_age_18b" && selected.some(d => d.topic === "Age")) {
+  if (table.code === "resident_age_18b" && selected.some(d => d.topic === "Age")) {
     sheetIntroText.push("Note: the data in this table is not filtered by the selected age range ("
       + selected.filter(d => d.topic === "Age")[0].label + ').');
+  }
+
+  if (codes[table.code].some(d => d.cells.length > 1)) {
+    sheetIntroText.push(`The data on this sheet is based on  the variable "${table.key}" (${table.code}).`);
+    sheetIntroText.push(`"Some categories have been merged to create the ${codes[table.code].length} categories shown.`);
   }
 
   return sheetIntroText;
@@ -242,7 +248,7 @@ export function createOdsZipFiles(data, datasets, selected) {
     let sheet = {
       sheetName: removeCategoryCountFromName(table.key).replace('Age (B)', 'Age'),
       tableName: table.code,
-      sheetIntroText: makeSheetIntroText(table.code, selected),
+      sheetIntroText: makeSheetIntroText(table, selected),
       columns: [
         {
           heading: "Category",
