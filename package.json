@@ -4,7 +4,7 @@
   "homepage": "http://bothness.github.io/key-pop-explorer",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && touch build/.nojekyll",
+    "build": "vite build && touch build/.nojekyll && node ./scripts/js-fix",
     "preview": "vite preview",
     "deploy": "gh-pages -d build -t true"
   },
