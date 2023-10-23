@@ -17,9 +17,9 @@
     </div>
     <div class="num-suffix">people</div>
     <div class="num-desc">
-      <Em color="lightgrey">{calcPopPercentString(
-        data.selected.total_pop.percent
-      )}%</Em> of the total population of England and Wales
+      <Em color="lightgrey"
+        >{calcPopPercentString(data.selected.total_pop.percent)}%</Em
+      > of the total population of England and Wales
     </div>
   {/if}
 </Card>
@@ -38,7 +38,6 @@
     margin-left: 2px;
   }
   .num-desc {
-    /* TODO share code with .num-desc in index.svelte? */
     display: block;
     margin-top: 10px;
     color: #707070;

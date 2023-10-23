@@ -33,7 +33,6 @@
 
 <style>
   .num-desc {
-    /* TODO share code with .num-desc in index.svelte? */
     display: block;
     margin-top: 10px;
     color: #707070;

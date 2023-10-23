@@ -73,15 +73,7 @@
   let chart_type = BarChart;
   let activeColumn = null;
 
-  const getUnblockedCount = (op) =>
-    unblockedCombinationCounts[
-      [...selected.map((d) => d.key), op.key]
-        .sort((a, b) => a.localeCompare(b))
-        .join(",")
-    ];
-
   function updateUrl() {
-    // TODO: check what `goto` does
     goto(`${base}?${selected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
       noScroll: true,
       keepFocus: true,
@@ -161,14 +153,6 @@
       counts.missingBecauseDisclosive;
     return counts;
   }
-
-  // {#each datasets[0].tablesCategorised as category}
-  //   {#if category.tables.some((t) => chartIsAvailable(t.code))}
-  //     <Cards title={category.categoryName} height="auto">
-  //       <Card colspan={3} noBackground>
-  //         <SimpleLegend>{category.categoryDescription}</SimpleLegend>
-  //       </Card>
-  //       {#each category.tables.filter((t) => chartIsAvailable(t.code)) as table}
 
   function downloadData(data) {
     analyticsEvent({

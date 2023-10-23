@@ -162,7 +162,6 @@
     color: grey;
   }
   .subtitle {
-    /* TODO avoid duplication with index.svelte */
     font-size: 16px;
     margin: -10px 0 0;
   }
