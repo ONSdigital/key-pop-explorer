@@ -10,21 +10,20 @@
 </script>
 
 {#if data.selected.residents?.[table.code]?.values}
-<Card {title}>
-  <!-- FIXME: check for missing data -->
-  {#if data.selected.residents[table.code].values === "blocked"}
-    <span class="num-desc">{texts.blocked}</span>
-  {:else if data.selected.residents[table.code].values.percent[0] == null}
-    <span class="num-desc">{texts.nodata}</span>
-  {:else}
-    <svelte:component
-      this={chart_type}
-      data={data.selected && makeDataNew("residents", table.code, data)}
-      showLegend={false}
-    />
-  {/if}
-  <span class="num-desc">% of {populationBases[table.code]}</span>
-</Card>
+  <Card {title}>
+    {#if data.selected.residents[table.code].values === "blocked"}
+      <span class="num-desc">{texts.blocked}</span>
+    {:else if data.selected.residents[table.code].values.percent[0] == null}
+      <span class="num-desc">{texts.nodata}</span>
+    {:else}
+      <svelte:component
+        this={chart_type}
+        data={data.selected && makeDataNew("residents", table.code, data)}
+        showLegend={false}
+      />
+    {/if}
+    <span class="num-desc">% of {populationBases[table.code]}</span>
+  </Card>
 {/if}
 
 <style>

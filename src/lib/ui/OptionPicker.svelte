@@ -71,7 +71,6 @@
           {disabled}
         >
           {#if varToSelectedClassification[activeColumn.label] > 0}
-            <!-- FIXME: use proper up and down chevrons -->
             <button class="btn-link" on:click={fewerCategories}
               ><Icon type="chevron" rotation={90} /> Show fewer</button
             >
