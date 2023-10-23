@@ -90,42 +90,7 @@
   {/key}
 </div>
 
-<!-- {#if false}
-  <div>
-    {#each options as option}
-      <details>
-        <summary
-          style="border: 1px solid lightsteelblue; padding: 3px; width: 300px"
-          >{option.label}<span class="chevron-right">&gt;</span></summary
-        >
-        {#each option.vars as v}
-          <details style="margin-left: 21px">
-            <summary
-              >{v.cats.length} categories<span class="chevron-right">&gt;</span
-              ></summary
-            >
-            <div style="margin-left: 21px">
-              {#each v.cats as c}
-                <div>
-                  <button on:click={() => clickCallback(v, c)}
-                    >+ {c.label}</button
-                  >
-                </div>
-              {/each}
-            </div>
-          </details>
-        {/each}
-      </details>
-    {/each}
-  </div>
-{/if} -->
-
 <style>
-  li {
-    margin: 0;
-    padding: 0;
-  }
-
   .container {
     display: flex;
     flex-direction: column;
@@ -135,9 +100,5 @@
     .container {
       flex-direction: row;
     }
-  }
-
-  .chevron-right {
-    float: right;
   }
 </style>
