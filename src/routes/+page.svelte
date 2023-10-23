@@ -73,15 +73,15 @@
   let chart_type = BarChart;
   let activeColumn = null;
 
-  function updateUrl() {
-    goto(`${base}?${selected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
+  function updateUrl(newSelected) {
+    goto(`${base}?${newSelected.map((d) => `${d.key}=${d.code}`).join("&")}`, {
       noScroll: true,
       keepFocus: true,
     });
   }
 
   function doSelect(variable, cat) {
-    selected = [
+    const newSelected = [
       ...selected.filter((d) => d.topic !== variable.shortLabel),
       { topic: variable.shortLabel, key: variable.key, ...cat },
     ];
@@ -89,19 +89,19 @@
       event: "variableSelect",
       variable: variable.shortLabel,
       category: cat.label,
-      count: selected.length,
+      count: newSelected.length,
     });
-    updateUrl();
+    updateUrl(newSelected);
   }
 
   function doDeselect(variable) {
-    selected = selected.filter((d) => d.topic !== variable.shortLabel);
-    updateUrl();
+    const newSelected = selected.filter((d) => d.topic !== variable.shortLabel);
+    updateUrl(newSelected);
   }
 
   function unSelect(topic) {
-    selected = selected.filter((d) => d.topic != topic);
-    updateUrl();
+    const newSelected = selected.filter((d) => d.topic != topic);
+    updateUrl(newSelected);
   }
 
   function groupsToBreaks(groups) {
