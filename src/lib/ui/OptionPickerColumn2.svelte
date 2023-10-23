@@ -43,15 +43,26 @@
 <div class="column" class:hidden-first-column={hiddenOnMobile}>
   <div class:hidden-on-desktop={true}>
     {#if backButtonCallback != null}
-    <ol class="ons-breadcrumb__items ons-u-fs-s">
-      <li class="ons-breadcrumb__item" id="breadcrumb-1">
-        <button class="btn-link ons-breadcrumb__link" on:click={backButtonCallback}
-        >Back</button>
-        <svg class="ons-svg-icon svelte-w4p0hu" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor">
-          <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)"></path>
-        </svg>
-      </li>
-    </ol>
+      <ol class="ons-breadcrumb__items ons-u-fs-s">
+        <li class="ons-breadcrumb__item" id="breadcrumb-1">
+          <button
+            class="btn-link ons-breadcrumb__link"
+            on:click={backButtonCallback}>Back</button
+          >
+          <svg
+            class="ons-svg-icon svelte-w4p0hu"
+            viewBox="0 0 8 13"
+            xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
+            fill="currentColor"
+          >
+            <path
+              d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
+              transform="translate(-5.02 -1.59)"
+            />
+          </svg>
+        </li>
+      </ol>
     {/if}
   </div>
 
@@ -68,30 +79,33 @@
   </div>
 
   {#if globalSelectedCategories.length === 3 && !checkIfAnySelected(currentVar, globalSelectedCategories)}
-      At most three characteristics can be selected. To add another
-      characteristic, please remove one of the three selected ones.
-    {:else}
-  <div class="ons-radios__items">
+    At most three characteristics can be selected. To add another
+    characteristic, please remove one of the three selected ones.
+  {:else}
+    <div class="ons-radios__items">
       {#key options}
-      {#each options as option, i}
-        <button
-          use:focusMe={i === 0}
-          class="ons-radios__item ons-radios__item--no-border"
-          class:ons-radio__checked={checkIfOptionSelected(option, globalSelectedCategories)}
-          on:click={() => clickCallback(option)}
-          {disabled}>
-          <span class="ons-radio ons-radio--no-border">
-            <span
-              class="ons-radio__input ons-js-radio"/>
-            <span class="ons-radio__label">
-              {labeller(option)}
+        {#each options as option, i}
+          <button
+            use:focusMe={i === 0}
+            class="ons-radios__item ons-radios__item--no-border"
+            class:ons-radio__checked={checkIfOptionSelected(
+              option,
+              globalSelectedCategories
+            )}
+            on:click={() => clickCallback(option)}
+            {disabled}
+          >
+            <span class="ons-radio ons-radio--no-border">
+              <span class="ons-radio__input ons-js-radio" />
+              <span class="ons-radio__label">
+                {labeller(option)}
+              </span>
             </span>
-          </span>
-        </button>
-      {/each}
+          </button>
+        {/each}
       {/key}
-  </div>
-  <slot />
+    </div>
+    <slot />
   {/if}
 </div>
 
@@ -127,15 +141,6 @@
   }
   .column-title {
     font-size: 20px;
-  }
-  p {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 3px;
-  }
-  input,
-  label {
-    cursor: pointer;
   }
   button.ons-radios__item {
     display: block;
