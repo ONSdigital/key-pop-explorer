@@ -24,11 +24,17 @@
   }
 </script>
 
-<div class="column" class:hidden-first-column={hiddenOnMobile}>
+<div
+  class="column"
+  class:hidden-first-column={hiddenOnMobile}
+  role="form"
+  aria-label="Press up or down to choose a variable. Enter to select."
+>
   <h5 class="column-title">{columnTitle}</h5>
 
   {#each options as option}
     <button
+      type="button"
       class:plain-button={true}
       class:selected={option === selected}
       on:click={() => {

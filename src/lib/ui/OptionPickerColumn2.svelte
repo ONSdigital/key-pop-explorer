@@ -46,6 +46,7 @@
       <ol class="ons-breadcrumb__items ons-u-fs-s">
         <li class="ons-breadcrumb__item" id="breadcrumb-1">
           <button
+            type="button"
             class="btn-link ons-breadcrumb__link"
             on:click={backButtonCallback}>Back</button
           >
@@ -82,7 +83,11 @@
     At most three characteristics can be selected. To add another
     characteristic, please remove one of the three selected ones.
   {:else}
-    <div class="ons-radios__items">
+    <div
+      class="ons-radios__items"
+      role="form"
+      aria-label="Press up or down to choose a category. Enter to select."
+    >
       {#key options}
         {#each options as option, i}
           <button
