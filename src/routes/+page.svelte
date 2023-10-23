@@ -83,7 +83,12 @@
   function doSelect(variable, cat) {
     const newSelected = [
       ...selected.filter((d) => d.topic !== variable.shortLabel),
-      { topic: variable.shortLabel, key: variable.key, ...cat },
+      {
+        topic: variable.shortLabel,
+        longLabel: variable.label,
+        key: variable.key,
+        ...cat,
+      },
     ];
     analyticsEvent({
       event: "variableSelect",
@@ -274,6 +279,7 @@
       if (!category) continue;
       selected.push({
         topic: variable.shortLabel,
+        longLabel: variable.label,
         key: variable.key,
         ...category,
       });
