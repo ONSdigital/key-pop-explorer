@@ -1,6 +1,5 @@
 <script>
   export let hovered = null;
-  export let lineWidth = 3;
   export let height = 15;
   export let breaks = [0, 20, 40, 60, 80, 100];
   export let colors = [
