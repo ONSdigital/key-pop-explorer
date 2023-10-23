@@ -4,7 +4,6 @@
 
   export let options = [];
   export let clickCallback = clicked;
-  export let backButtonCallback = null;
   export let globalSelectedCategories = [];
   export let columnTitle = "column title";
   export let labeller = (option) => option.label;
@@ -26,11 +25,6 @@
 </script>
 
 <div class="column" class:hidden-first-column={hiddenOnMobile}>
-  {#if backButtonCallback != null}
-    <button class="hidden-on-desktop" on:click={backButtonCallback}>Back</button
-    >
-  {/if}
-
   <h5 class="column-title">{columnTitle}</h5>
 
   {#each options as option}
@@ -43,14 +37,13 @@
       }}
     >
       {labeller(option)}
-      <span class="right-chevron"><Icon type="chevron"/></span>
+      <span class="right-chevron"><Icon type="chevron" /></span>
       {#if checkIfAnySelected(option, globalSelectedCategories)}
         <br />
         <div class="selected-item-label">
-          Selected: {trimLabel(checkIfAnySelected(
-            option,
-            globalSelectedCategories
-          ))}
+          Selected: {trimLabel(
+            checkIfAnySelected(option, globalSelectedCategories)
+          )}
         </div>
       {/if}
     </button>
@@ -80,7 +73,7 @@
   }
   button.plain-button {
     font-size: 16px;
-    font-family:"OpenSans","Helvetica Neue",arial,sans-serif !important;
+    font-family: "OpenSans", "Helvetica Neue", arial, sans-serif !important;
   }
   button.plain-button {
     display: block;
