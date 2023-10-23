@@ -99,13 +99,8 @@
     updateUrl(newSelected);
   }
 
-  function doDeselect(variable) {
-    const newSelected = selected.filter((d) => d.topic !== variable.shortLabel);
-    updateUrl(newSelected);
-  }
-
   function unSelect(topic) {
-    const newSelected = selected.filter((d) => d.topic != topic);
+    const newSelected = selected.filter((d) => d.topic !== topic);
     updateUrl(newSelected);
   }
 
@@ -432,7 +427,7 @@
       <OptionPicker
         options={varsNested}
         clickCallback={doSelect}
-        removeCatCallback={doDeselect}
+        removeCatCallback={(variable) => unSelect(variable.shortLabel)}
         globalSelectedCategories={selected}
         disabled={status === "loading"}
         bind:activeColumn
