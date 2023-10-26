@@ -23,7 +23,7 @@
 </svelte:head>
 
 <AnalyticsBanner {analyticsProps}/>
-<PhaseBanner phase="prototype"/>
+<PhaseBanner phase="beta"/>
 <Header />
 <Main>
   <slot />
