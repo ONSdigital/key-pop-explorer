@@ -53,3 +53,13 @@ button.ons-breadcrumb__link {
     display: none;
   }
 }
+
+summary:focus:not(:active) h3 > span {
+  background: var(--ons-color-sun-yellow, rgb(251, 201, 0)) !important;
+  color: black;
+  box-shadow: 0 .1666666667em 0 black;
+}
+
+summary:focus:hover:not(:active) h3 > span {
+  background: rgb(226, 181, 0) !important;
+}

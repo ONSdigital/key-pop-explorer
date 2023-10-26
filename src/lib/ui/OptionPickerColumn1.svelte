@@ -32,7 +32,7 @@
 >
   <h5 class="column-title">{columnTitle}</h5>
 
-  {#each options as option}
+  {#each options as option, i}
     <button
       type="button"
       class:plain-button={true}
