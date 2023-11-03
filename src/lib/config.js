@@ -46,8 +46,6 @@ export const colors = {
 	seq: ["#d5f690", "#5bc4b1", "#2e9daa", "#0079a2", "#005583"],
 	nodata: "lightgrey"
 };
-export const spacer = '&nbsp;&nbsp;&nbsp;&nbsp;';
-export const arrow = '&rtrif;&nbsp;&nbsp;'
 
 // Where outputClassifications includes a nice name for the classification,
 // override the official name from the metadata.
