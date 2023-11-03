@@ -49,6 +49,15 @@ export const colors = {
 export const spacer = '&nbsp;&nbsp;&nbsp;&nbsp;';
 export const arrow = '&rtrif;&nbsp;&nbsp;'
 
+// Where outputClassifications includes a nice name for the classification,
+// override the official name from the metadata.
+outputClassifications.forEach(c => {
+	const classification = allClassifications[c.code];
+	if (c.label !== null) {
+		classification.label = c.label;
+	}
+});
+
 export const codes = {};
 outputClassifications.forEach(c => {
 	const classification = allClassifications[c.code];
