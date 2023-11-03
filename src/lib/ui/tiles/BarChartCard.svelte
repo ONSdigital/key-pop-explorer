@@ -22,7 +22,7 @@
         showLegend={false}
       />
     {/if}
-    <span class="num-desc">% of {populationBases[table.code]}</span>
+    <span class="num-desc">% of {table.populationBase}</span>
   </Card>
 {/if}
 

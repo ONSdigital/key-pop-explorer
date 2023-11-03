@@ -51,11 +51,13 @@ export const arrow = '&rtrif;&nbsp;&nbsp;'
 
 // Where outputClassifications includes a nice name for the classification,
 // override the official name from the metadata.
+// Also, add population bases to the metadata.
 outputClassifications.forEach(c => {
 	const classification = allClassifications[c.code];
 	if (c.label !== null) {
 		classification.label = c.label;
 	}
+	classification.populationBase = c.populationBase;
 });
 
 export const codes = {};
@@ -84,7 +86,8 @@ outputClassifications.forEach(c => {
 	const classification = allClassifications[c.code];
 	datasets[0].tables.push({
 		key: classification.label,
-		code: classification.id
+		code: classification.id,
+		populationBase: classification.populationBase
 	});
 });
 
@@ -99,7 +102,8 @@ outputClassificationsCategorised.forEach(category => {
 		const classification = allClassifications[code];
 		datasets[0].tablesCategorised[datasets[0].tablesCategorised.length - 1].tables.push({
 			key: classification.label,
-			code: classification.id
+			code: classification.id,
+			populationBase: classification.populationBase
 		});
 
 	}
