@@ -52,6 +52,8 @@
     "category_name": "Households",
     "category_description": "TODO",
     "classification_codes": [
+      "hh_size_5a",
+      "hh_family_composition_6a",
       "hh_deprivation",
       "accommodation_type_3a",
       "number_bedrooms_5a",
