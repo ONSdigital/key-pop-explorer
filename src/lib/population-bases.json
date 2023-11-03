@@ -20,5 +20,16 @@
   "occupation_current_10a": "people aged 16 years and over in employment",
   "ns_sec_10a": "people aged 16 years and over",
   "hours_per_week_worked": "people aged 16 years and over in employment",
-  "highest_qualification": "people aged 16 years and over"
+  "highest_qualification": "people aged 16 years and over",
+  "hh_deprivation": "all people in households",
+  "accommodation_type_3a": "all people in households",
+  "number_bedrooms_5a": "all people in households",
+  "occupancy_rating_bedrooms_6a": "all people in households",
+  "hh_tenure_5a": "all people in households",
+  "number_of_cars_5a": "all people in households",
+  "hh_dependent_children_3a": "all people in households",
+  "hh_families_type_6a": "all people in households",
+  "hh_multi_language_3a": "all people in households",
+  "hh_disabled_4a": "all people in households",
+  "heating_type_3a": "all people in households"
 }
