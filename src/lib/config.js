@@ -1,4 +1,4 @@
-import allClassifications from './all-classifications.json';
+import allClassifications from './all-used-classifications.json';
 import inputClassifications from './input-classifications.json';
 import outputClassifications from './output-classifications-with-details';
 import outputClassificationsCategorised from './output-classifications-categorised';
