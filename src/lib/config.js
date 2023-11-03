@@ -54,7 +54,7 @@ outputClassifications.forEach(c => {
 	const classification = allClassifications[c.code];
 	if (c.categories == null) {
 		codes[classification.id] = classification.categories
-			.filter(d => d.id != '-8')
+			.filter(d => d.id !== '-8' && d.id !== '-9')
 			.map(d => ({ label: d.label, cells: [d.id] }));
 	} else {
 		codes[classification.id] = c.categories;
