@@ -134,11 +134,11 @@ function nestVars(vars) {
 		nested[v.shortLabel] ||= [];
 		nested[v.shortLabel].push(v);
 	}
-	for (let l of shortLabels) {
-		nested[l].sort((a, b) => a.cats.length - b.cats.length);
-	}
 	let result = [];
-	shortLabels.forEach(label => result.push({ label, vars: nested[label] }));
+	for (let label of shortLabels) {
+		nested[label].sort((a, b) => a.cats.length - b.cats.length);
+		result.push({ label, vars: nested[label] });
+	}
 	return result;
 }
 
