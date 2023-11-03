@@ -1,6 +1,6 @@
 import { feature } from 'topojson-client';
 
-import { maskRanges, codes } from "$lib/config";
+import { codes } from "$lib/config";
 
 import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 
@@ -77,13 +77,6 @@ export function capitalise(str) {
 
 export function removeCategoryCountFromName(name) {
   return name.replace(new RegExp(" \\([0-9]* categories\\)"), "");
-}
-
-export function computeAgeMaskRange(selected) {
-  for (const s of selected)
-    if (s.var in maskRanges) return maskRanges[s.var][s.code];
-
-  return null;
 }
 
 export const religionComparatorByName = (a, b) => {

@@ -3,7 +3,7 @@
   import ProfileChart from "$lib/chart/ProfileChart.svelte";
 
   import { texts } from "$lib/config";
-  import { makeDataNew, computeAgeMaskRange } from "$lib/utils";
+  import { makeDataNew } from "$lib/utils";
 
   export let data;
   export let selected;
@@ -21,7 +21,6 @@
     <ProfileChart
       data={data.selected && makeDataNew("residents", "resident_age_18b", data)}
       zKey="group"
-      maskRange={computeAgeMaskRange(selected)}
       base="% of all people"
       ageShadingNote={selected.some((d) => d.topic === "Age")
         ? ageShadingNote
