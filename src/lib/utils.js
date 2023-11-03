@@ -4,7 +4,8 @@ import { maskRanges, codes } from "$lib/config";
 
 import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 
-const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
+//const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
+const endpoint = "http://localhost:8000/";
 
 function getSelString(sel) {
   let selected = [...sel].sort((a, b) => a.key.localeCompare(b.key));
