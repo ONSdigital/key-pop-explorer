@@ -47,5 +47,22 @@
       "hours_per_week_worked"
     ],
     "quality_information_html": "There are pandemic-related quality considerations for <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/methodologies/traveltoworkqualityinformationforcensus2021\">travel to work</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/methodologies/labourmarketqualityinformationforcensus2021\">labour market</a> data."
+  },
+  {
+    "category_name": "Households",
+    "category_description": "TODO",
+    "classification_codes": [
+      "hh_deprivation",
+      "accommodation_type_3a",
+      "number_bedrooms_5a",
+      "occupancy_rating_bedrooms_6a",
+      "hh_tenure_5a",
+      "number_of_cars_5a",
+      "hh_dependent_children_3a",
+      "hh_families_type_6a",
+      "hh_multi_language_3a",
+      "hh_disabled_4a",
+      "heating_type_3a"
+    ]
   }
 ]
