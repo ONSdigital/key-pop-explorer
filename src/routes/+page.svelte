@@ -16,13 +16,11 @@
   import {
     themes,
     vars,
-    codes,
     varsNested,
     mapStyle,
     mapBounds,
     maxBounds,
     datasets,
-    unblockedCombinationCounts,
     ladBounds,
     colors,
   } from "$lib/config";
