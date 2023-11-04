@@ -491,6 +491,15 @@
   <div class="hide-when-printing">
     <Section>
       <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
+      <p>
+        Use the buttons below to print this profile and to download the source
+        data as a spreadsheet in ODS format. The source data can also be found
+        in the ONS's
+        <a href="https://www.ons.gov.uk/datasets/create"
+          >Create a Custom Dataset</a
+        > tool, which also provides access to many additional multivariate datasets.
+        TODO link to Census Hub and maybe Nomis too?
+      </p>
       <div class="use-this-profile-buttons">
         <Button on:click={printPage} variant="secondary" icon="print"
           >Print profile</Button
