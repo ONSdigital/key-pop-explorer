@@ -154,11 +154,6 @@ function makeSheetIntroText(table, selected) {
     "Source: Census 2021 from the Office for National Statistics",
   ];
 
-  if (table.code === "resident_age_18b" && selected.some(d => d.topic === "Age")) {
-    sheetIntroText.push("Note: the data in this table is not filtered by the selected age range ("
-      + selected.filter(d => d.topic === "Age")[0].label + ').');
-  }
-
   if (codes[table.code].some(d => d.cells.length > 1)) {
     sheetIntroText.push(`The data on this sheet is based on  the variable "${table.key}" (${table.code}).`);
     sheetIntroText.push(`Some categories have been merged to create the ${codes[table.code].length} categories shown.`);
