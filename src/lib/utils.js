@@ -148,8 +148,7 @@ function createCoverSheetContents(selected) {
   return coverSheetContents;
 }
 
-function makeSheetIntroText(table, selected) {
-  //table, codes[table.code]
+function makeSheetIntroText(table) {
   let sheetIntroText = [
     "Source: Census 2021 from the Office for National Statistics",
   ];
@@ -237,7 +236,7 @@ export function createOdsZipFiles(data, datasets, selected) {
     let sheet = {
       sheetName: removeCategoryCountFromName(table.key).replace('Age (B)', 'Age'),
       tableName: table.code,
-      sheetIntroText: makeSheetIntroText(table, selected),
+      sheetIntroText: makeSheetIntroText(table),
       columns: [
         {
           heading: "Category",
