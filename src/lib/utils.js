@@ -151,6 +151,7 @@ function createCoverSheetContents(selected) {
 function makeSheetIntroText(table) {
   let sheetIntroText = [
     "Source: Census 2021 from the Office for National Statistics",
+    `Counts are for ${table.populationBase} meeting the criteria on the cover sheet.`
   ];
 
   if (codes[table.code].some(d => d.cells.length > 1)) {
