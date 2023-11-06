@@ -388,7 +388,7 @@
         <Notice mode={"info"}>
           <strong>
             {getAvailableChartCounts(data).available}
-            of {getAvailableChartCounts(data).total} charts available.
+            of {getAvailableChartCounts(data).total} charts are available.
           </strong>
           {#if getAvailableChartCounts(data).missingBecauseDisclosive > 0}
             <br />
