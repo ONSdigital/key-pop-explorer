@@ -271,3 +271,51 @@ export function createOdsZipFiles(data, datasets, selected) {
 
   return accessibleSpreadsheetCreator(odsData);
 }
+
+const VariableStatus = {
+  // an "enum"
+  sameAsAnInputVar: "sameAsAnInputVar",
+  missingBecauseDisclosive: "missingBecauseDisclosive",
+  missingUnavailableAgeRange: "missingUnavailableAgeRange",
+  missingAgeUnder16: "missingAgeUnder16",
+  available: "available",
+};
+
+export function getStatusOfVariables(selectedData, tables) {
+  const result = {};
+
+  for (const table of tables) {
+    const values = selectedData.residents[table.code].values;
+    if (values === undefined) {
+      result[table.code] = VariableStatus.sameAsAnInputVar;
+    } else if (values === "blocked") {
+      result[table.code] = VariableStatus.missingBecauseDisclosive;
+    } else if (values === "unavailable_age_range") {
+      result[table.code] = VariableStatus.missingUnavailableAgeRange;
+    } else if (values === "all_zero") {
+      result[table.code] = VariableStatus.missingAgeUnder16;
+    } else {
+      result[table.code] = VariableStatus.available;
+    }
+  }
+
+  return result;
+}
+
+export function getAvailableChartCounts(statusOfVariables) {
+  let counts = {};
+  for (let status in VariableStatus) {
+    counts[status] = 0;
+  }
+
+  for (let status of Object.values(statusOfVariables)) {
+    ++counts[status];
+  }
+
+  counts.missing =
+    counts.missingBecauseDisclosive +
+    counts.missingUnavailableAgeRange +
+    counts.missingAgeUnder16;
+  counts.total = counts.missing + counts.available;
+  return counts;
+}

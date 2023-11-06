@@ -12,6 +12,8 @@
     trimLabel,
     createOdsZipFiles,
     chartIsAvailable,
+    getAvailableChartCounts,
+    getStatusOfVariables,
   } from "$lib/utils";
   import {
     themes,
@@ -111,41 +113,6 @@
     return breaks;
   }
 
-  function addAvailableChartCountsForListOfCodes(data, tableCodes, counts) {
-    for (const tableCode of tableCodes) {
-      const values = data.selected.residents[tableCode].values;
-      if (values === undefined) {
-        // Don't count this one, because the chart
-        // is for one of the selected input variables
-      } else if (values === "blocked") {
-        ++counts.missingBecauseDisclosive;
-      } else if (values.percent[0] == null) {
-        ++counts.missingAgeUnder16;
-      } else {
-        ++counts.available;
-      }
-    }
-  }
-
-  function getAvailableChartCounts(data) {
-    let counts = {
-      available: 0,
-      missingBecauseDisclosive: 0,
-      missingAgeUnder16: 0,
-    };
-    addAvailableChartCountsForListOfCodes(
-      data,
-      datasets[0].tables.map((t) => t.code),
-      counts
-    );
-
-    counts.total =
-      counts.available +
-      counts.missingAgeUnder16 +
-      counts.missingBecauseDisclosive;
-    return counts;
-  }
-
   function downloadData(data) {
     analyticsEvent({
       event: "fileDownload",
@@ -239,6 +206,12 @@
 
     varcount = selected.length;
 
+    data.statusOfVariables = getStatusOfVariables(
+      data.selected,
+      datasets[0].tables
+    );
+    data.availableChartCounts = getAvailableChartCounts(data.statusOfVariables);
+
     status = data.selected.total_pop.count == null ? "failed" : "success";
   }
 
@@ -284,8 +257,7 @@
   function shouldShowMissingDataNotice(data) {
     return (
       data.selected != null &&
-      getAvailableChartCounts(data).available !=
-        getAvailableChartCounts(data).total &&
+      data.availableChartCounts.missing > 0 &&
       totalPopIsAtLeast100(data)
     );
   }
@@ -387,10 +359,10 @@
       {#if shouldShowMissingDataNotice(data)}
         <Notice mode={"info"}>
           <strong>
-            {getAvailableChartCounts(data).available}
-            of {getAvailableChartCounts(data).total} charts are available.
+            {data.availableChartCounts.available}
+            of {data.availableChartCounts.total} charts are available.
           </strong>
-          {#if getAvailableChartCounts(data).missingBecauseDisclosive > 0}
+          {#if data.availableChartCounts.missingBecauseDisclosive > 0}
             <br />
             <a
               href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/protectingpersonaldataincensus2021results"
@@ -398,7 +370,7 @@
             >
             prevents some datasets from being included.
           {/if}
-          {#if u16 && getAvailableChartCounts(data).missingAgeUnder16 > 0}
+          {#if u16 && data.availableChartCounts.missingAgeUnder16 > 0}
             <br />
             Economic indicators (employment, social status etc) are not available
             for ages 0 to 15.
