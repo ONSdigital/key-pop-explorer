@@ -7,6 +7,15 @@ import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 //const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
 const endpoint = "http://localhost:8000/";
 
+const VariableStatus = {
+  // an "enum"
+  sameAsAnInputVar: "sameAsAnInputVar",
+  missingBecauseDisclosive: "missingBecauseDisclosive",
+  missingUnavailableAgeRange: "missingUnavailableAgeRange",
+  missingAgeUnder16: "missingAgeUnder16",
+  available: "available",
+};
+
 function getSelString(sel) {
   let selected = [...sel].sort((a, b) => a.key.localeCompare(b.key));
   let selString = sel.length == 0 ?
@@ -123,10 +132,7 @@ export function trimLabel(label) {
 }
 
 export function chartIsAvailable(tableCode, data) {
-  const values = data.selected.residents[tableCode].values;
-  return values !== "blocked"
-    && values !== undefined
-    && values.percent[0] != null;
+  return data.statusOfVariables[tableCode] === VariableStatus.available;
 }
 
 function createCoverSheetContents(selected) {
@@ -271,15 +277,6 @@ export function createOdsZipFiles(data, datasets, selected) {
 
   return accessibleSpreadsheetCreator(odsData);
 }
-
-const VariableStatus = {
-  // an "enum"
-  sameAsAnInputVar: "sameAsAnInputVar",
-  missingBecauseDisclosive: "missingBecauseDisclosive",
-  missingUnavailableAgeRange: "missingUnavailableAgeRange",
-  missingAgeUnder16: "missingAgeUnder16",
-  available: "available",
-};
 
 export function getStatusOfVariables(selectedData, tables) {
   const result = {};
