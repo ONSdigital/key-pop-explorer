@@ -74,20 +74,9 @@ outputClassifications.forEach(c => {
 export let datasets = [
 	{
 		key: 'residents',
-		code: 'Usual-Residents',
-		tables: []
+		code: 'Usual-Residents'
 	}
 ];
-
-outputClassifications.forEach(c => {
-	const classification = allClassifications[c.code];
-	datasets[0].tables.push({
-		key: classification.label,
-		code: classification.id,
-		populationBase: classification.populationBase
-	});
-});
-
 
 datasets[0].tablesCategorised = outputClassificationsCategorised.map(category => {
 	const tables = category.classification_codes.map(code => {
@@ -106,6 +95,8 @@ datasets[0].tablesCategorised = outputClassificationsCategorised.map(category =>
 		tables
 	};
 });
+
+datasets[0].tables = datasets[0].tablesCategorised.flatMap(category => category.tables);
 
 export let vars = [];
 
