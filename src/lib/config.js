@@ -3,10 +3,8 @@ import inputClassifications from './input-classifications.json';
 import outputClassifications from './output-classifications-with-details';
 import outputClassificationsCategorised from './output-classifications-categorised';
 import populationBases_ from "$lib/population-bases.json";
-import unblockedCombinationCounts_ from "$lib/unblocked-combination-counts";
 import mapStyle_ from "$lib/map-style.json";
 
-export const unblockedCombinationCounts = unblockedCombinationCounts_;
 export const populationBases = populationBases_;
 
 // CORE CONFIG
