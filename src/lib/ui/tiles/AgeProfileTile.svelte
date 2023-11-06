@@ -13,9 +13,7 @@
 </script>
 
 <Card title="Age profile">
-  {#if data.selected.residents.resident_age_18b.values === "blocked"}
-    <span class="num-desc">{texts.nodata}</span>
-  {:else if data.selected.residents.resident_age_18b.values.percent[0] == null}
+  {#if data.statusOfVariables.resident_age_18b !== "available"}
     <span class="num-desc">{texts.nodata}</span>
   {:else}
     <ProfileChart

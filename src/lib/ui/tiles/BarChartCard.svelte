@@ -1,5 +1,5 @@
 <script>
-  import { texts, populationBases } from "$lib/config";
+  import { texts } from "$lib/config";
   import { makeDataNew } from "$lib/utils";
   import { Card } from "@onsvisual/svelte-components";
 
@@ -11,9 +11,7 @@
 
 {#if data.selected.residents?.[table.code]?.values}
   <Card {title}>
-    {#if data.selected.residents[table.code].values === "blocked"}
-      <span class="num-desc">{texts.blocked}</span>
-    {:else if data.selected.residents[table.code].values.percent[0] == null}
+    {#if data.statusOfVariables[table.code] !== "available"}
       <span class="num-desc">{texts.nodata}</span>
     {:else}
       <svelte:component
