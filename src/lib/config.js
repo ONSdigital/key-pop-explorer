@@ -75,8 +75,7 @@ export let datasets = [
 	{
 		key: 'residents',
 		code: 'Usual-Residents',
-		tables: [],
-		tablesCategorised: []
+		tables: []
 	}
 ];
 
@@ -89,22 +88,22 @@ outputClassifications.forEach(c => {
 	});
 });
 
-outputClassificationsCategorised.forEach(category => {
-	datasets[0].tablesCategorised.push({
-		categoryName: category.category_name,
-		categoryDescription: category.category_description,
-		qualityInformationHtml: category.quality_information_html,
-		tables: []
-	});
-	for (const code of category.classification_codes) {
+
+datasets[0].tablesCategorised = outputClassificationsCategorised.map(category => {
+	const tables = category.classification_codes.map(code => {
 		const classification = allClassifications[code];
-		datasets[0].tablesCategorised[datasets[0].tablesCategorised.length - 1].tables.push({
+		return {
 			key: classification.label,
 			code: classification.id,
 			populationBase: classification.populationBase
-		});
-
-	}
+		};
+	});
+	return {
+		categoryName: category.category_name,
+		categoryDescription: category.category_description,
+		qualityInformationHtml: category.quality_information_html,
+		tables
+	};
 });
 
 export let vars = [];
