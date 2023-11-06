@@ -466,7 +466,7 @@
       {colors}
     />
     {#each datasets[0].tablesCategorised as category}
-      {#if category.tables.some((t) => chartIsAvailable(t.code, data))}
+      {#if category.shouldBeDisplayed && category.tables.some( (t) => chartIsAvailable(t.code, data) )}
         <Cards title={category.categoryName} height="auto">
           <Card colspan={3} noBackground>
             <SimpleLegend>{category.categoryDescription}</SimpleLegend>

@@ -1,5 +1,11 @@
 [
   {
+    "category_name": "Demographics",
+    "category_description": "(not displayed)",
+    "display": false,
+    "classification_codes": ["resident_age_18b", "sex"]
+  },
+  {
     "category_name": "Population",
     "category_description": "People, their living arrangements and where they come from.",
     "classification_codes": [

@@ -1,11 +1,13 @@
-import allClassifications from './all-used-classifications.json';
-import inputClassifications from './input-classifications.json';
-import outputClassifications from './output-classifications-with-details';
+import metadata from './metadata.json';
 import outputClassificationsCategorised from './output-classifications-categorised';
 import populationBases_ from "$lib/population-bases.json";
 import mapStyle_ from "$lib/map-style.json";
 
 export const populationBases = populationBases_;
+
+const allClassifications = metadata.allUsedClassifications;
+const inputClassifications = metadata.inputClassifications;
+const outputClassifications = metadata.outputClassificationsWithDetails;
 
 // CORE CONFIG
 export const themes = {
@@ -100,6 +102,7 @@ datasets[0].tablesCategorised = outputClassificationsCategorised.map(category =>
 		categoryName: category.category_name,
 		categoryDescription: category.category_description,
 		qualityInformationHtml: category.quality_information_html,
+		shouldBeDisplayed: !("display" in category) || category.display,
 		tables
 	};
 });
