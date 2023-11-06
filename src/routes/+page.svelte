@@ -133,18 +133,12 @@
       missingBecauseDisclosive: 0,
       missingAgeUnder16: 0,
     };
-    for (const category of datasets[0].tablesCategorised) {
-      addAvailableChartCountsForListOfCodes(
-        data,
-        category.tables.map((t) => t.code),
-        counts
-      );
-    }
     addAvailableChartCountsForListOfCodes(
       data,
-      ["sex", "resident_age_18b"],
+      datasets[0].tables.map((t) => t.code),
       counts
     );
+
     counts.total =
       counts.available +
       counts.missingAgeUnder16 +
