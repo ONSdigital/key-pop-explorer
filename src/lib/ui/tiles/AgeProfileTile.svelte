@@ -7,9 +7,6 @@
 
   export let data;
   export let selected;
-
-  const ageShadingNote =
-    "This chart shows all ages, with the selected age range highlighted.";
 </script>
 
 <Card title="Age profile">
@@ -20,9 +17,6 @@
       data={data.selected && makeDataNew("residents", "resident_age_18b", data)}
       zKey="group"
       base="% of all people"
-      ageShadingNote={selected.some((d) => d.topic === "Age")
-        ? ageShadingNote
-        : null}
       showLegend={false}
     />
   {/if}
