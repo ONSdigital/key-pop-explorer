@@ -3,7 +3,7 @@
     "category_name": "Demographics",
     "category_description": "(not displayed)",
     "display": false,
-    "classification_codes": ["resident_age_18b", "sex"]
+    "classification_codes": ["resident_age_18b", "resident_age_23a", "sex"]
   },
   {
     "category_name": "Population",

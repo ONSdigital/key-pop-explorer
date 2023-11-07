@@ -7,14 +7,19 @@
 
   export let data;
   export let selected;
+
+  $: ageVariable =
+    data.statusOfVariables.resident_age_18b === "available"
+      ? "resident_age_18b"
+      : "resident_age_23a";
 </script>
 
 <Card title="Age profile">
-  {#if data.statusOfVariables.resident_age_18b !== "available"}
+  {#if data.statusOfVariables[ageVariable] !== "available"}
     <span class="num-desc">{texts.nodata}</span>
   {:else}
     <ProfileChart
-      data={data.selected && makeDataNew("residents", "resident_age_18b", data)}
+      data={data.selected && makeDataNew("residents", ageVariable, data)}
       zKey="group"
       base="% of all people"
       showLegend={false}

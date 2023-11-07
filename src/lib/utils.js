@@ -237,7 +237,11 @@ export function createOdsZipFiles(data, datasets, selected) {
     });
   }
   for (let table of datasets[0].tables) {
-    if (table.code === "resident_age_23a") continue;
+    // A hacky fix to show at most one age chart.
+    // TODO move the variable codes to config
+    if (data.statusOfVariables.resident_age_18b === "available" && table.code === "resident_age_23a") {
+      continue;
+    }
     if (!chartIsAvailable(table.code, data)) continue;
     if (data.selected.residents[table.code].values == null) continue;
     let sheet = {
@@ -307,6 +311,14 @@ export function getAvailableChartCounts(statusOfVariables) {
 
   for (let status of Object.values(statusOfVariables)) {
     ++counts[status];
+  }
+
+  // A hacky adjustment to the counts, since we'll only show one of the age charts
+  // TODO move the variable codes to config
+  if (statusOfVariables.resident_age_18b === "available") {
+    --counts[statusOfVariables.resident_age_23a];
+  } else {
+    --counts[statusOfVariables.resident_age_18b];
   }
 
   counts.missing =
