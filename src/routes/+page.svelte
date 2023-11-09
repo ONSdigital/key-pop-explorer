@@ -37,6 +37,7 @@
     analyticsEvent,
     Section,
     ShareButtons,
+    Divider,
   } from "@onsvisual/svelte-components";
   import BarChart from "$lib/chart/BarChart.svelte";
   import GroupChart from "$lib/chart/GroupChart.svelte";
@@ -455,17 +456,7 @@
     {/each}
   {/if}
   <div class="hide-when-printing">
-    <Section>
-      <h2 class="ons-u-fs-r--b ons-u-mb-xs">Use this profile</h2>
-      <p>
-        Use the buttons below to print this profile and to download the source
-        data as a spreadsheet in ODS format. The source data can also be found
-        in the ONS's
-        <a href="https://www.ons.gov.uk/datasets/create"
-          >Create a Custom Dataset</a
-        > tool, which also provides access to many additional multivariate datasets.
-        TODO link to Census Hub and maybe Nomis too?
-      </p>
+    <Section title="Use this profile">
       <div class="use-this-profile-buttons">
         <Button on:click={printPage} variant="secondary" icon="print"
           >Print profile</Button
@@ -482,6 +473,12 @@
     <ShareButtons title="Share this profile" />
   </div>
 {/if}
+<Divider />
+<Section title="About the data" width="medium">
+  <p>
+    The data presented in this tool is derived from the <a href="https://www.ons.gov.uk/datasets/create">Create a custom dataset</a> service, which allows you to make your own datasets combining multiple census variables. <a href="https://www.ons.gov.uk/aboutus/transparencyandgovernance/datastrategy/datapolicies/statisticaldisclosurecontrol">Statistical disclosure control</a> methods are automatically applied to this data to ensure that the confidentiality of data subjects, including individuals and households, are protected.
+  </p>
+</Section>
 
 <style>
   :global(.tile) {
@@ -583,5 +580,9 @@
     .hide-when-printing {
       display: none;
     }
+  }
+
+  :global(.ons-grid h2) {
+    font-size: 1.44444rem !important;
   }
 </style>
