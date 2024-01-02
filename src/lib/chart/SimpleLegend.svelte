@@ -45,6 +45,7 @@
   }
   .bold {
     font-weight: bold;
+    color: #1b708f;
   }
   .brackets::before {
     content: "(";

@@ -117,6 +117,7 @@
   }
   .bold {
     font-weight: bold;
+    color: #1b708f;
   }
   .sml {
     margin-left: 3px;
