@@ -373,7 +373,7 @@
           {/if}
           {#if u16 && data.availableChartCounts.missingAgeUnder16 > 0}
             <br />
-            Economic indicators (employment, social status etc) are not available
+            Work-related indicators (employment, occupation etc) are not available
             for ages 0 to 15.
           {/if}
         </Notice>
@@ -472,13 +472,18 @@
     </Section>
     <ShareButtons title="Share this profile" />
   </div>
+  <Section title="About the data" width="medium">
+    <p>
+      The data presented in this tool is derived from the <a href="https://www.ons.gov.uk/datasets/create">Create a custom dataset</a> service, which allows you to make your own datasets combining multiple census variables. <a href="https://www.ons.gov.uk/aboutus/transparencyandgovernance/datastrategy/datapolicies/statisticaldisclosurecontrol">Statistical disclosure control</a> methods are automatically applied to this data to ensure that the confidentiality of data subjects, including individuals and households, are protected.
+    </p>
+    <p>
+      Note that some population groups have age and geographic profiles that may affect other variables such as education, employment, health and housing. Take care when making comparisons between different groups.
+    </p>
+    <p>
+      * Some tables are presented in this tool using the base population "% of people in households". Values in these tables may vary significantly from other Census 2021 data sources using the base population "% of households".
+    </p>
+  </Section>
 {/if}
-<Divider />
-<Section title="About the data" width="medium">
-  <p>
-    The data presented in this tool is derived from the <a href="https://www.ons.gov.uk/datasets/create">Create a custom dataset</a> service, which allows you to make your own datasets combining multiple census variables. <a href="https://www.ons.gov.uk/aboutus/transparencyandgovernance/datastrategy/datapolicies/statisticaldisclosurecontrol">Statistical disclosure control</a> methods are automatically applied to this data to ensure that the confidentiality of data subjects, including individuals and households, are protected.
-  </p>
-</Section>
 
 <style>
   :global(.tile) {
@@ -512,7 +517,7 @@
     border: 1.5px solid #0f8243;
     border-radius: 3px;
     padding: 5px;
-    margin: 0 5px 5px 0;
+    margin: 5px 5px 0 0;
     line-height: normal;
   }
   button.chip:focus {

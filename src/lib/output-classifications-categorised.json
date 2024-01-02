@@ -9,10 +9,14 @@
     "category_name": "Population",
     "category_description": "People, their living arrangements and where they come from.",
     "classification_codes": [
-      "legal_partnership_status_6a",
       "country_of_birth_3a",
-      "passports_all_4a",
-      "residence_length_6b"
+      "hh_dependent_children_3a",
+      "hh_family_composition_6a",
+      "hh_deprivation",
+      "hh_size_5a",
+      "legal_partnership_status_6a",
+      "residence_length_6b",
+      "passports_all_4a"
     ]
   },
   {
@@ -25,9 +29,10 @@
     "category_description": "How people identified themselves and their beliefs.",
     "classification_codes": [
       "ethnic_group_tb_6a",
+      "hh_multi_language_3a",
       "national_identity_all_4a",
-      "religion_tb",
-      "english_proficiency"
+      "english_proficiency",
+      "religion_tb"
     ],
     "quality_information_html": "There are quality considerations for the <a target=\"_blank\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/methodologies/ethnicgroupnationalidentitylanguageandreligionqualityinformationforcensus2021\">national identity</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/methodologies/ethnicgroupnationalidentitylanguageandreligionqualityinformationforcensus2021\">religion</a> data."
   },
@@ -37,7 +42,8 @@
     "classification_codes": [
       "health_in_general",
       "disability_3a",
-      "is_carer_5a"
+      "is_carer_5a",
+      "hh_disabled_4a"
     ]
   },
   {
@@ -49,28 +55,22 @@
       "economic_activity_status_4a",
       "has_ever_worked",
       "occupation_current_10a",
-      "ns_sec_10a",
-      "hours_per_week_worked"
+      "hours_per_week_worked",
+      "ns_sec_10a"
     ],
     "quality_information_html": "There are pandemic-related quality considerations for <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/methodologies/traveltoworkqualityinformationforcensus2021\">travel to work</a> and <a target=\"_blank\" href=\"https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/methodologies/labourmarketqualityinformationforcensus2021\">labour market</a> data."
   },
   {
-    "category_name": "Households",
-    "category_description": "TODO",
+    "category_name": "Housing",
+    "category_description": "Types of homes and the people living in them.",
     "classification_codes": [
-      "hh_size_5a",
-      "hh_family_composition_6a",
-      "hh_deprivation",
       "accommodation_type_3a",
+      "heating_type_3a",
       "number_bedrooms_5a",
-      "occupancy_rating_bedrooms_6a",
-      "hh_tenure_5a",
       "number_of_cars_5a",
-      "hh_dependent_children_3a",
+      "occupancy_rating_bedrooms_6a",
       "hh_families_type_6a",
-      "hh_multi_language_3a",
-      "hh_disabled_4a",
-      "heating_type_3a"
+      "hh_tenure_5a"
     ]
   }
 ]

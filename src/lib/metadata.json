@@ -254,7 +254,7 @@
         },
         "ns_sec_10a": {
             "id": "ns_sec_10a",
-            "label": "National Statistics Socio-economic Classification (NS-SeC) (10 categories)",
+            "label": "Socio-economic Classification (NS-SeC) (10 categories)",
             "categories": [
                 {
                     "id": "-8",
@@ -1998,7 +1998,7 @@
         },
         "number_of_cars_5a": {
             "id": "number_of_cars_5a",
-            "label": "Car or van availability (5 categories)",
+            "label": "Number of cars or vans (5 categories)",
             "categories": [
                 {
                     "id": "-8",
@@ -2099,7 +2099,7 @@
         },
         "hh_dependent_children_3a": {
             "id": "hh_dependent_children_3a",
-            "label": "Dependent children in household and their age - indicator (3 categories)",
+            "label": "Dependent children in household (3 categories)",
             "categories": [
                 {
                     "id": "-8",
@@ -2638,7 +2638,7 @@
                 }
             ],
             "bacap_code": "hh_size",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_family_composition_6a",
@@ -2666,28 +2666,28 @@
                 }
             ],
             "bacap_code": "hh_family_composition",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_deprivation",
             "label": null,
             "categories": null,
             "bacap_code": "hh_deprivation",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "accommodation_type_3a",
             "label": null,
             "categories": null,
             "bacap_code": "accommodation_type",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "number_bedrooms_5a",
             "label": null,
             "categories": null,
             "bacap_code": "number_bedrooms",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "occupancy_rating_bedrooms_6a",
@@ -2725,7 +2725,7 @@
                 }
             ],
             "bacap_code": "occupancy_rating_bedrooms",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_tenure_5a",
@@ -2757,49 +2757,49 @@
                 }
             ],
             "bacap_code": "hh_tenure",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "number_of_cars_5a",
             "label": null,
             "categories": null,
             "bacap_code": "number_of_cars",
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_dependent_children_3a",
             "label": null,
             "categories": null,
             "bacap_code": null,
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_families_type_6a",
             "label": null,
             "categories": null,
             "bacap_code": null,
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_multi_language_3a",
             "label": null,
             "categories": null,
             "bacap_code": null,
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "hh_disabled_4a",
             "label": null,
             "categories": null,
             "bacap_code": null,
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         },
         {
             "code": "heating_type_3a",
             "label": "Central heating",
             "categories": null,
             "bacap_code": null,
-            "populationBase": "all people in households"
+            "populationBase": "people in households*"
         }
     ]
 }

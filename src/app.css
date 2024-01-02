@@ -63,3 +63,12 @@ summary:focus:not(:active) h3 > span {
 summary:focus:hover:not(:active) h3 > span {
   background: rgb(226, 181, 0) !important;
 }
+
+.ons-panel + .ons-panel {
+  margin-top: 0;
+  padding-top: 0;
+}
+h3.ons-card__title {
+  line-height: 1.2 !important;
+  margin-bottom: 10px !important;
+}
