@@ -477,10 +477,10 @@
       The data presented in this tool is derived from the <a href="https://www.ons.gov.uk/datasets/create">Create a custom dataset</a> service, which allows you to make your own datasets combining multiple census variables. <a href="https://www.ons.gov.uk/aboutus/transparencyandgovernance/datastrategy/datapolicies/statisticaldisclosurecontrol">Statistical disclosure control</a> methods are automatically applied to this data to ensure that the confidentiality of data subjects, including individuals and households, are protected.
     </p>
     <p>
-      Note that some population groups have age and geographic profiles that may affect other variables such as education, employment, health and housing. Take care when making comparisons between different groups.
+      Please take care when making comparisons between different population groups. Some groups have age and geographic profiles that are likely to affect other variables such as education, employment, health and housing.
     </p>
     <p>
-      * Some tables are presented in this tool using the base population "% of people in households". Values in these tables may vary significantly from other Census 2021 data sources using the base population "% of households".
+      *Some charts are presented as a "% of people in households". Note that this is different from other sources presented as "% of households".
     </p>
   </Section>
 {/if}
