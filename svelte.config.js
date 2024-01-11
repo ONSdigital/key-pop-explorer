@@ -1,6 +1,8 @@
 /** @type {import('@sveltejs/kit').Config} */
 import adapter from '@sveltejs/adapter-static';
+import { base_preview, base_prod } from "./src/app.config.js";
 
+const base = process.env.APP_ENV === 'preview' ? base_preview : base_prod;
 const production = process.env.NODE_ENV === 'production';
 
 const config = {
@@ -9,15 +11,16 @@ const config = {
 		adapter: adapter({
 			// Options below are defaults
 			pages: 'build',
-			assets: 'build'
+			assets: 'build',
+			strict: false,
 		}),
 		prerender: {
-			entries: ['/'],
-			handleHttpError: 'warn'
+			handleHttpError: 'warn',
+			handleMissingId: 'warn',
 		},
 		paths: {
-			base: production ? '/visualisations/populationprofiles' : '',
-			relative: false
+			base: production ? base : '',
+			relative: false,
 		}
 	}
 };

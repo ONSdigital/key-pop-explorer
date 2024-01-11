@@ -1,10 +1,11 @@
 {
   "name": "key-pop-explorer",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "homepage": "http://bothness.github.io/key-pop-explorer",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && touch build/.nojekyll && node ./scripts/js-fix",
+    "build": "vite build && node ./scripts/js-fix",
+    "build:preview": "cross-env APP_ENV=preview vite build && touch build/.nojekyll",
     "preview": "vite preview",
     "deploy": "gh-pages -d build -t true"
   },
@@ -14,6 +15,7 @@
     "@sveltejs/adapter-static": "^2.0.3",
     "@sveltejs/kit": "^1.24.1",
     "accessible-spreadsheet-creator": "^0.0.19",
+    "cross-env": "^7.0.3",
     "d3-dsv": "latest",
     "d3-scale": "latest",
     "gh-pages": "^3.2.3",
