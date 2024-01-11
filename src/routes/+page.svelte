@@ -415,7 +415,7 @@
       .includes("sex") && data.selected.residents["sex"].values !== "blocked"}
       <BarChartCard
         title="Sex"
-        table={{ code: "sex", key: "Sex" }}
+        table={{ code: "sex", key: "Sex", populationBase: "all people" }}
         {data}
         {chart_type}
       />
