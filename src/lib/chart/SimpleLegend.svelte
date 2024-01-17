@@ -5,7 +5,7 @@
   {#each ["People with the selected characteristics", "All people in England and Wales"] as group, i}
     <li class:ew={i != 0}>
       <div class="legend-vis {i == 0 ? 'bar' : 'marker'}" />
-      <span class={i == 0 ? "bold" : "brackets"}>{group}</span>
+      <span class={i == 0 ? "bold" : ""}>{group}</span>
     </li>
   {/each}
 </ul>

@@ -79,6 +79,9 @@
 
   {#each data_grouped as group}
     <div class="label-group">
+      {#if group.label === "Can speak English very well"}
+        <p class="label-subhead">Main lannguage is not English (English and Welsh in Wales) and:</p>
+      {/if}
       {group.label}
       <span class="nowrap">
         {#each group.values as d, i}
@@ -171,5 +174,10 @@
   }
   .nowrap {
     white-space: nowrap;
+  }
+  .label-subhead {
+    line-height: 1.2;
+    font-size: 14px;
+    margin: 6px 0;
   }
 </style>
