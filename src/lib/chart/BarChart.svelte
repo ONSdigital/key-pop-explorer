@@ -80,7 +80,7 @@
   {#each data_grouped as group}
     <div class="label-group">
       {#if group.label === "Can speak English very well"}
-        <p class="label-subhead">Main lannguage is not English (English and Welsh in Wales) and:</p>
+        <p class="label-subhead">Main language is not English (English or Welsh in Wales) and:</p>
       {/if}
       {group.label}
       <span class="nowrap">
