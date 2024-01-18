@@ -254,7 +254,7 @@
         },
         "ns_sec_10a": {
             "id": "ns_sec_10a",
-            "label": "Socio-economic Classification (NS-SeC) (10 categories)",
+            "label": "Socio-economic classification (NS-SeC) (10 categories)",
             "categories": [
                 {
                     "id": "-8",

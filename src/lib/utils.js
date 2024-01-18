@@ -4,8 +4,7 @@ import { codes } from "$lib/config";
 
 import accessibleSpreadsheetCreator from "accessible-spreadsheet-creator";
 
-//const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
-const endpoint = "https://jtrim-ons.github.io/key-pop-data2/generated/";
+const endpoint = "https://ons-dp-prod-cdn.s3.eu-west-2.amazonaws.com/maptiles/pgp-data/";
 
 const VariableStatus = {
   // an "enum"
